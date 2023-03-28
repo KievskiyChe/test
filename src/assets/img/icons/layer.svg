@@ -1,0 +1,17 @@
+<svg width="900" height="550" viewBox="0 0 900 550" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="450" cy="275" r="274.5" stroke="white" stroke-opacity="0.1" stroke-dasharray="2 2"/>
+<circle cx="450" cy="275" r="224.5" stroke="white" stroke-opacity="0.1" stroke-dasharray="2 2"/>
+<circle cx="450" cy="275" r="264" stroke="#F9D667" stroke-opacity="0.4" stroke-width="12"/>
+<line x1="451.5" y1="459" x2="451.5" y2="509" stroke="white" stroke-opacity="0.1"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M684 275C684 404.235 579.235 509 450 509C320.765 509 216 404.235 216 275C216 145.765 320.765 41 450 41C450.333 41 450.667 41.0007 451 41.0021V91H452V41.0084C580.314 42.0826 684 146.433 684 275ZM685 275C685 404.787 579.787 510 450 510C320.213 510 215 404.787 215 275C215 145.213 320.213 40 450 40C579.787 40 685 145.213 685 275Z" fill="#F9D667" fill-opacity="0.5"/>
+<line x1="4.37114e-08" y1="294.5" x2="160" y2="294.5" stroke="white" stroke-opacity="0.1"/>
+<line x1="740" y1="294.5" x2="900" y2="294.5" stroke="white" stroke-opacity="0.1"/>
+<line x1="98.25" y1="96.567" x2="236.814" y2="176.567" stroke="white" stroke-opacity="0.1"/>
+<line x1="38.25" y1="96.567" x2="159.494" y2="166.567" stroke="white" stroke-opacity="0.1"/>
+<line y1="-0.5" x2="160" y2="-0.5" transform="matrix(-0.866025 0.5 0.5 0.866025 190.564 398)" stroke="white" stroke-opacity="0.1"/>
+<line y1="-0.5" x2="140" y2="-0.5" transform="matrix(-0.866025 0.5 0.5 0.866025 250.564 398)" stroke="white" stroke-opacity="0.1"/>
+<line y1="-0.5" x2="160" y2="-0.5" transform="matrix(-0.866025 0.5 0.5 0.866025 801.564 97)" stroke="white" stroke-opacity="0.1"/>
+<line y1="-0.5" x2="140" y2="-0.5" transform="matrix(-0.866025 0.5 0.5 0.866025 861.564 97)" stroke="white" stroke-opacity="0.1"/>
+<line x1="710.25" y1="397.567" x2="848.814" y2="477.567" stroke="white" stroke-opacity="0.1"/>
+<line x1="650.25" y1="397.567" x2="771.494" y2="467.567" stroke="white" stroke-opacity="0.1"/>
+</svg>

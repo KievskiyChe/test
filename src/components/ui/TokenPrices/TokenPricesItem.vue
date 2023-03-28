@@ -1,0 +1,68 @@
+<script setup lang="ts">
+import { cutString } from "@/common/helpers";
+import TokenIcon from "@/components/ui/TokenIcon.vue";
+
+defineProps<{
+  id: number;
+  token: IToken;
+}>();
+</script>
+
+<template>
+  <div class="token-price">
+    <div class="token-id">{{ id }}.</div>
+
+    <div class="icon" @click.stop="addTokenToMetaMask(token.symbol)">
+      <TokenIcon :name="token.symbol" />
+    </div>
+
+    <div class="token-content">
+      <span>{{ token.symbol }}</span>
+      <span>{{ cutString(token.price, 12) }}</span>
+    </div>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.token-price {
+  display: grid;
+  grid-template-columns: 15px auto 1fr;
+  align-items: center;
+  position: relative;
+  height: 38px;
+}
+
+.icon {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1;
+
+  transition: all 0.3s ease;
+
+  &:focus,
+  &:active {
+    scale: 0.9;
+  }
+}
+
+.token-content {
+  position: absolute;
+  width: calc(100% - 30px);
+  height: 20px;
+  left: 30px;
+  border-radius: 0 30px 30px 0;
+  box-shadow: 0px 1px 4px rgba(255, 249, 199, 0.2);
+  font-size: 14px;
+  padding-right: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 30px;
+
+  span:first-child {
+    text-transform: uppercase;
+  }
+}
+</style>

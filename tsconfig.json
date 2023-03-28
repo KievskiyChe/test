@@ -1,0 +1,24 @@
+{
+  "files": ["config/components.d.ts", "config/auto-imports.d.ts"],
+  "extends": "@vue/tsconfig/tsconfig.web.json",
+  "include": [
+    "vite-env.d.ts",
+    "src/**/*.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "config/*.d.ts"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "noEmit": true
+  },
+
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
