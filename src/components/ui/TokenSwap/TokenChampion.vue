@@ -18,8 +18,7 @@ const { approveReward, claimReward } = useRewardsStore();
       </h2>
     </div>
 
-    <div class="rewards" v-if="reward">
-      <!-- not approved -->
+    <!-- <div class="rewards" v-if="reward">
       <TheButton
         v-if="reward.canClaim && !reward.approved"
         :disabled="process"
@@ -31,7 +30,6 @@ const { approveReward, claimReward } = useRewardsStore();
         <span>{{ process ? "proccess..." : "approve" }}</span>
       </TheButton>
 
-      <!-- approved and can claim -->
       <TheButton
         v-if="reward.canClaim && reward.approved"
         :disabled="process"
@@ -43,14 +41,13 @@ const { approveReward, claimReward } = useRewardsStore();
         <span>{{ process ? "proccess..." : "claim" }}</span>
       </TheButton>
 
-      <!-- no reward OR rewards already claimed -->
       <TheButton v-if="!reward.canClaim" :disabled="true">
         <template #icon>
           <img src="@/assets/img/icons/claim.svg" />
         </template>
         <span>no rewards</span>
       </TheButton>
-    </div>
+    </div> -->
   </div>
 </template>
 
