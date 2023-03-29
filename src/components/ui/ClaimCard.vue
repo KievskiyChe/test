@@ -79,7 +79,7 @@ defineProps<Props>();
   width: 100%;
   height: 75px;
   display: grid;
-  grid-template-columns: 1fr 140px 170px;
+  grid-template-columns: 180px 1fr 1fr;
   gap: 20px;
 }
 
