@@ -241,6 +241,7 @@ export class Manager implements IManager {
       });
 
       await this.tournament.update();
+      await this.tournament.updateRewards();
 
       const { showPopup } = usePopupsStore();
       showPopup(Popup.CLAIM);
