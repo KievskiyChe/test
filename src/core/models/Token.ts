@@ -73,7 +73,7 @@ export class Token implements IToken {
   };
 
   /**
-   * Approve token for spending (swaps)
+   * Approve token for spending (rewards)
    * @memberof Token
    */
   public approveManager = async (
