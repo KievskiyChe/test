@@ -2,13 +2,26 @@
 const tournament = inject<ITournament>("Tournament")!;
 
 const { user } = storeToRefs(useUserStore());
-const { fee, round } = storeToRefs(useTournamentStore());
+const { fee, round, game } = storeToRefs(useTournamentStore());
 const { process, from, to, amountFrom, isValidFrom, slippage } = storeToRefs(
   useSwapStore()
 );
 
 const { startProcess, successProcess, errorProcess, setProcess, resetForm } =
   useSwapStore();
+
+const canBuy = (token: IToken) => {  
+  if (!game.value || !round.value) return false;
+
+  const currentRound = game.value.rounds.get(round.value - 1)?.pairs.map((pair) => pair.winner);
+
+  if (!currentRound) return false;
+
+  const tokens = Array.from(currentRound)
+  const arr = tokens.filter((item) => item);  
+
+  return arr.find((item) => item?.symbol === token.symbol) ? true : false;
+};
 
 const swapTokens = async () => {
   startProcess();
@@ -111,7 +124,7 @@ const handleApprove = async (token: IToken | undefined) => {
 
         <TheButton
           v-if="user && from.approved"
-          :disabled="!user || process || process || !isValidFrom"
+          :disabled="!user || process || process || !isValidFrom || !canBuy(to)"
           @click.stop="swapTokens"
         >
           <template #icon>

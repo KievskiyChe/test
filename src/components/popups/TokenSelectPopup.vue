@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { tokens } = storeToRefs(useTournamentStore());
+const { tokens, game, round } = storeToRefs(useTournamentStore());
 const { hideAllPopups } = usePopupsStore();
 const { setTo, setFrom } = useSwapStore();
 
@@ -12,6 +12,7 @@ const props = defineProps<Props>();
 const close = () => {
   hideAllPopups();
 };
+
 
 const setToken = (token: IToken) => {
   if (props.emitted === "from") setFrom(token);
@@ -129,6 +130,7 @@ const animation = {
   padding: 0 8px;
   border-radius: 8px;
 }
+
 
 .list-item:hover {
   cursor: pointer;

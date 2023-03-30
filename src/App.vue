@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { exists } = usePopupsStore();
+const { exists, showPopup } = usePopupsStore();
 </script>
 
 <template>

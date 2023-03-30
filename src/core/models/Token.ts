@@ -2,7 +2,7 @@ import { BigNumber, ethers } from "ethers";
 import { createContractERC20 } from "../common/helpers";
 
 export class Token implements IToken {
-  private provider = {} as Signer;
+  private readonly provider = {} as Signer;
   private readonly sleepTime = 150;
 
   protected contract: Contract;

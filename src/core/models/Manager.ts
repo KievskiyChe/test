@@ -92,9 +92,19 @@ export class Manager implements IManager {
         return await this.fetchRewardsByTournamentId(tournamentId, userAddress);
       });
 
-      const rewards = (await Promise.all(promises)) as Reward[];
+      const arr = (await Promise.all(promises)) as Reward[];
 
-      return rewards.reverse();
+      const rewards = arr.sort((a, b) => {
+        if (a.canClaim === true && b.canClaim === false) {
+          return -1;
+        } else if (a.canClaim === false && b.canClaim === true) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+
+      return rewards;
     } catch (error) {
       console.log(error);
       console.log("Error while fetching rewards");

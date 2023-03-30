@@ -163,7 +163,7 @@ const getAmountsOutOptions = (type: string) => {
   display: flex;
 
   input {
-    width: 200px;
+    width: 100%;
     height: 100%;
     background: transparent;
     color: #fff;
@@ -173,7 +173,7 @@ const getAmountsOutOptions = (type: string) => {
     border: none;
     outline: none;
     letter-spacing: 0.05em;
-
+    
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

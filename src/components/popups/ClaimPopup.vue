@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { hidePopup } = usePopupsStore();
+const { game } = storeToRefs(useTournamentStore())
 const { process, reward } = storeToRefs(useRewardsStore());
 const { approveReward, claimReward } = useRewardsStore();
 
@@ -18,6 +19,8 @@ const animation = {
     },
   },
 };
+
+
 </script>
 
 <template>
@@ -28,13 +31,20 @@ const animation = {
       <div class="popup-content">
         <div class="title">Claim</div>
 
-        <div class="body" v-if="reward">
-          <small>your prize</small>
-          <h1>{{ parseString(String(reward.reward), 2) }}</h1>
+        <div class="body">
+          <div class="winner" v-if="game && game.winner" :name="game.winner.symbol">
+            <TokenIcon :name="game.winner.symbol" :big="true" />
+            <span>{{ game.winner.name }}</span>
+          </div>
+          <template v-if="reward">
+            <small>your prize</small>
+            <h1>{{ parseString(String(reward.reward), 2) }}</h1>
+          </template>
         </div>
 
         <div class="foo">
           <div class="claim" v-if="reward">
+
             <TheButton
               v-if="reward.canClaim && reward.approved"
               @click.stop="claimReward(reward)"
@@ -63,6 +73,9 @@ const animation = {
               </template>
               <span>no rewards</span>
             </TheButton>
+          </div>
+          <div v-else>
+            <p>No rewards</p>
           </div>
           <router-link :to="{ name: 'claim-history' }" @click="close">
             my battle history
@@ -98,6 +111,23 @@ const animation = {
   background: var(--black-600);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+.winner {
+  display: grid;
+  gap: 10px;
+  place-items: center;
+  
+  span {
+    font-weight: 900;
+    text-align: center;
+    font-size: 30px;
+    text-transform: uppercase;
+    color: #1e1e1e;
+    background-color: transparent;
+    text-shadow: -1px -1px 0 #f9d667, 1px -1px 0 #f9d667, -1px 1px 0 #f9d667,
+      1px 1px 0 #f9d667;
+  }
 }
 
 .popup-content {
