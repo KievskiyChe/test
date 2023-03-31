@@ -3,7 +3,7 @@ import { createContractERC20 } from "../common/helpers";
 
 export class Token implements IToken {
   private readonly provider = {} as Signer;
-  private readonly sleepTime = 1000;
+  private readonly sleepTime = 500;
 
   protected contract: Contract;
   protected router: Contract;
@@ -120,8 +120,11 @@ export class Token implements IToken {
    */
   public fetchMetadata = async (): Promise<void> => {
     try {
+      await sleep(this.sleepTime);
       const name = await this.contract.name();
+      await sleep(this.sleepTime);
       const symbol = await this.contract.symbol();
+      await sleep(this.sleepTime);
       const decimals = await this.contract.decimals();
       await sleep(this.sleepTime);
       console.log('getting spot price for token: ', this.address);
