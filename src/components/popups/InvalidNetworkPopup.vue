@@ -9,6 +9,9 @@ const animation = {
     to: { y: 0 },
   },
 };
+
+const chain = import.meta.env.VITE_APP_CHAIN;
+const network = import.meta.env.VITE_APP_NETWORK;
 </script>
 
 <template>
@@ -25,8 +28,8 @@ const animation = {
 
         <div class="foo">
           <p>switch to</p>
-          <TheButton @click.stop="switchNetwork(137)">
-            <span>polygon</span>
+          <TheButton @click.stop="switchNetwork(+chain)">
+            <span>{{ network }}</span>
           </TheButton>
         </div>
       </div>
