@@ -26,7 +26,7 @@ const animation = {
         <div class="foo">
           <p>switch to</p>
           <TheButton @click.stop="switchNetwork(137)">
-            <span>goerli testnet</span>
+            <span>polygon</span>
           </TheButton>
         </div>
       </div>
