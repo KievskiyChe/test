@@ -11,7 +11,7 @@
             <h2><sup>$</sup>0</h2>
           </div>
 
-          <div class="info-icon"></div>
+          <!-- <div class="info-icon"></div> -->
         </div>
 
         <div class="stats-players">

@@ -24,7 +24,7 @@ const animation = {
     <main class="content container">
       <div class="title">
         <h1>Battle History</h1>
-        <p>prizes information</p>
+        <p>prizes</p>
       </div>
 
       <div class="rewards" v-if="!process">

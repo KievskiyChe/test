@@ -71,7 +71,7 @@ const isWinner = (token: IToken, winner: IToken) => {
   text-align: center;
   padding: 80px 0;
   font-size: 32px;
-  font-family: "Aurebesh", sans-serif;
+  // font-family: "Aurebesh", sans-serif;
 }
 
 .content {

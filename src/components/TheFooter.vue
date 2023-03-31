@@ -6,22 +6,22 @@
 
     <div class="social">
       <Motion :from="{ y: 10 }" :to="{ y: 0 }">
-        <a href="#" class="icon">
+        <a href="https://awakeness.gitbook.io/awakeness" target="_blank" class="icon">
           <img src="@/assets/img/social/github.svg" alt="GitHub" />
         </a>
       </Motion>
       <Motion :delay="0.1" :from="{ y: 10 }" :to="{ y: 0 }">
-        <a href="#" class="icon">
+        <a href="https://twitter.com/AwakenessFi" target="_blank" class="icon">
           <img src="@/assets/img/social/twitter.svg" alt="Twitter" />
         </a>
       </Motion>
-      <Motion :delay="0.2" :from="{ y: 10 }" :to="{ y: 0 }">
+      <!-- <Motion :delay="0.2" :from="{ y: 10 }" :to="{ y: 0 }">
         <a href="#" class="icon">
           <img src="@/assets/img/social/reddit.svg" alt="Reddit" />
         </a>
-      </Motion>
+      </Motion> -->
       <Motion :delay="0.3" :from="{ y: 10 }" :to="{ y: 0 }">
-        <a href="#" class="icon">
+        <a href="http://discord.gg/Ap9Pt32cvG" target="_blank" class="icon">
           <img src="@/assets/img/social/discord.svg" alt="Discord" />
         </a>
       </Motion>
