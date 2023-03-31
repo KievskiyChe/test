@@ -7,7 +7,7 @@
     <div class="social">
       <Motion :from="{ y: 10 }" :to="{ y: 0 }">
         <a href="https://awakeness.gitbook.io/awakeness" target="_blank" class="icon">
-          <img src="@/assets/img/social/github.svg" alt="GitHub" />
+          <img src="@/assets/img/social/gitbook.svg" alt="GitHub" />
         </a>
       </Motion>
       <Motion :delay="0.1" :from="{ y: 10 }" :to="{ y: 0 }">
@@ -60,11 +60,12 @@
 
 .icon {
   cursor: pointer;
-  width: 24px;
-  height: 24px;
+  max-width: 24px;
+  max-height: 24px;
+  position: relative;
 
   img {
-    width: 100%;
+    width: 24px;
   }
 }
 </style>
