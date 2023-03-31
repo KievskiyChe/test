@@ -11,10 +11,10 @@ const { startProcess, successProcess, errorProcess, setProcess, resetForm } =
   useSwapStore();
 
 const canBuy = (token: IToken) => {  
-  if (!game.value || !round.value) return false;
+  if (!game.value) return false;
+  if (round.value === 0) return true;
 
   const currentRound = game.value.rounds.get(round.value - 1)?.pairs.map((pair) => pair.winner);
-
   if (!currentRound) return false;
 
   const tokens = Array.from(currentRound)
