@@ -123,8 +123,9 @@ export class Token implements IToken {
       const name = await this.contract.name();
       const symbol = await this.contract.symbol();
       const decimals = await this.contract.decimals();
-      const price = await this.manager.getSpotPrice(this.address);
       await sleep(this.sleepTime);
+      console.log('getting spot price for token: ', this.address);
+      const price = await this.manager.getSpotPrice(this.address);
 
       let amount = 0;
 
