@@ -44,12 +44,12 @@ export const createContractFactory = () => {
 export const getProvider = (provider: Provider): Provider => {
   const chain = import.meta.env.VITE_APP_CHAIN;
   const rpc = getRpcByChain(chain);
+  return new ethers.providers.JsonRpcProvider(rpc);
 
-  if (provider) {
-    return provider;
-  } else {
-    return new ethers.providers.JsonRpcProvider(rpc);
-  }
+  // if (provider) {
+  //   return provider;
+  // } else {
+  // }
 };
 
 export const getRpcByChain = (chain: string) => {
@@ -57,9 +57,9 @@ export const getRpcByChain = (chain: string) => {
     case 5:
       return "https://rpc.ankr.com/eth_goerli";
     case 137:
-      return "https://rpc.ankr.com/polygon";
+      return "https://polygon.llamarpc.com";
     default:
-      return "https://rpc.ankr.com/eth_goerli";
+      return "https://polygon.llamarpc.com";
   }
 };
 

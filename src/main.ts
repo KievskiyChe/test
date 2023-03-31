@@ -49,6 +49,8 @@ connector
     const signer = provider.getSigner(userAddress);
     const result = checkProviderAndSigner(provider, signer);
 
+    console.log(result.provider);
+
     return { userAddress, provider: result.provider, signer: result.signer };
   })
   .then((data) => setGlobals(data))

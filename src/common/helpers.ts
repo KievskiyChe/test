@@ -113,8 +113,6 @@ export const addTokenToMetaMask = async (symbol: string): Promise<void> => {
     deaw: "0x9Fae8e060A51e2f96Ba34658627E7dC29844F347",
   };
 
-  console.log(symbol);
-
   const options = {
     address: tokens[symbol.toLowerCase()],
     symbol: symbol.toUpperCase(),
