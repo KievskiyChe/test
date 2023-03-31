@@ -8,7 +8,7 @@
           <img src="@/assets/img/icons/prize.svg" alt="prize" />
           <div class="stats-title">
             <span>total prize <br />pool</span>
-            <h2><sup>$</sup>1.1M</h2>
+            <h2><sup>$</sup>0</h2>
           </div>
 
           <div class="info-icon"></div>
@@ -18,7 +18,7 @@
           <img src="@/assets/img/icons/players.svg" alt="players" />
           <div class="stats-title">
             <span>players</span>
-            <h2>100K</h2>
+            <h2>0</h2>
           </div>
         </div>
       </div>
