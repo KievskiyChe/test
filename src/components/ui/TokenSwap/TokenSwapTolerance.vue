@@ -3,7 +3,7 @@ const { setSlippage } = useSwapStore();
 
 const selected = ref(1);
 
-const options = [
+const options = reactive([
   {
     value: 0.5,
     label: "0.5%",
@@ -13,10 +13,19 @@ const options = [
     label: "1%",
   },
   {
-    value: 1,
     label: "Custom %",
+    value: null,
   },
-];
+]);
+
+watch(
+  () => options[2].value,
+  (value) => {
+    if (value) {
+      setSlippage(value);
+    }
+  }
+);
 </script>
 
 <template>
@@ -30,8 +39,16 @@ const options = [
         :class="{ selected: index === selected }"
         @click.stop="(selected = index), setSlippage(option.value)"
       >
-        {{ option.label }}
+        <template v-if="index !== 2">
+          {{ option.label }}
+        </template>
+        <template v-else>
+          <input type="number" v-model="option.value" :placeholder="option.label" />
+        </template>
       </div>
+      <!-- <div class="option">
+        <input type="number" placeholder="Custom %">
+      </div> -->
     </div>
   </div>
 </template>
@@ -58,6 +75,23 @@ const options = [
       border-color: var(--shadow-yellow);
       background: var(--shadow-yellow);
       color: #000;
+
+      input {
+        color: #000;
+      }
+    }
+
+    input {
+      background: transparent;
+      width: 80px;
+      height: 100%;
+      border: none;
+      outline: none;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #fff;
     }
   }
 }

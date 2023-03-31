@@ -86,7 +86,8 @@ export const useSwapStore = defineStore("swap-module", () => {
   };
 
   // set slippage
-  const setSlippage = (value: number) => {
+  const setSlippage = (value: number | null) => {
+    if (!value) return;
     slippage.value = value;
   };
 
