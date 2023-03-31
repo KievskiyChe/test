@@ -8,7 +8,7 @@ import { randomHash } from "./common/helpers";
 const LAST_ROUND = 3;
 
 export default class Tournament implements ITournament {
-  private readonly sleepTime = 100;
+  private readonly sleepTime = 1000;
 
   public readonly router = {} as IRouter;
   public readonly factory = {} as IFactory;

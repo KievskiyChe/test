@@ -3,7 +3,7 @@ import { createContractERC20 } from "../common/helpers";
 
 export class Token implements IToken {
   private readonly provider = {} as Signer;
-  private readonly sleepTime = 150;
+  private readonly sleepTime = 1000;
 
   protected contract: Contract;
   protected router: Contract;
