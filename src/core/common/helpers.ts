@@ -57,9 +57,9 @@ export const getRpcByChain = (chain: string) => {
     case 5:
       return "https://rpc.ankr.com/eth_goerli";
     case 137:
-      return "https://polygon.llamarpc.com";
+      return "https://polygon-rpc.com";
     default:
-      return "https://polygon.llamarpc.com";
+      return "https://polygon-rpc.com";
   }
 };
 
