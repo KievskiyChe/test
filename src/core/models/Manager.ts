@@ -49,7 +49,7 @@ export class Manager implements IManager {
         router: this.tournament.router.contract,
         manager: this.contract,
       };
-
+      
       return await new Token(params).init();
     });
 
