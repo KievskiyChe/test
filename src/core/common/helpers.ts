@@ -41,15 +41,18 @@ export const createContractFactory = () => {
   return new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, window.__SIGNER__);
 };
 
+// TODO: change rpc provider
 export const getProvider = (provider: Provider): Provider => {
   const chain = import.meta.env.VITE_APP_CHAIN;
   const rpc = getRpcByChain(chain);
+  const p = new ethers.providers.JsonRpcProvider(rpc);
   
-  if (provider) {
-    return provider;
-  } else {
-    return new ethers.providers.JsonRpcProvider(rpc);
-  }
+  return p;
+  // if (provider) {
+  //   return provider;
+  // } else {
+  //   return new ethers.providers.JsonRpcProvider(rpc);
+  // }
 };
 
 export const getRpcByChain = (chain: string) => {
