@@ -34,7 +34,7 @@ onClickOutside(outside, () => {
       <Motion>
         <div class="content" @click="handleConnect()">
           <div class="icon">
-            <img src="@/assets/img/icons/eth.svg" alt="Ethereum" />
+            <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
 
           <span class="connect">Connect</span>
