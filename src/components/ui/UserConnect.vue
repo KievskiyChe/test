@@ -46,7 +46,7 @@ onClickOutside(outside, () => {
       <Motion>
         <div class="content" @click.stop="showUserInfo = !showUserInfo">
           <div class="icon">
-            <img src="@/assets/img/icons/eth.svg" alt="Ethereum" />
+            <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
 
           <span class="user-address">{{ getShortAddress() }}</span>
@@ -91,11 +91,19 @@ onClickOutside(outside, () => {
 .content {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   cursor: pointer;
 
   span {
     padding-bottom: 3px;
+  }
+
+  .icon {
+    width: 20px;
+
+    img {
+      width: 100%;
+    }
   }
 }
 
