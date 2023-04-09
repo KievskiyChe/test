@@ -56,7 +56,7 @@ const scaleAnimation = {
 
         <Motion :delay="0.35" v-bind="scaleAnimation">
           <div class="title">
-            <h1>The Galactic War is <br />upon us...</h1>
+            <h1>Wait for the next <br />tournament to start...</h1>
           </div>
         </Motion>
 
