@@ -36,7 +36,7 @@ export class Connector {
       if (this.modal.cachedProvider) return await this.connect();
       return null;
     } catch (error) {
-      alert({ type: 'auth', error });
+      alert({ type: "auth", error });
     }
   };
 
@@ -122,31 +122,38 @@ export class Connector {
 
   async connectMetamask() {
     // Check if Metamask is installed
-    if (typeof window.ethereum !== 'undefined') {
+    if (typeof window.ethereum !== "undefined") {
       try {
         // Request access to the user's Metamask account
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        
+        const accounts = await window.ethereum.request({
+          method: "eth_requestAccounts",
+        });
+
         // Create a Web3Provider instance using the Metamask provider
         const provider = new ethers.providers.Web3Provider(window.ethereum);
-        
+
         // Set the signer to the current account
         const signer = provider.getSigner();
-        
+
         // Get the current network ID
         const network = await provider.getNetwork();
-        
+
         // Log some info
-        console.log('Connected to Metamask with account', accounts[0]);
-        console.log('Current network is', network.name, 'with ID', network.chainId);
-        
+        console.log("Connected to Metamask with account", accounts[0]);
+        console.log(
+          "Current network is",
+          network.name,
+          "with ID",
+          network.chainId
+        );
+
         // Return the provider and signer
         return { provider, signer };
       } catch (error) {
         console.error(error);
       }
     } else {
-      console.error('Metamask is not installed');
+      console.error("Metamask is not installed");
     }
   }
 }

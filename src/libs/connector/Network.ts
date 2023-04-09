@@ -6,7 +6,6 @@ export default class Network {
   public symbol: string = "";
 
   constructor(private readonly provider: any) {
-    // alert(JSON.stringify(this.provider.provider))
     if (!this.provider.provider.chainId) {
       
     }
