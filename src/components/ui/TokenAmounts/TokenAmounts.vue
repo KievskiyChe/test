@@ -3,7 +3,7 @@ const { user } = storeToRefs(useUserStore());
 const { process } = storeToRefs(useTournamentStore());
 const { totalAmountsUSD } = useTournamentStore();
 
-const showChart = ref(true);
+const showChart = ref(false);
 
 const toggle = () => {
   showChart.value = !showChart.value;

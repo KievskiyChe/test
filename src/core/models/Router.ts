@@ -20,15 +20,9 @@ export class Router implements IRouter {
       );
 
       if (!options.amount) return;
-
-      console.log(amount, path);
       
       const result = await this.contract.getAmountsOutWithFee(amount, path);
       const value = result.toString().split(",")[1];
-
-      console.log("Amounts out: ", value);
-      
-      
 
       return ethers.utils.formatUnits(value, options.to.decimals);
     } catch (error) {
