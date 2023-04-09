@@ -10,7 +10,7 @@
       <img src="@/assets/img/backgrounds/5.webp" />
     </div>
 
-    <div class="overlay-mobile">
+    <div class="overlay overlay-mobile">
       <img src="@/assets/img/backgrounds/1.webp" />
     </div>
 
@@ -31,10 +31,6 @@
 </template>
 
 <style scoped lang="scss">
-.overlay-mobile {
-  display: none;
-}
-
 .battle-view {
   width: 100%;
   height: 100%;
@@ -52,11 +48,11 @@
   display: grid;
 }
 
-.overlay, .overlay-mobile {
-  width: calc(100% + 40px);
-  height: calc(100% + 40px);
-  top: -20px;
-  left: -20px;
+.overlay {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
 
   position: absolute;
   overflow: hidden;
@@ -71,14 +67,19 @@
     background: rgba(37, 39, 47, 0.5);
     filter: contrast(120%);
   }
-}
 
-.overlay-mobile {
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
+  &-mobile {
+    display: none;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 10px);
+    min-height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
 
@@ -104,10 +105,10 @@
 
   .overlay {
     display: none;
-  }
 
-  .overlay-mobile {
-    display: block;
+    &-mobile {
+      display: block;
+    }
   }
 }
 </style>
