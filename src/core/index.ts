@@ -8,7 +8,7 @@ import { randomHash } from "./common/helpers";
 const LAST_ROUND = 3;
 
 export default class Tournament implements ITournament {
-  private readonly sleepTime = 1000;
+  private readonly sleepTime = 100;
 
   public readonly router = {} as IRouter;
   public readonly factory = {} as IFactory;
@@ -65,20 +65,20 @@ export default class Tournament implements ITournament {
     const { fetchFee } = this.factory;
 
     try {
-      await this.fetchParam("id", fetchId, 200);
-      await this.fetchParam("round", fetchRound, 200);
-      await this.fetchParam("startTime", fetchStartTime, 200);
-      await this.fetchParam("fee", fetchFee, 200);
-      await this.fetchParam("usdc", fetchUSDC, 200);
-      await this.fetchParam("status", fetchStatus, 200);
+      await this.fetchParam("id", fetchId);
+      await this.fetchParam("round", fetchRound);
+      await this.fetchParam("startTime", fetchStartTime);
+      await this.fetchParam("fee", fetchFee);
+      await this.fetchParam("usdc", fetchUSDC);
+      await this.fetchParam("status", fetchStatus);
 
       const round = this.getParam<number>("round");
       const currentId = this.getParam<number>("id");
       const id = round !== LAST_ROUND ? currentId : currentId - 1;
 
       await this.fetchParam("tokens", () => fetchTokens(id), slt);
-      await this.fetchParam("bracket", () => fetchBracket(id), 200);
-      await this.fetchParam("rewards", () => fetchRewards(currentId), 200);
+      await this.fetchParam("bracket", () => fetchBracket(id));
+      await this.fetchParam("rewards", () => fetchRewards(currentId));
       await this.fetchWinner(id);
 
       const tokens = this.getParam<IToken[]>("tokens");

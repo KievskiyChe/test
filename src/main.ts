@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { Connector, EVENTS } from "vue-dapp-connector";
+import { Connector, EVENTS } from "@/libs/connector";
 import { connectorPluginCustomStyles } from "./plugins/connector-modal";
 import { useUserStore } from "@/stores/user";
 import { checkNetwork } from "@/common/helpers";
@@ -15,6 +15,7 @@ import App from "./App.vue";
 import router from "./router";
 import { overlay, lazyload } from "./directives";
 import "./assets/scss/style.scss";
+import { ethers } from "ethers";
 
 const app = createApp(App);
 
@@ -29,13 +30,18 @@ app.directive("lazyload", lazyload);
 
 const { setUser } = useUserStore();
 
+const state = {
+  userAddress: "",
+  provider: new ethers.providers.JsonRpcProvider("https://polygon.llamarpc.com"),
+  signer: null as ethers.Signer | null | any,
+}
+
 connector
   .authenticate()
   .then((data) => {
     if (!data) {
-      const provider = getProvider(null);
-      const signer = getSigner(null, provider);
-      return { userAddress: "", provider, signer };
+      state.signer = state.provider;
+      return { userAddress: "", provider: state.provider, signer: state.provider };
     }
 
     const { wallet, network } = data;
@@ -43,18 +49,16 @@ connector
     setUser({ wallet, network });
     checkNetwork(network.id);
 
-    const userAddress = wallet.address;
-    const provider = connector.getProvider();
-
-    const signer = provider.getSigner(userAddress);
-    const result = checkProviderAndSigner(provider, signer);
-
-    console.log(result.provider);
-
-    return { userAddress, provider: result.provider, signer: result.signer };
+    state.userAddress = wallet.address;
+    state.provider = connector.getProvider();
+    state.signer = state.provider.getSigner(state.userAddress);
   })
-  .then((data) => setGlobals(data))
+  .catch(() => {
+    alert("Error");
+    state.signer = state.provider;
+  })
   .finally(async () => {
+    setGlobals(state)
     const tournament = new Tournament();
     await tournament.fetchStatus();
 
