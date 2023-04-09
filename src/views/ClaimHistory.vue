@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { rewards } = storeToRefs(useRewardsStore());
-const { process } = storeToRefs(useTournamentStore());
+const { process, isActive } = storeToRefs(useTournamentStore());
 
 const animation = {
   from: {
@@ -39,6 +39,14 @@ const animation = {
               <ClaimCard :claim="claim" />
             </Motion>
           </div>
+
+          <div class="actions" v-if="isActive">
+            <router-link to="/batlle">
+              <TheButton>
+                <span>Back to tournament</span>
+              </TheButton>
+            </router-link>
+          </div>
         </template>
 
         <template v-if="!rewards.length">
@@ -76,6 +84,10 @@ const animation = {
   height: 100%;
   display: grid;
   place-items: center;
+}
+
+.actions {
+  margin-top: 100px;
 }
 
 .process .wrapper {

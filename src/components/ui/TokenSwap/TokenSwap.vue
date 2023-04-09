@@ -104,7 +104,8 @@ const handleApprove = async (token: IToken | undefined) => {
 
       <Motion class="fee">
         <span>Swap fee</span>
-        <span>%{{ fee ? fee / 1000 : 0 }}</span>
+        <!-- <span>%{{ fee ? fee / 1000 : 0 }}</span> -->
+        <span>%1</span>
       </Motion>
 
       <Motion class="foo" v-if="from && to">

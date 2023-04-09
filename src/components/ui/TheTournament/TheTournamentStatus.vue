@@ -24,7 +24,7 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
           <TheTimer title="time of battle" :time="startTime" />
         </div>
 
-        <div class="info-bottom">min 12 h max 30 h</div>
+        <div class="info-bottom">min 10 h max 30 h</div>
       </div>
     </TheCard>
 
