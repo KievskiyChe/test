@@ -23,7 +23,7 @@ export class Connector {
 
   constructor() {
     this.modal = new Web3Modal({
-      cacheProvider: false,
+      cacheProvider: true,
       providerOptions: {
         coinbasewallet: config.coinbasewallet,
         walletconnect: config.walletconnect,
