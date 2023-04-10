@@ -14,13 +14,17 @@ export class Router implements IRouter {
   ): Promise<string | undefined> => {
     try {
       const { address, decimals } = options.from;
-      const path = [address, options.to.address];
 
-      const amount = ethers.utils.parseUnits(options.amount, decimals);
+      const path = [address, options.to.address];
+      const amountIn = ethers.utils
+        .parseUnits(options.amount, decimals)
+        .toString();
 
       if (!options.amount) return;
 
-      const result = await this.contract.getAmountsOutWithFee(amount, path);
+      const args = [amountIn, path];
+
+      const result = await this.contract.getAmountsOutWithFee(...args);
       const [_, value] = result.toString().split(",");
 
       return ethers.utils.formatUnits(value, options.to.decimals);
