@@ -13,11 +13,11 @@ export class Router implements IRouter {
     options: AmountsOutOptions
   ): Promise<string | undefined> => {
     try {
-      const { address, decimals } = options.from;
+      const { from, to } = options;
 
-      const path = [address, options.to.address];
+      const path = [from.address, to.address];
       const amountIn = ethers.utils
-        .parseUnits(options.amount, decimals)
+        .parseUnits(options.amount, from.decimals)
         .toString();
 
       if (!options.amount) return;
@@ -47,7 +47,8 @@ export class Router implements IRouter {
         { gasLimit }
       );
 
-      return await tx.wait().then((reciept: TransactionReceipt) => reciept);
+      // return await tx.wait().then((reciept: TransactionReceipt) => reciept);
+      return await tx.wait();
     } catch (error) {
       console.log(error);
       console.log("Error while swapping tokens");

@@ -9,7 +9,7 @@ interface SwapOptions {
   slippage: string;
   path: string[];
   to: string;
-  expiration: number;
+  deadline: number;
 }
 
 interface AmountsOutOptions {
