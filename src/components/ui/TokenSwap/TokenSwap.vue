@@ -53,7 +53,7 @@ const getSwapOptions = (): SwapOptions | undefined => {
     ),
     path: [from.value.address, to.value.address],
     to: user.value.wallet.address,
-    expiration: Date.now() + 200000,
+    deadline: Date.now() + 200000,
   };
 };
 
