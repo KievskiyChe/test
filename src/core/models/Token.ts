@@ -1,5 +1,9 @@
 import { BigNumber, ethers } from "ethers";
 import { createContractERC20 } from "../common/helpers";
+import Bottleneck from "bottleneck";
+
+// Define a rate limit of 10 requests per second
+const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
 
 export class Token implements IToken {
   private readonly provider = {} as Signer;
@@ -120,20 +124,16 @@ export class Token implements IToken {
    */
   public fetchMetadata = async (): Promise<void> => {
     try {
-      await sleep(this.sleepTime);
-      const name = await this.contract.name();
-      // await sleep(this.sleepTime);
-      const symbol = await this.contract.symbol();
-      // await sleep(this.sleepTime);
-      const decimals = await this.contract.decimals();
-      // await sleep(this.sleepTime);
+      const name: string = await limiter.schedule(() => this.contract.name());
+      const symbol: string = await limiter.schedule(() => this.contract.symbol());
+      const decimals: number = await limiter.schedule(() => this.contract.decimals());
+      const price: number = await limiter.schedule(() => this.manager.getSpotPrice(this.address));
       console.log('getting spot price for token: ', this.address);
-      const price = await this.manager.getSpotPrice(this.address);
 
       let amount = 0;
 
       if (this.userAddress) {
-        amount = await this.contract.balanceOf(this.userAddress);
+        amount = await limiter.schedule(() => this.contract.balanceOf(this.userAddress));
       }
 
       this.name = name;

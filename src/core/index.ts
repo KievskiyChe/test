@@ -5,6 +5,11 @@ import { Manager } from "./models/Manager";
 import { Game } from "./models/Game";
 import { randomHash } from "./common/helpers";
 
+import Bottleneck from "bottleneck";
+
+// Define a rate limit of 10 requests per second
+const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 100 });
+
 const LAST_ROUND = 3;
 
 export default class Tournament implements ITournament {
@@ -76,7 +81,7 @@ export default class Tournament implements ITournament {
       const currentId = this.getParam<number>("id");
       const id = round !== LAST_ROUND ? currentId : currentId - 1;
 
-      await this.fetchParam("tokens", () => fetchTokens(id), slt);
+      await this.fetchParam("tokens", () => fetchTokens(id));
       await this.fetchParam("bracket", () => fetchBracket(id));
       await this.fetchParam("rewards", () => fetchRewards(currentId));
       await this.fetchWinner(id);
@@ -104,7 +109,6 @@ export default class Tournament implements ITournament {
    * Fetch param and set it to the store on the fly
    * @param {keyof Params} key
    * @param {Promise<any>} fn - callable function
-   * @param {number} sleepTime - sleep time in ms
    * @dev 'sleepTime' need for correct work of
    * the fetching process. By example, polygon_mumbai testnet is very slow and
    * have request limits for calls (40 per second). So, we need to wait a
@@ -113,14 +117,13 @@ export default class Tournament implements ITournament {
    */
   private fetchParam = async (
     key: keyof Params,
-    fn: () => Promise<any>,
-    sleepTime: number = 0
+    fn: () => Promise<any>
   ): Promise<void> => {
     const timer = `getting ${key}-${randomHash(4)}`;
     console.time(timer);
     try {
-      await sleep(sleepTime);
-      return this.setParam(key, await fn());
+      const value = await limiter.schedule(() => fn());
+      return this.setParam(key, value);
     } catch (error) {
       console.log(error);
       console.log(`Error while getting ${key}`);
