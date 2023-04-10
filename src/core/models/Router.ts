@@ -13,21 +13,19 @@ export class Router implements IRouter {
     options: AmountsOutOptions
   ): Promise<string | undefined> => {
     try {
-      const path = [options.from.address, options.to.address];
-      const amount = ethers.utils.parseUnits(
-        options.amount,
-        options.from.decimals
-      );
+      const { address, decimals } = options.from;
+      const path = [address, options.to.address];
+
+      const amount = ethers.utils.parseUnits(options.amount, decimals);
 
       if (!options.amount) return;
-      
+
       const result = await this.contract.getAmountsOutWithFee(amount, path);
-      const value = result.toString().split(",")[1];
+      const [_, value] = result.toString().split(",");
 
       return ethers.utils.formatUnits(value, options.to.decimals);
     } catch (error) {
-      console.log(error);
-      console.log("Error while getting amounts out");
+      console.log(`Error while getting amounts out: ${error}`);
     }
   };
 
@@ -37,10 +35,12 @@ export class Router implements IRouter {
   public swapTokens = async (
     options: SwapOptions
   ): Promise<TransactionReceipt> => {
+    const gasLimit = 6_000_000;
+
     try {
       const tx = await this.contract.swapExactTokensForTokens(
         ...Object.values(options),
-        { gasLimit: 6_000_000 }
+        { gasLimit }
       );
 
       return await tx.wait().then((reciept: TransactionReceipt) => reciept);
