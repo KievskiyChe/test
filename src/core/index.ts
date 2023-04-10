@@ -8,7 +8,7 @@ import { randomHash } from "./common/helpers";
 import Bottleneck from "bottleneck";
 
 // Define a rate limit of 10 requests per second
-const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 100 });
+const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 50 });
 
 const LAST_ROUND = 3;
 
