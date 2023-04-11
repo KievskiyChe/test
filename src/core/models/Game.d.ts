@@ -4,6 +4,7 @@ interface IGame {
   round: number | null;
   rounds: Map<number, IGameRound>;
   tokens: IToken[];
+  loosers: string[];
   update: (round: number, bracket: number[]) => void;
   getRounds(): any[];
 }

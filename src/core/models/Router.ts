@@ -27,6 +27,8 @@ export class Router implements IRouter {
       const result = await this.contract.getAmountsOutWithFee(...args);
       const [_, value] = result.toString().split(",");
 
+      console.log(value)
+
       return ethers.utils.formatUnits(value, options.to.decimals);
     } catch (error) {
       console.log(`Error while getting amounts out: ${error}`);

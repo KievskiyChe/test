@@ -5,6 +5,7 @@ export class Game implements IGame {
 
   public winner = null as IToken | null;
   public rounds = new Map() as Map<number, IGameRound>;
+  public loosers = [] as string[];
 
   constructor(round: number, tokens: IToken[], bracket: number[]) {
     this.round = round;
@@ -76,6 +77,8 @@ export class Game implements IGame {
         pairs: [],
       });
     }
+
+    this.loosers = this.getLoosers();
   };
 
   public getRounds = (): any[] => {
@@ -84,6 +87,34 @@ export class Game implements IGame {
     const round3 = this.rounds.get(2);
     const round4 = this.rounds.get(3) ?? [];
     return [round1, round2, round3, round4];
+  };
+
+  public getLoosers = (): string[] => {
+    const round1 = this.rounds.get(0);
+    const round2 = this.rounds.get(1);
+    const round3 = this.rounds.get(2);
+
+    const winnersList = [
+      round1?.pairs[0].winner,
+      round1?.pairs[1].winner,
+      round1?.pairs[2].winner,
+      round1?.pairs[3].winner,
+      round2?.pairs[0].winner,
+      round2?.pairs[1].winner,
+      round3?.pairs[0].winner,
+    ];
+
+    const winnersAddresses = winnersList.map((winner) => {
+      if (winner) return winner.address;
+      return;
+    }).filter((winner) => winner);
+
+    const loosers: any[] = this.tokens.map((token) => {
+      if (!winnersAddresses.includes(token.address)) return token.address;
+      return undefined;
+    }).filter((looser) => looser);
+
+    return loosers;
   };
 
   public setWinner = (winner: IToken): void => {

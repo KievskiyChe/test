@@ -139,7 +139,7 @@ export class Token implements IToken {
       this.name = name;
       this.symbol = symbol;
       this.decimals = decimals;
-      this.price = ethers.utils.formatUnits(price, decimals);
+      this.price = ethers.utils.formatUnits(price, 6);
 
       if (amount) {
         this.amount = ethers.utils.formatUnits(amount, decimals);
