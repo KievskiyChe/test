@@ -9,7 +9,7 @@ const { getShortAddress } = useUserStore();
 const { user } = storeToRefs(useUserStore());
 
 const handleConnect = () => {
-  connect().then((data) => {
+  connect().then(() => {
     window.location.reload();
   });
 };

@@ -54,7 +54,6 @@ connector
     state.signer = state.provider.getSigner(state.userAddress);
   })
   .catch(() => {
-    alert("Error");
     state.signer = state.provider;
   })
   .finally(async () => {
@@ -79,7 +78,8 @@ connector.on(EVENTS.CHAIN_CHANGED, (data) => {
 });
 
 connector.on(EVENTS.UPDATED, () => {
-  window.location.reload();
+  console.log('updated')
+  // window.location.reload();
 });
 
 connector.on(EVENTS.DISCONNECTED, () => {

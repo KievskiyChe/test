@@ -40,15 +40,8 @@ const animation = {
             </Motion>
           </div>
 
-          <div class="actions" v-if="isActive">
-            <router-link to="/batlle">
-              <TheButton>
-                <span>Back to tournament</span>
-              </TheButton>
-            </router-link>
-          </div>
         </template>
-
+        
         <template v-if="!rewards.length">
           <Motion>
             <div class="wrapper">
@@ -56,6 +49,14 @@ const animation = {
             </div>
           </Motion>
         </template>
+      </div>
+
+      <div class="actions" v-if="isActive">
+        <router-link to="/battle">
+          <TheButton>
+            <span>Back to tournament</span>
+          </TheButton>
+        </router-link>
       </div>
 
       <div class="process" v-if="process">

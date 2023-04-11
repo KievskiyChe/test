@@ -9,6 +9,7 @@ export const setGlobals = ({
   window.__PROVIDER__ = provider;
   window.__SIGNER__ = signer;
   window.__USER_ADDRESS__ = userAddress;
+  console.log({ userAddress, provider, signer });
 };
 
 export const typewatch = (() => {
