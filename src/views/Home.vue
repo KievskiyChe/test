@@ -70,6 +70,7 @@ const scaleAnimation = {
               :delay="0.15 * index"
             >
               <TokenIconCircle
+                v-if="token.symbol"
                 :token="token.symbol"
                 @click.stop="addTokenToMetaMask(token.symbol)"
               />
