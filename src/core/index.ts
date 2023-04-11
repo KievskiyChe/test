@@ -8,7 +8,7 @@ import { randomHash } from "./common/helpers";
 import Bottleneck from "bottleneck";
 
 // Define a rate limit of 10 requests per second
-const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 100 });
+const limiter = new Bottleneck({ maxConcurrent: 40, minTime: 1 });
 
 const LAST_ROUND = 3;
 
@@ -122,7 +122,8 @@ export default class Tournament implements ITournament {
     const timer = `getting ${key}-${randomHash(4)}`;
     console.time(timer);
     try {
-      const value = await limiter.schedule(() => fn());
+      // const value = await limiter.schedule(() => fn());
+      const value = await fn();
       return this.setParam(key, value);
     } catch (error) {
       console.log(error);

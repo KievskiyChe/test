@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProvider } from "vagmi";
+import { useProvider, useSigner } from "vagmi";
 import Tournament from "./core";
 const { exists, showPopup } = usePopupsStore();
 
@@ -7,7 +7,9 @@ const provider = useProvider({
   chainId: 137
 }).value;
 
-console.log(provider)
+
+const { data, isError, isLoading, error } = useSigner();
+console.log(data)
 
 setGlobals({ provider, userAddress: "", signer: provider });
 
@@ -24,6 +26,16 @@ main()
 </script>
 
 <template>
+   <div>
+    Sign: {{ isLoading ? data : 'd' }}
+  </div>
+  <div v-if="isLoading">
+    Loading...
+  </div>
+  <div v-if="isError && error">
+    {{ error.message }}
+  </div>
+
   <router-view></router-view>
 
   <!-- notifications -->
