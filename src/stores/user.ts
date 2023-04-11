@@ -1,18 +1,18 @@
-import type {
-  ConnectorResponse,
-  INetwork,
-  IWallet,
-} from "vue-dapp-connector/dist/types";
+// import type {
+//   ConnectorResponse,
+//   INetwork,
+//   IWallet,
+// } from "vue-dapp-connector/dist/types";
 
-export interface User {
-  wallet: IWallet;
-  network: INetwork;
-}
+// export interface User {
+//   wallet: IWallet;
+//   network: INetwork;
+// }
 
 export const useUserStore = defineStore("user-module", () => {
-  const user = ref<User | null>();
+  const user = ref<any | null>();
 
-  const setUser = (data: ConnectorResponse | null) => {
+  const setUser = (data: any | null) => {
     const { pushNotification } = useNotificationStore();
     if (!data) {
       pushNotification({
