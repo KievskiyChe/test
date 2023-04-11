@@ -128,7 +128,7 @@ export class Token implements IToken {
       const symbol: string = await limiter.schedule(() => this.contract.symbol());
       const decimals: number = await limiter.schedule(() => this.contract.decimals());
       const price: number = await limiter.schedule(() => this.manager.getSpotPrice(this.address));
-      console.log('getting spot price for token: ', this.address);
+      console.log('getting metadata for token: ', this.address);
 
       let amount = 0;
 
