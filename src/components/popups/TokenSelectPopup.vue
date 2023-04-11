@@ -20,6 +20,14 @@ const setToken = (token: IToken) => {
   close();
 };
 
+const sortedTokens = computed(() => {
+  return tokens.value.sort((a, b) => {
+    if (a.price > b.price) return -1;
+    if (a.price < b.price) return 1;
+    return 0;
+  });
+});
+
 const animation = {
   content: {
     from: {
@@ -40,11 +48,12 @@ const animation = {
       <div class="popup-content">
         <div class="title">Select token</div>
 
-        <div class="list">
+        <div class="list" v-if="game">
           <div
             class="list-item"
-            v-for="(token, index) in tokens"
+            v-for="(token, index) in sortedTokens"
             :key="index"
+            :class="{inactive: token.inactive }"
             @click.stop="setToken(token)"
           >
             <div class="token-icon">
@@ -129,6 +138,12 @@ const animation = {
   transition: all 0.3s ease;
   padding: 0 8px;
   border-radius: 8px;
+
+  &.inactive {
+    opacity: 0.5;
+    user-select: none;
+    pointer-events: none;
+  }
 }
 
 

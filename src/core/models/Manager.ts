@@ -13,6 +13,7 @@ export class Manager implements IManager {
   private readonly signer = {} as Signer;
   private readonly tournament = {} as ITournament;
   private tournamentId = null as number | null;
+  private addresses = [] as string[];
 
   constructor(tournament: ITournament) {
     this.tournament = tournament;
@@ -42,6 +43,7 @@ export class Manager implements IManager {
 
   public fetchTokens = async (tournamentId: number): Promise<IToken[]> => {
     const addresses: string[] = await this.contract.getTokens(tournamentId);
+    this.addresses = addresses;
 
     const promises = addresses.map(async (address: string): Promise<IToken> => {
       const params = {
@@ -155,6 +157,22 @@ export class Manager implements IManager {
       console.log(`Error while claiming rewards by tournament ${tournamentId}`);
     }
   };
+
+  public fetchTotalPrize = async (usdc: IToken): Promise<string> => {
+    const balancePromises = this.addresses.map(async (address: string) => {
+      const poolData = await this.contract.getSpotPriceAndPair(address);
+      const pool = poolData[1];
+      return await usdc.balanceOf(pool);
+    });
+
+    const balancesList = await Promise.all(balancePromises);
+
+    const totalPrize = balancesList.reduce((acc, cur) => {
+      return Number(acc) + Number(cur);
+    }, 0);
+
+    return String(totalPrize);
+  }
 
   public getReward = async (tournamentId: number): Promise<string> => {
     return String(await this.contract.getReward(tournamentId));

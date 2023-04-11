@@ -10,6 +10,7 @@ export const useTournamentStore = defineStore("tournament-module", () => {
   const usdc = ref<IToken>();
   const game = ref<IGame>();
   const rewards = ref<Reward[]>([]);
+  const totalPrize = ref("0");
 
   const setProcess = (value: boolean): void => {
     process.value = value;
@@ -47,7 +48,13 @@ export const useTournamentStore = defineStore("tournament-module", () => {
     game.value = value;
   };
 
+  const setTotalPrize = (value: string): void => {
+    totalPrize.value = value;
+  };
+
   const availableAssets = (): number => {
+    if (!tokens.value) return 0;
+
     return tokens.value.filter((token) => {
       return Number(token.amount) > 0;
     }).length;
@@ -60,8 +67,10 @@ export const useTournamentStore = defineStore("tournament-module", () => {
   };
 
   const totalAmountsUSD = (): string => {
+    if (!tokens.value) return "0.0000";
+
     const total = tokens.value.reduce((acc, token) => {
-      return acc + Number(token.amountUSD);
+      return acc + (!token.inactive ? Number(token.amountUSD) : 0);
     }, 0);
 
     return cutString(parseFloat(total.toString()).toFixed(4), 4);
@@ -72,7 +81,7 @@ export const useTournamentStore = defineStore("tournament-module", () => {
   };
 
   const update = (params: Params): void => {
-    const { id, status, fee, tokens, usdc, game, round, startTime } = params;
+    const { id, status, fee, tokens, usdc, game, round, startTime, totalPrize } = params;
 
     setId(id);
     setIsActive(status);
@@ -82,6 +91,7 @@ export const useTournamentStore = defineStore("tournament-module", () => {
     setUSDC(usdc);
     setGame(game);
     setRound(round);
+    setTotalPrize(totalPrize);
   };
 
   return {
@@ -95,6 +105,7 @@ export const useTournamentStore = defineStore("tournament-module", () => {
     usdc,
     game,
     rewards,
+    totalPrize,
     setProcess,
     setIsActive,
     setRound,

@@ -1,34 +1,13 @@
 <script setup lang="ts">
-// import type { Connector } from "vue-dapp-connector";
+import { watch } from 'vue';
 import { onClickOutside } from "@vueuse/core";
-import type {Auth} from '@/core/auth'
-
 import { useAccount, useConnect, useDisconnect } from 'vagmi'
-import { InjectedConnector } from 'vagmi/connectors/injected'
-import { chain } from 'vagmi';
-import { WalletConnectConnector } from 'vagmi/connectors/walletConnect';
 import { MetaMaskConnector } from 'vagmi/connectors/metaMask';
+import { updateGlobalsAddress } from '@/common/helpers';
+
+const { pushNotification } = useNotificationStore();
 
 const connector = new MetaMaskConnector();
-
-// const connector = inject<Connector>("Connector")!;
-const auth = inject<Auth>('Auth')!;
-// const { connect, disconnect } = connector;
-const { getShortAddress } = useUserStore();
-const { user } = storeToRefs(useUserStore());
-
-const handleConnect = () => {
-  // connect().then(() => {
-  //   window.location.reload();
-  // });
-};
-
-const handleDisconnect = () => {
-  // disconnect().then(() => {
-  //   localStorage.clear();
-  // });
-};
-
 const { address, isConnected } = useAccount()
 const { connect } = useConnect({
   connector,
@@ -46,6 +25,20 @@ const shortAddress = computed(() => {
 
 onClickOutside(outside, () => {
   showUserInfo.value = false;
+});
+
+watch(isConnected, (value) => {
+  if (value) {
+    updateGlobalsAddress(address.value ? address.value : '');
+    const tournament = getTournament()
+    tournament.update()
+  } else {
+    pushNotification({
+      status: INotificationStatus.INFO,
+      title: "Disconnected",
+      description: "You've been disconnected from the app."
+    })
+  }
 });
 </script>
 
@@ -92,7 +85,7 @@ onClickOutside(outside, () => {
               <!-- <div class="dollar-value">$ 00.00</div> -->
             </div>
 
-            <div class="disconnect" @click="disconnect()">
+            <div class="disconnect" @click="disconnect(), showUserInfo = false">
               <span>Disconnect</span>
             </div>
           </ThePopup>

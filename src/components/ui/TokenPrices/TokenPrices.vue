@@ -1,5 +1,24 @@
 <script setup lang="ts">
-const { tokens, process } = storeToRefs(useTournamentStore());
+const { tokens, process, game} = storeToRefs(useTournamentStore());
+
+const formatedTokens = computed(() => {
+  if (!game) return []
+  return tokens.value.map((token) => {
+    if (game.value?.loosers.includes(token.address)) {
+      token.price = '0.00'
+      token.inactive = true
+    }
+    return token
+  })
+})
+
+const sortedTokens = computed(() => {
+  return formatedTokens.value.sort((a, b) => {
+    if (a.price > b.price) return -1
+    if (a.price < b.price) return 1
+    return 0
+  })
+})
 </script>
 
 <template>
@@ -12,7 +31,7 @@ const { tokens, process } = storeToRefs(useTournamentStore());
 
         <Motion class="list" v-if="tokens && tokens.length && !process">
           <TokenPricesItem
-            v-for="(token, index) in tokens"
+            v-for="(token, index) in sortedTokens"
             :key="index"
             :id="index + 1"
             :token="token"

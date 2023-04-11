@@ -8,6 +8,7 @@ interface IManager {
   fetchUSDC: () => Promise<IToken>;
   fetchFee: () => Promise<number>;
   fetchStartTime: () => Promise<number>;
+  fetchTotalPrize: (usdc: IToken) => Promise<string>;
   fetchRewards: (tournamentId: number) => Promise<Reward[] | undefined>;
   getReward: (tournamentId: number) => Promise<string>;
   getPendingFees: () => Promise<string>;

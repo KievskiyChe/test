@@ -94,15 +94,31 @@ export class Game implements IGame {
     const round2 = this.rounds.get(1);
     const round3 = this.rounds.get(2);
 
-    const winnersList = [
-      round1?.pairs[0].winner,
-      round1?.pairs[1].winner,
-      round1?.pairs[2].winner,
-      round1?.pairs[3].winner,
-      round2?.pairs[0].winner,
-      round2?.pairs[1].winner,
-      round3?.pairs[0].winner,
-    ];
+    let winnersList = [] as any[];
+
+    if (this.round === 0) return [];
+
+    if (this.round === 1) {
+      winnersList = [
+        round1?.pairs[0].winner,
+        round1?.pairs[1].winner,
+        round1?.pairs[2].winner,
+        round1?.pairs[3].winner,
+      ]
+    }
+
+    if (this.round === 2) {
+      winnersList = [
+        round2?.pairs[0].winner,
+        round2?.pairs[1].winner,
+      ]
+    }
+
+    if (this.round === 3) {
+      winnersList = [
+        round3?.pairs[0].winner,
+      ]
+    }
 
     const winnersAddresses = winnersList.map((winner) => {
       if (winner) return winner.address;
@@ -110,7 +126,11 @@ export class Game implements IGame {
     }).filter((winner) => winner);
 
     const loosers: any[] = this.tokens.map((token) => {
-      if (!winnersAddresses.includes(token.address)) return token.address;
+      if (!winnersAddresses.includes(token.address)) {
+        token.inactive = true;
+        token.price = '0.00'
+        return token.address
+      };
       return undefined;
     }).filter((looser) => looser);
 
@@ -119,6 +139,12 @@ export class Game implements IGame {
 
   public setWinner = (winner: IToken): void => {
     this.winner = winner;
+  };
+
+  public getTokens = (): IToken[] => {
+    const loosers = this.getLoosers();
+    const tokens = this.tokens.filter((token) => !loosers.includes(token.address));
+    return tokens;
   };
 
   public update = (round: number, bracket: number[]): void => {

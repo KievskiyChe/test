@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const tournament = inject<ITournament>("Tournament")!;
+import { useAccount } from 'vagmi';
+const tournament = getTournament()
+
+const { isConnected } = useAccount();
 
 const { user } = storeToRefs(useUserStore());
 const { fee, round, game } = storeToRefs(useTournamentStore());
@@ -83,18 +86,18 @@ const handleApprove = async (token: IToken | undefined) => {
       </Motion>
 
       <!-- user connected and process take while -->
-      <Motion class="swap-load" v-if="user && process">
+      <Motion class="swap-load" v-if="isConnected && process">
         <TheLoader />
       </Motion>
 
       <!-- user not connected -->
-      <Motion class="swap-load" v-if="!user">
+      <Motion class="swap-load" v-if="!isConnected">
         <Motion>
           <p>Please connect wallet</p>
         </Motion>
       </Motion>
 
-      <Motion v-if="user && !process">
+      <Motion v-if="isConnected && !process">
         <TokenSwapForm />
       </Motion>
 
@@ -110,8 +113,8 @@ const handleApprove = async (token: IToken | undefined) => {
 
       <Motion class="foo" v-if="from && to">
         <TheButton
-          v-if="user && !from.approved"
-          :disabled="!user || process || process"
+          v-if="isConnected && !from.approved"
+          :disabled="!isConnected || process || process"
           @click.prevent="handleApprove(from)"
         >
           <template v-if="!process">
@@ -124,8 +127,8 @@ const handleApprove = async (token: IToken | undefined) => {
         </TheButton>
 
         <TheButton
-          v-if="user && from.approved"
-          :disabled="!user || process || process || !isValidFrom || !canBuy(to)"
+          v-if="isConnected && from.approved"
+          :disabled="!isConnected || process || process || !isValidFrom || !canBuy(to)"
           @click.stop="swapTokens"
         >
           <template #icon>
@@ -134,7 +137,7 @@ const handleApprove = async (token: IToken | undefined) => {
           <span>swap</span>
         </TheButton>
 
-        <TheButton v-if="!user" :disabled="true">
+        <TheButton v-if="!isConnected" :disabled="true">
           <template #icon>
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>

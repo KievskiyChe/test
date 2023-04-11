@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const { totalPrize, process } = storeToRefs(useTournamentStore())
+</script>
 
 <template>
   <div class="card-wrapper">
@@ -8,19 +10,19 @@
           <img src="@/assets/img/icons/prize.svg" alt="prize" />
           <div class="stats-title">
             <span>total prize <br />pool</span>
-            <h2><sup>$</sup>0</h2>
+            <h2><sup>$</sup>{{ process ? '0.00' : parseString(totalPrize, 2) }}</h2>
           </div>
 
           <!-- <div class="info-icon"></div> -->
         </div>
 
-        <div class="stats-players">
+        <!-- <div class="stats-players">
           <img src="@/assets/img/icons/players.svg" alt="players" />
           <div class="stats-title">
             <span>players</span>
             <h2>0</h2>
           </div>
-        </div>
+        </div> -->
       </div>
     </TheCard>
   </div>

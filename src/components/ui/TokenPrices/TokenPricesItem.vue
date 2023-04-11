@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="token-price" v-if="game" :class="{inactive: game.loosers.includes(token.address) }">
+  <div class="token-price" v-if="game" :class="{inactive: token.inactive }">
     <div class="token-id">{{ id }}.</div>
 
     <div class="icon">
@@ -19,8 +19,7 @@ defineProps<{
 
     <div class="token-content">
       <span>{{ token.symbol }}</span>
-      <span v-if="!game.loosers.includes(token.address)">{{ cutString(token.price, 12) }}</span>
-      <span v-else>0.00</span>
+      <span>{{ cutString(token.price, 10) }}</span>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const store = useSwapStore();
-const tournament = inject<ITournament>("Tournament");
+const tournament = getTournament()
 
 const {
   from,

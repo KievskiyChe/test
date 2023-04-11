@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const { user } = storeToRefs(useUserStore());
+import { updateGlobalsAddress } from '@/common/helpers';
+import { useAccount } from 'vagmi'
+
+const { isConnected, address } = useAccount()
 const { process } = storeToRefs(useTournamentStore());
 const { totalAmountsUSD } = useTournamentStore();
 
@@ -8,13 +11,21 @@ const showChart = ref(false);
 const toggle = () => {
   showChart.value = !showChart.value;
 };
+
+watch(isConnected, (value) => {
+  if (value) {
+    updateGlobalsAddress(address.value ? address.value : '');
+    const tournament = getTournament()
+    tournament.update()
+  }
+});
 </script>
 
 <template>
   <div class="token-amounts">
     <TheCard :swapEdges="true">
       <div class="wrapper">
-        <Motion class="title" v-if="user && !process">
+        <Motion class="title" v-if="isConnected && !process">
           <span>You've got</span>
           <div class="balance">
             <sup>$</sup>
@@ -22,15 +33,15 @@ const toggle = () => {
           </div>
         </Motion>
 
-        <template v-if="showChart && user && !process">
+        <template v-if="showChart && isConnected && !process">
           <TokenAmountsChart />
         </template>
 
-        <template v-if="!showChart && user && !process">
+        <template v-if="!showChart && isConnected && !process">
           <TokenAmountsList />
         </template>
 
-        <div class="toggle" v-if="user && !process">
+        <div class="toggle" v-if="isConnected && !process">
           <div
             class="toggle-point"
             :class="{ active: showChart }"
@@ -48,12 +59,12 @@ const toggle = () => {
         </div>
 
         <!-- loader -->
-        <div class="load" v-if="user && process">
+        <div class="load" v-if="isConnected && process">
           <TheLoader />
         </div>
 
         <!-- user not connected -->
-        <template v-if="!user">
+        <template v-if="!isConnected">
           <Motion :delay="0.4" class="no-connected">
             <UserNotConnected />
           </Motion>
@@ -92,11 +103,11 @@ const toggle = () => {
   display: flex;
   align-items: center;
   margin-top: 10px;
-
+  
   sup {
     font-size: 14px;
   }
-
+  
   span {
     font-family: "Aurebesh";
     font-size: 32px;

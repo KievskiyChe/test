@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { addTokenToMetaMask } from "@/common/helpers";
 const { id, round, isActive, tokens, process } = storeToRefs(
   useTournamentStore()
 );
@@ -72,7 +71,6 @@ const scaleAnimation = {
               <TokenIconCircle
                 v-if="token.symbol"
                 :token="token.symbol"
-                @click.stop="addTokenToMetaMask(token.symbol)"
               />
             </Motion>
           </div>

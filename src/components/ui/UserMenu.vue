@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
+import { useAccount } from "vagmi";
+const { isConnected } = useAccount();
 const { user } = storeToRefs(useUserStore());
 
 const showMenu = ref(false);
@@ -10,7 +12,7 @@ onClickOutside(outside, () => {
 });
 
 const toggleMenu = () => {
-  if (!user.value) return;
+  if (!isConnected.value) return;
   showMenu.value = !showMenu.value;
 };
 </script>

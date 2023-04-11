@@ -37,6 +37,7 @@ interface Params {
 
   tokens: IToken[];
   usdc: IToken;
+  totalPrize: string;
 
   game: IGame;
   rewards: Reward[];

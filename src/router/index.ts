@@ -1,12 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { HomeQuard, BattleQuard, ClaimHistoryQuard } from "./quards";
 
 const routes = [
   {
     path: "/",
     name: "home",
     component: () => import("../views/Home.vue"),
-    beforeEnter: HomeQuard,
   },
   {
     path: "/offline",
@@ -16,13 +14,11 @@ const routes = [
     path: "/battle",
     name: "battle",
     component: () => import("../views/Battle.vue"),
-    beforeEnter: BattleQuard,
   },
   {
     path: "/claim-history",
     name: "claim-history",
     component: () => import("../views/ClaimHistory.vue"),
-    beforeEnter: ClaimHistoryQuard,
   },
   {
     path: "/:pathMatch(.*)*",
@@ -34,5 +30,22 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(async (to, from, next) => {
+  const tournament = getTournament();
+  await tournament.fetchStatus()
+
+  const { isActive } = storeToRefs(useTournamentStore());
+
+  if (to.name === "home" && isActive.value) {
+    return next('/battle');
+  }
+
+  if (to.name === "battle" && !isActive.value) {
+    return next('/');
+  }
+
+  next()
+})
 
 export default router;

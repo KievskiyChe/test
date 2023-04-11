@@ -1,41 +1,29 @@
 <script setup lang="ts">
-import { useProvider, useSigner } from "vagmi";
+import { useAccount, useProvider } from "vagmi";
 import Tournament from "./core";
-const { exists, showPopup } = usePopupsStore();
+
+const { exists } = usePopupsStore();
+const { isConnected, address } = useAccount();
 
 const provider = useProvider({
-  chainId: 137
+  chainId: 137,
 }).value;
 
+setGlobals({
+  provider,
+  userAddress: isConnected.value ? (address.value ? address.value : "") : "",
+  signer: provider,
+});
 
-const { data, isError, isLoading, error } = useSigner();
-console.log(data)
 
-setGlobals({ provider, userAddress: "", signer: provider });
-
-
-const main = async () => {
+onMounted(async () => {
   const tournament = new Tournament();
-  tournament.fetchStatus();
-
-  await tournament.update();
   setTouranment(tournament);
-}
-
-main()
+  await tournament.update();
+});
 </script>
 
 <template>
-   <div>
-    Sign: {{ isLoading ? data : 'd' }}
-  </div>
-  <div v-if="isLoading">
-    Loading...
-  </div>
-  <div v-if="isError && error">
-    {{ error.message }}
-  </div>
-
   <router-view></router-view>
 
   <!-- notifications -->

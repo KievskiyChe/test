@@ -56,7 +56,6 @@ export default class Tournament implements ITournament {
   private fetch = async (): Promise<void> => {
     this.updateStoreProcess(true);
 
-    const slt = this.sleepTime;
     const {
       fetchId,
       fetchRound,
@@ -85,6 +84,7 @@ export default class Tournament implements ITournament {
       await this.fetchParam("bracket", () => fetchBracket(id));
       await this.fetchParam("rewards", () => fetchRewards(currentId));
       await this.fetchWinner(id);
+      await this.fetchParam("totalPrize", () => this.manager.fetchTotalPrize(this.getParam('usdc')));
 
       const tokens = this.getParam<IToken[]>("tokens");
       const bracket = this.getParam<number[]>("bracket");

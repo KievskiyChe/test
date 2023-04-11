@@ -12,6 +12,10 @@ export const setGlobals = ({
   console.log({ userAddress, provider, signer });
 };
 
+export const updateGlobalsAddress = (address: string): void => {
+  window.__USER_ADDRESS__ = address;
+};
+
 export const typewatch = (() => {
   let timer = null as any;
   return function (callback: CallableFunction, ms: number) {

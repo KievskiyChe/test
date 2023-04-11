@@ -21,7 +21,7 @@ const isWinner = (token: IToken, winner: IToken) => {
         <div class="sidebar-title">tournament <br />stats:</div>
 
         <!-- prize and players -->
-        <!-- <TheTournamentStats /> -->
+        <TheTournamentStats />
 
         <!-- status and timer -->
         <TheTournamentStatus />

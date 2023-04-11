@@ -1,13 +1,13 @@
 <script setup lang="ts">
-// import type { Connector } from "vue-dapp-connector";
+import { useAccount, useConnect } from 'vagmi'
+import { MetaMaskConnector } from 'vagmi/connectors/metaMask';
 
-// const connector = inject<Connector>("Connector")!;
+const connector = new MetaMaskConnector();
 
-// const handleConnect = () => {
-//   connector.connect().then((data) => {
-//     window.location.reload();
-//   });
-// };
+const { isConnected } = useAccount()
+const { connect } = useConnect({
+  connector,
+})
 </script>
 
 <template>
@@ -17,9 +17,9 @@
     </div>
     <p>To see your balance and participate in the battle, connect wallet</p>
     <div class="foo">
-      <!-- <TheButton @click.prevent="handleConnect()">
+      <TheButton @click.prevent="connect()">
         <span>connect wallet</span>
-      </TheButton> -->
+      </TheButton>
     </div>
   </div>
 </template>
