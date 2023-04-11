@@ -1,9 +1,9 @@
 export const HomeQuard = (to: any, from: any, next: CallableFunction) => {
   const { isActive, round } = storeToRefs(useTournamentStore());
 
-  if (to.name === "home" && isActive) {
-    return next("/battle");
-  }
+  // if (to.name === "home" && isActive) {
+  //   return next("/battle");
+  // }
 
   next();
 };
@@ -11,9 +11,9 @@ export const HomeQuard = (to: any, from: any, next: CallableFunction) => {
 export const BattleQuard = (to: any, from: any, next: CallableFunction) => {
   const { isActive, round } = storeToRefs(useTournamentStore());
 
-  if (to.name === "battle" && !isActive.value) {
-    return next("/");
-  }
+  // if (to.name === "battle" && !isActive.value) {
+  //   return next("/");
+  // }
 
   next();
 };

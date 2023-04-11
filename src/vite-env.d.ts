@@ -1,6 +1,8 @@
 /// <reference types="vite/client" />
 /// <reference path="./core/index.d.ts" />
 
+import type { Auth } from "./core/auth";
+
 declare global {
   interface Window {
     ethereum: any;

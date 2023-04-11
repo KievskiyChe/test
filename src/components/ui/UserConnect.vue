@@ -1,27 +1,48 @@
 <script setup lang="ts">
-import type { Connector } from "vue-dapp-connector";
+// import type { Connector } from "vue-dapp-connector";
 import { onClickOutside } from "@vueuse/core";
+import type {Auth} from '@/core/auth'
 
-const connector = inject<Connector>("Connector")!;
+import { useAccount, useConnect, useDisconnect } from 'vagmi'
+import { InjectedConnector } from 'vagmi/connectors/injected'
+import { chain } from 'vagmi';
+import { WalletConnectConnector } from 'vagmi/connectors/walletConnect';
+import { MetaMaskConnector } from 'vagmi/connectors/metaMask';
 
-const { connect, disconnect } = connector;
+const connector = new MetaMaskConnector();
+
+// const connector = inject<Connector>("Connector")!;
+const auth = inject<Auth>('Auth')!;
+// const { connect, disconnect } = connector;
 const { getShortAddress } = useUserStore();
 const { user } = storeToRefs(useUserStore());
 
 const handleConnect = () => {
-  connect().then(() => {
-    window.location.reload();
-  });
+  // connect().then(() => {
+  //   window.location.reload();
+  // });
 };
 
 const handleDisconnect = () => {
-  disconnect().then(() => {
-    localStorage.clear();
-  });
+  // disconnect().then(() => {
+  //   localStorage.clear();
+  // });
 };
+
+const { address, isConnected } = useAccount()
+const { connect } = useConnect({
+  connector,
+})
+const { disconnect } = useDisconnect()
 
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
+
+const shortAddress = computed(() => {
+  if (address.value) {
+    return address.value.slice(0, 6) + '...' + address.value.slice(-4);
+  }
+});
 
 onClickOutside(outside, () => {
   showUserInfo.value = false;
@@ -30,9 +51,9 @@ onClickOutside(outside, () => {
 
 <template>
   <div class="user" ref="outside">
-    <template v-if="!user">
+    <template v-if="!isConnected">
       <Motion>
-        <div class="content" @click="handleConnect()">
+        <div class="content" @click="connect()">
           <div class="icon">
             <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
@@ -42,14 +63,15 @@ onClickOutside(outside, () => {
       </Motion>
     </template>
 
-    <template v-if="user">
+    <template v-if="isConnected">
       <Motion>
         <div class="content" @click.stop="showUserInfo = !showUserInfo">
           <div class="icon">
             <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
 
-          <span class="user-address">{{ getShortAddress() }}</span>
+          <!-- <span class="user-address">{{ getShortAddress() }}</span> -->
+          <span>{{ shortAddress }}</span>
         </div>
       </Motion>
     </template>
@@ -70,7 +92,7 @@ onClickOutside(outside, () => {
               <!-- <div class="dollar-value">$ 00.00</div> -->
             </div>
 
-            <div class="disconnect" @click="handleDisconnect()">
+            <div class="disconnect" @click="disconnect()">
               <span>Disconnect</span>
             </div>
           </ThePopup>

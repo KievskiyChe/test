@@ -1,5 +1,26 @@
 <script setup lang="ts">
+import { useProvider } from "vagmi";
+import Tournament from "./core";
 const { exists, showPopup } = usePopupsStore();
+
+const provider = useProvider({
+  chainId: 137
+}).value;
+
+console.log(provider)
+
+setGlobals({ provider, userAddress: "", signer: provider });
+
+
+const main = async () => {
+  const tournament = new Tournament();
+  tournament.fetchStatus();
+
+  await tournament.update();
+  setTouranment(tournament);
+}
+
+main()
 </script>
 
 <template>
