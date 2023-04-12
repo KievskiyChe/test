@@ -204,12 +204,11 @@ const isWinner = (token: IToken, winner: IToken) => {
   .players {
     gap: unset;
     padding: 40px 20px;
-    /* padding-left: 14px; */
     border-radius: 8px;
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--white-200);
+    border: 1px solid var(--white-50);
 
     .section {
       padding-right: 14px;
