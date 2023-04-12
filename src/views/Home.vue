@@ -26,15 +26,15 @@ const scaleAnimation = {
 
       <div class="content">
         <div class="info" v-if="isActive">
-          <Motion
+          <!-- <Motion
             class="text text-right"
             v-if="!process"
             :delay="0.5"
             v-bind="scaleAnimation"
           >
             <router-link to="/battle">tournament # {{ id + 1 }}</router-link>
-          </Motion>
-          <div class="text" v-else></div>
+          </Motion> -->
+          <div class="text"></div>
 
           <div class="splitter">
             <span></span>
@@ -42,15 +42,15 @@ const scaleAnimation = {
             <span></span>
           </div>
 
-          <Motion
+          <!-- <Motion
             class="text text-left"
             v-if="!process"
             :delay="0.65"
             v-bind="scaleAnimation"
           >
             <router-link to="/battle">round # {{ round + 1 }}</router-link>
-          </Motion>
-          <div class="text" v-else></div>
+          </Motion> -->
+          <div class="text"></div>
         </div>
 
         <Motion :delay="0.35" v-bind="scaleAnimation">

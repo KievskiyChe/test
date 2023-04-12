@@ -26,11 +26,11 @@ watch(isConnected, (value) => {
     <TheCard :swapEdges="true">
       <div class="wrapper">
         <Motion class="title" v-if="isConnected && !process">
-          <span>You've got</span>
+          <!-- <span>You've got</span>
           <div class="balance">
             <sup>$</sup>
             <span>{{ totalAmountsUSD() }}</span>
-          </div>
+          </div> -->
         </Motion>
 
         <template v-if="showChart && isConnected && !process">

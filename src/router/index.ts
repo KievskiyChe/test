@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
-    path: "/",
+    path: "/waitplease",
     name: "home",
     component: () => import("../views/Home.vue"),
   },
@@ -11,7 +11,7 @@ const routes = [
     component: () => import("../views/Offline.vue"),
   },
   {
-    path: "/battle",
+    path: "/tournament",
     name: "battle",
     component: () => import("../views/Battle.vue"),
   },
@@ -22,7 +22,7 @@ const routes = [
   },
   {
     path: "/:pathMatch(.*)*",
-    redirect: { name: "home" },
+    redirect: { name: "battle" },
   },
 ];
 
@@ -47,7 +47,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.name === "battle" && !isActive.value) {
-    return next('/');
+    return next('/waitplease');
   }
 
   next()
