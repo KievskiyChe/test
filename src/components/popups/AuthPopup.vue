@@ -206,6 +206,7 @@ const animation = {
 
 .icon {
   height: 40px;
+  width: 40px;
 
   img {
     width: 100%;
