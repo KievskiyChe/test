@@ -20,11 +20,13 @@ const isWinner = (token: IToken, winner: IToken) => {
       <div class="sidebar">
         <div class="sidebar-title">tournament <br />stats:</div>
 
-        <!-- prize and players -->
-        <TheTournamentStats />
-
-        <!-- status and timer -->
-        <TheTournamentStatus />
+        <div class="sidebar-data">
+          <!-- prize and players -->
+          <TheTournamentStats />
+  
+          <!-- status and timer -->
+          <TheTournamentStatus />
+        </div>
       </div>
 
       <!-- players -->
@@ -90,6 +92,12 @@ const isWinner = (token: IToken, winner: IToken) => {
   display: flex;
   flex-direction: column;
   gap: 25px;
+
+  &-data {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
 }
 
 .sidebar-title {

@@ -14,7 +14,9 @@ const totalPrize = computed(() => {
     <TheCard :smallEdges="true">
       <div class="stats">
         <div class="stats-prize">
-          <img src="@/assets/img/icons/prize.svg" alt="prize" />
+          <div class="stats-prize-icon">
+            <img src="@/assets/img/icons/prize.svg" alt="prize" />
+          </div>
           <div class="stats-title">
             <span>total prize <br />pool</span>
             <h2><sup>$</sup>{{ process ? '0.00' : parseString(String(totalPrize), 2) }}</h2>
@@ -74,6 +76,11 @@ const totalPrize = computed(() => {
   gap: 15px;
 }
 
+.stats-prize-icon {
+  display: flex;
+  align-items: center;
+}
+
 .stats-title {
   display: grid;
   gap: 5px;
@@ -90,6 +97,28 @@ const totalPrize = computed(() => {
     display: flex;
     align-items: center;
     gap: 3px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .stats-prize {
+    justify-content: space-between;
+  }
+
+  .stats-prize-icon {
+    position: relative;
+    padding-left: 25px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 1px;
+      top: 10%;
+      height: 80%;
+      background: var(--white-100);
+      right: -60px;
+      border-radius: 2px;
+    }
   }
 }
 </style>
