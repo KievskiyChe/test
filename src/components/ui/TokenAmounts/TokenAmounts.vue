@@ -109,8 +109,9 @@ watch(isConnected, (value) => {
   }
   
   span {
-    font-family: "Aurebesh";
-    font-size: 32px;
+    /* font-family: "Aurebesh"; */
+    font-size: 30px;
+    font-weight: bold;
     padding: 0;
     margin-top: -14px;
   }
