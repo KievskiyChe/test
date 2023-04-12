@@ -25,20 +25,20 @@ export const createContractManager = (
   return new ethers.Contract(
     MANAGER_ADDRESS,
     MANAGER_ABI,
-    signer ? signer : window.__PROVIDER__
+    window.__PROVIDER__
   );
 };
 
 export const createContractRouter = (): Contract => {
-  return new ethers.Contract(ROUTER_ADDRESS, ROUTER_ABI, window.__SIGNER__);
+  return new ethers.Contract(ROUTER_ADDRESS, ROUTER_ABI, window.__PROVIDER__);
 };
 
 export const createContractERC20 = (address: string) => {
-  return new ethers.Contract(address, ERC_20_ABI, window.__SIGNER__);
+  return new ethers.Contract(address, ERC_20_ABI, window.__PROVIDER__);
 };
 
 export const createContractFactory = () => {
-  return new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, window.__SIGNER__);
+  return new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, window.__PROVIDER__);
 };
 
 // TODO: change rpc provider

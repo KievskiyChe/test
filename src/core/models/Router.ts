@@ -27,8 +27,6 @@ export class Router implements IRouter {
       const result = await this.contract.getAmountsOutWithFee(...args);
       const [_, value] = result.toString().split(",");
 
-      console.log(value)
-
       return ethers.utils.formatUnits(value, options.to.decimals);
     } catch (error) {
       console.log(`Error while getting amounts out: ${error}`);
@@ -44,12 +42,11 @@ export class Router implements IRouter {
     const gasLimit = 6_000_000;
 
     try {
-      const tx = await this.contract.swapExactTokensForTokens(
+      const signerContract = this.contract.connect(window.__SIGNER__);
+      const tx = await signerContract.swapExactTokensForTokens(
         ...Object.values(options),
         { gasLimit }
       );
-
-      // return await tx.wait().then((reciept: TransactionReceipt) => reciept);
       return await tx.wait();
     } catch (error) {
       console.log(error);

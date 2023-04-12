@@ -3,6 +3,7 @@ export enum Popup {
   TOKEN_SELECT_FROM = "token-select-from",
   TOKEN_SELECT_TO = "token-select-to",
   INVALID_NETWORK = "invalid-network",
+  AUTH = "auth",
 }
 
 export enum INotificationStatus {
@@ -14,7 +15,7 @@ export enum INotificationStatus {
 }
 
 export interface Globals {
-  readonly userAddress: string;
-  readonly provider: Provider;
-  readonly signer: Signer;
+  readonly userAddress?: string;
+  readonly provider?: Provider;
+  readonly signer?: Signer;
 }

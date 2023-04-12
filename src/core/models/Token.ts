@@ -1,9 +1,10 @@
 import { BigNumber, ethers } from "ethers";
 import { createContractERC20 } from "../common/helpers";
 import Bottleneck from "bottleneck";
+import ABI_ERC_20 from "../abis/ERC20.json";
 
 // Define a rate limit of 10 requests per second
-const limiter = new Bottleneck({ maxConcurrent: 40, minTime: 1 });
+const limiter = new Bottleneck({ maxConcurrent: 10, minTime: 1 });
 
 export class Token implements IToken {
   private readonly provider = {} as Signer;
@@ -39,7 +40,7 @@ export class Token implements IToken {
     this.address = address;
     this.router = router;
     this.manager = manager;
-    this.contract = createContractERC20(address);
+    this.contract = new ethers.Contract(address, ABI_ERC_20, this.provider);
   }
 
   public init = async (): Promise<IToken> => {
@@ -69,7 +70,9 @@ export class Token implements IToken {
    * @memberof Token
    */
   public approve = async (): Promise<TransactionReceipt> => {
-    const tx = await this.contract.approve(
+    const signerContract = this.contract.connect(window.__SIGNER__)
+
+    const tx = await signerContract.approve(
       this.router.address,
       ethers.constants.MaxUint256
     );
@@ -83,7 +86,9 @@ export class Token implements IToken {
   public approveManager = async (
     amount: string
   ): Promise<TransactionReceipt> => {
-    const tx = await this.contract.approve(
+    const signerContract = this.contract.connect(window.__SIGNER__)
+
+    const tx = await signerContract.approve(
       this.manager.address,
       ethers.utils.parseUnits(amount, this.decimals)
     );

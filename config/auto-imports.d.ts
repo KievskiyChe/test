@@ -13,6 +13,7 @@ declare global {
   const calculateUSD: typeof import('../src/common/helpers')['calculateUSD']
   const checkNetwork: typeof import('../src/common/helpers')['checkNetwork']
   const computed: typeof import('vue')['computed']
+  const connectors: typeof import('../src/common/auth.config')['connectors']
   const createApp: typeof import('vue')['createApp']
   const createPinia: typeof import('pinia')['createPinia']
   const customRef: typeof import('vue')['customRef']
@@ -77,6 +78,7 @@ declare global {
   const triggerRef: typeof import('vue')['triggerRef']
   const typewatch: typeof import('../src/common/helpers')['typewatch']
   const unref: typeof import('vue')['unref']
+  const updateGlobalsAddress: typeof import('../src/common/helpers')['updateGlobalsAddress']
   const useAttrs: typeof import('vue')['useAttrs']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -110,6 +112,7 @@ declare module 'vue' {
     readonly calculateUSD: UnwrapRef<typeof import('../src/common/helpers')['calculateUSD']>
     readonly checkNetwork: UnwrapRef<typeof import('../src/common/helpers')['checkNetwork']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
+    readonly connectors: UnwrapRef<typeof import('../src/common/auth.config')['connectors']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createPinia: UnwrapRef<typeof import('pinia')['createPinia']>
     readonly customRef: UnwrapRef<typeof import('vue')['customRef']>
@@ -174,6 +177,7 @@ declare module 'vue' {
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly typewatch: UnwrapRef<typeof import('../src/common/helpers')['typewatch']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
+    readonly updateGlobalsAddress: UnwrapRef<typeof import('../src/common/helpers')['updateGlobalsAddress']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>

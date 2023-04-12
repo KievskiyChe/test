@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useAccount } from 'vagmi';
-const tournament = getTournament()
 
-const { isConnected } = useAccount();
+
+const { isConnected, address } = useAccount();
 
 const { user } = storeToRefs(useUserStore());
 const { fee, round, game } = storeToRefs(useTournamentStore());
@@ -27,6 +27,7 @@ const canBuy = (token: IToken) => {
 };
 
 const swapTokens = async () => {
+  const tournament = getTournament()
   startProcess();
 
   try {
@@ -45,7 +46,7 @@ const swapTokens = async () => {
 };
 
 const getSwapOptions = (): SwapOptions | undefined => {
-  if (!from.value || !to.value || !user.value) return;
+  if (!from.value || !to.value || !isConnected.value) return;
 
   return {
     amount: parseUnits(amountFrom.value, from.value.decimals),
@@ -55,7 +56,7 @@ const getSwapOptions = (): SwapOptions | undefined => {
       from.value.decimals
     ),
     path: [from.value.address, to.value.address],
-    to: user.value.wallet.address,
+    to: address.value!,
     deadline: Date.now() + 200000,
   };
 };
@@ -66,6 +67,7 @@ const handleApprove = async (token: IToken | undefined) => {
 
   try {
     const receipt = await token.approve();
+    const tournament = getTournament()
 
     if (receipt && receipt.status) {
       await tournament.update();

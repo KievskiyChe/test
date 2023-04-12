@@ -33,6 +33,11 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const tournament = getTournament();
+
+  if (!tournament) {
+    return next();
+  }
+
   await tournament.fetchStatus()
 
   const { isActive } = storeToRefs(useTournamentStore());

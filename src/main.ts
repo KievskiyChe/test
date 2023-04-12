@@ -1,12 +1,11 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import {
-  configureChains,
-  createClient,
-  chain,
-  VagmiPlugin
-} from 'vagmi';
-import { publicProvider } from 'vagmi/providers/public';
+import { configureChains, createClient, chain, VagmiPlugin } from "vagmi";
+
+import { publicProvider } from "vagmi/providers/public";
+import { alchemyProvider } from "vagmi/providers/alchemy";
+import { infuraProvider } from "vagmi/providers/infura";
+import { connectors } from '@/common/auth.config'
 
 import App from "./App.vue";
 import router from "./router";
@@ -18,11 +17,16 @@ const pinia = createPinia();
 
 const { provider, webSocketProvider } = configureChains(
   [chain.polygon],
-  [publicProvider()],
+  [
+    publicProvider(),
+    alchemyProvider({ alchemyId: import.meta.env.VITE_APP_ALCHEMY_KEY }),
+    infuraProvider({ infuraId: import.meta.env.VITE_APP_INFURA_KEY }),
+  ]
 );
 
 const client = createClient({
   autoConnect: true,
+  connectors: connectors.map((c) => c.connector),
   provider,
   webSocketProvider,
 });

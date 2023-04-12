@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import { watch } from 'vue';
 import { onClickOutside } from "@vueuse/core";
-import { useAccount, useConnect, useDisconnect } from 'vagmi'
-import { MetaMaskConnector } from 'vagmi/connectors/metaMask';
-import { updateGlobalsAddress } from '@/common/helpers';
+import { useAccount, useDisconnect } from 'vagmi'
+import { Popup } from '@/common/interfaces';
 
-const { pushNotification } = useNotificationStore();
-
-const connector = new MetaMaskConnector();
+const { showPopup } = usePopupsStore();
 const { address, isConnected } = useAccount()
-const { connect } = useConnect({
-  connector,
-})
 const { disconnect } = useDisconnect()
 
 const showUserInfo = ref(false);
@@ -26,27 +19,13 @@ const shortAddress = computed(() => {
 onClickOutside(outside, () => {
   showUserInfo.value = false;
 });
-
-watch(isConnected, (value) => {
-  if (value) {
-    updateGlobalsAddress(address.value ? address.value : '');
-    const tournament = getTournament()
-    tournament.update()
-  } else {
-    pushNotification({
-      status: INotificationStatus.INFO,
-      title: "Disconnected",
-      description: "You've been disconnected from the app."
-    })
-  }
-});
 </script>
 
 <template>
   <div class="user" ref="outside">
     <template v-if="!isConnected">
       <Motion>
-        <div class="content" @click="connect()">
+        <div class="content" @click="showPopup(Popup.AUTH)">
           <div class="icon">
             <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>

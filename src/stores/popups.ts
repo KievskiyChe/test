@@ -1,3 +1,5 @@
+import type { Popup } from "@/common/interfaces";
+
 export const usePopupsStore = defineStore("popups-module", () => {
   const popups = ref<Popup[]>([]);
 

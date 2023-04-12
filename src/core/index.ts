@@ -8,7 +8,7 @@ import { randomHash } from "./common/helpers";
 import Bottleneck from "bottleneck";
 
 // Define a rate limit of 10 requests per second
-const limiter = new Bottleneck({ maxConcurrent: 40, minTime: 1 });
+const limiter = new Bottleneck({ maxConcurrent: 10, minTime: 20 });
 
 const LAST_ROUND = 3;
 
@@ -83,8 +83,10 @@ export default class Tournament implements ITournament {
       await this.fetchParam("tokens", () => fetchTokens(id));
       await this.fetchParam("bracket", () => fetchBracket(id));
       await this.fetchParam("rewards", () => fetchRewards(currentId));
+      await this.fetchParam("totalPrize", () =>
+        this.manager.fetchTotalPrize(this.getParam("usdc"))
+      );
       await this.fetchWinner(id);
-      await this.fetchParam("totalPrize", () => this.manager.fetchTotalPrize(this.getParam('usdc')));
 
       const tokens = this.getParam<IToken[]>("tokens");
       const bracket = this.getParam<number[]>("bracket");

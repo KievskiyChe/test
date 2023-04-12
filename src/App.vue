@@ -1,26 +1,46 @@
 <script setup lang="ts">
-import { useAccount, useProvider } from "vagmi";
+import { Popup } from "./common/interfaces";
+import { useAccount, useProvider, useSigner, useNetwork } from "vagmi";
 import Tournament from "./core";
 
-const { exists } = usePopupsStore();
+const { exists, showPopup, hidePopup } = usePopupsStore();
 const { isConnected, address } = useAccount();
+const { chain } = useNetwork();
 
 const provider = useProvider({
   chainId: 137,
 }).value;
 
-setGlobals({
-  provider,
-  userAddress: isConnected.value ? (address.value ? address.value : "") : "",
-  signer: provider,
+
+useSigner({
+  onSuccess: (signer) => {
+    setGlobals({
+      signer: signer ?? provider,
+      provider,
+      userAddress: isConnected.value ? address.value! : "",
+    })
+  },
+  onError: (e) => {
+    console.log(e);
+    console.log("error getting signer");
+  },
 });
 
-
-onMounted(async () => {
-  const tournament = new Tournament();
-  setTouranment(tournament);
-  await tournament.update();
+watchEffect(() => {
+  if (chain?.value?.unsupported) {
+    showPopup(Popup.INVALID_NETWORK);
+  } else {
+    hidePopup(Popup.INVALID_NETWORK);
+  }
 });
+
+onMounted(() => {
+  setTimeout(() => {
+    const tournament = new Tournament();
+    setTouranment(tournament);
+    tournament.update();
+  }, 1500);
+})
 </script>
 
 <template>
@@ -30,6 +50,10 @@ onMounted(async () => {
   <NotificationList />
 
   <!-- popups -->
+  <template v-if="exists(Popup.AUTH)">
+    <AuthPopup />
+  </template>
+
   <template v-if="exists(Popup.CLAIM)">
     <ClaimPopup />
   </template>

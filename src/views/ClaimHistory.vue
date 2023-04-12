@@ -28,7 +28,7 @@ const animation = {
       </div>
 
       <div class="rewards" v-if="!process">
-        <template v-if="rewards.length">
+        <template v-if="rewards && rewards.length">
           <div class="list">
             <Motion
               v-bind="animation"
@@ -39,10 +39,9 @@ const animation = {
               <ClaimCard :claim="claim" />
             </Motion>
           </div>
-
         </template>
-        
-        <template v-if="!rewards.length">
+
+        <template v-if="!rewards || !rewards.length">
           <Motion>
             <div class="wrapper">
               <p>No rewards yet</p>
@@ -51,18 +50,18 @@ const animation = {
         </template>
       </div>
 
+      <div class="process" v-if="process">
+        <div class="wrapper">
+          <TheLoader />
+        </div>
+      </div>
+
       <div class="actions" v-if="isActive">
         <router-link to="/battle">
           <TheButton>
             <span>Back to tournament</span>
           </TheButton>
         </router-link>
-      </div>
-
-      <div class="process" v-if="process">
-        <div class="wrapper">
-          <TheLoader />
-        </div>
       </div>
     </main>
 

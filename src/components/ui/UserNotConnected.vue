@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { useAccount, useConnect } from 'vagmi'
-import { MetaMaskConnector } from 'vagmi/connectors/metaMask';
-
-const connector = new MetaMaskConnector();
-
-const { isConnected } = useAccount()
-const { connect } = useConnect({
-  connector,
-})
+import { Popup } from '@/common/interfaces';
+const showPopup = usePopupsStore().showPopup;
 </script>
 
 <template>
@@ -17,7 +10,7 @@ const { connect } = useConnect({
     </div>
     <p>To see your balance and participate in the battle, connect wallet</p>
     <div class="foo">
-      <TheButton @click.prevent="connect()">
+      <TheButton @click.prevent="showPopup(Popup.AUTH)">
         <span>connect wallet</span>
       </TheButton>
     </div>

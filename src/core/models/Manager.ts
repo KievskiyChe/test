@@ -209,7 +209,8 @@ export class Manager implements IManager {
   public redeem = async (tournamentId: number, token: IToken) => {
     const amount = ethers.utils.parseUnits(token.amount, token.decimals);
     try {
-      const tx = await this.contract.redeem(tournamentId, amount);
+      const signerContract = this.contract.connect(window.__SIGNER__);
+      const tx = await signerContract.redeem(tournamentId, amount);
       return await tx.wait();
     } catch (error) {
       return Promise.reject(error);

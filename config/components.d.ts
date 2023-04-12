@@ -9,6 +9,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AuthPopup: typeof import('./../src/components/popups/AuthPopup.vue')['default']
     ClaimCard: typeof import('./../src/components/ui/ClaimCard.vue')['default']
     ClaimPopup: typeof import('./../src/components/popups/ClaimPopup.vue')['default']
     InvalidNetworkPopup: typeof import('./../src/components/popups/InvalidNetworkPopup.vue')['default']
