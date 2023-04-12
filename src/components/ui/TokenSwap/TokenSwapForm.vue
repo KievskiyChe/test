@@ -81,7 +81,7 @@ const getAmountsOutOptions = (type: string) => {
           v-model.trim="amountFrom"
           @input="handleInput($event, 'from')"
         />
-        <small class="usd">$ {{ amountFromUSD }}</small>
+        <!-- <small class="usd">$ {{ amountFromUSD }}</small> -->
       </div>
       <div class="input-select" v-if="from">
         <TokenSelect :token="from" emitted="from" />
@@ -100,7 +100,7 @@ const getAmountsOutOptions = (type: string) => {
           v-model.trim="amountTo"
           disabled
         />
-        <small class="usd">$ {{ amountToUSD }}</small>
+        <!-- <small class="usd">$ {{ amountToUSD }}</small> -->
       </div>
       <div class="input-select" v-if="to">
         <TokenSelect :token="to" emitted="to" />
@@ -167,7 +167,8 @@ const getAmountsOutOptions = (type: string) => {
     height: 100%;
     background: transparent;
     color: #fff;
-    padding: 0 10px 10px 10px;
+    /* padding: 0 10px 10px 10px; */
+    padding: 10px;
     font-size: 20px;
     font-weight: 600;
     border: none;
