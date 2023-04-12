@@ -73,7 +73,7 @@ export const useTournamentStore = defineStore("tournament-module", () => {
       return acc + (!token.inactive ? Number(token.amountUSD) : 0);
     }, 0);
 
-    return cutString(parseFloat(total.toString()).toFixed(4), 4);
+    return parseFloat(total.toString()).toFixed(4);
   };
 
   const percentage = (amount: string): number => {
