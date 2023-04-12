@@ -41,7 +41,7 @@ export class Manager implements IManager {
     return await this.contract.isTournamentActive();
   };
 
-  public fetchTokens = async (tournamentId: number): Promise<IToken[]> => {
+  public fetchTokens = async (tournamentId: number, usdc: IToken): Promise<IToken[]> => {
     const addresses: string[] = await this.contract.getTokens(tournamentId);
     this.addresses = addresses;
 
@@ -52,7 +52,7 @@ export class Manager implements IManager {
         manager: this.contract,
       };
       
-      return await new Token(params).init();
+      return await new Token(params).init(usdc);
     });
 
     return await Promise.all(promises);

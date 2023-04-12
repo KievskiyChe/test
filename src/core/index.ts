@@ -80,12 +80,12 @@ export default class Tournament implements ITournament {
       const currentId = this.getParam<number>("id");
       const id = round !== LAST_ROUND ? currentId : currentId - 1;
 
-      await this.fetchParam("tokens", () => fetchTokens(id));
+      await this.fetchParam("tokens", () => fetchTokens(id, this.getParam('usdc')));
       await this.fetchParam("bracket", () => fetchBracket(id));
       await this.fetchParam("rewards", () => fetchRewards(currentId));
-      await this.fetchParam("totalPrize", () =>
-        this.manager.fetchTotalPrize(this.getParam("usdc"))
-      );
+      // await this.fetchParam("totalPrize", () =>
+      //   this.manager.fetchTotalPrize(this.getParam("usdc"))
+      // );
       await this.fetchWinner(id);
 
       const tokens = this.getParam<IToken[]>("tokens");
@@ -199,7 +199,7 @@ export default class Tournament implements ITournament {
     try {
       await this.fetchParam("fee", fetchFee);
       await this.fetchParam("usdc", fetchUSDC);
-      await this.fetchParam("tokens", () => fetchTokens(id));
+      await this.fetchParam("tokens", () => fetchTokens(id, this.getParam('usdc')));
     } catch (error: any) {
       console.log(error);
       console.log("Error while updating Tournament");

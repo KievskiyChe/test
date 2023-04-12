@@ -4,7 +4,7 @@ interface IManager {
   fetchBracket: (tournamentId: number) => Promise<number[]>;
   fetchRound: () => Promise<number>;
   fetchStatus: () => Promise<boolean>;
-  fetchTokens: (tournamentId: number) => Promise<IToken[]>;
+  fetchTokens: (tournamentId: number, usdc: IToken) => Promise<IToken[]>;
   fetchUSDC: () => Promise<IToken>;
   fetchFee: () => Promise<number>;
   fetchStartTime: () => Promise<number>;

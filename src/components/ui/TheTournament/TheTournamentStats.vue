@@ -1,5 +1,12 @@
 <script setup lang="ts">
-const { totalPrize, process } = storeToRefs(useTournamentStore())
+const { process, tokens } = storeToRefs(useTournamentStore())
+
+const totalPrize = computed(() => {
+  if (!tokens.value) return 0
+  return tokens.value.reduce((acc, token) => {
+    return Number(acc) + Number(token.liquidityPool)
+  }, 0)
+})
 </script>
 
 <template>
@@ -10,7 +17,7 @@ const { totalPrize, process } = storeToRefs(useTournamentStore())
           <img src="@/assets/img/icons/prize.svg" alt="prize" />
           <div class="stats-title">
             <span>total prize <br />pool</span>
-            <h2><sup>$</sup>{{ process ? '0.00' : parseString(totalPrize, 2) }}</h2>
+            <h2><sup>$</sup>{{ process ? '0.00' : parseString(String(totalPrize), 2) }}</h2>
           </div>
 
           <!-- <div class="info-icon"></div> -->

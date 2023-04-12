@@ -7,6 +7,7 @@ interface IToken {
   amount: string;
   approved: boolean;
   inactive?: boolean;
+  liquidityPool: string;
   get amountUSD(): string;
   balanceOf: (address: string) => Promise<string>;
   totalSupply: () => Promise<string>;

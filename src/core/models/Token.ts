@@ -22,6 +22,7 @@ export class Token implements IToken {
   public price!: string;
   public amount!: string;
   public approved = false;
+  public liquidityPool!: string;
 
   get amountUSD(): string {
     if (!this.amount || !this.price) return "0.00";
@@ -43,9 +44,9 @@ export class Token implements IToken {
     this.contract = new ethers.Contract(address, ABI_ERC_20, this.provider);
   }
 
-  public init = async (): Promise<IToken> => {
+  public init = async (usdc?: IToken): Promise<IToken> => {
     if (this.address !== "0x0000000000000000000000000000000000000000") {
-      await this.fetch();
+      await this.fetch(usdc);
     }
 
     return {
@@ -54,6 +55,7 @@ export class Token implements IToken {
       address: this.address,
       decimals: this.decimals,
       price: this.price,
+      liquidityPool: this.liquidityPool,
       amount: this.amount,
       amountUSD: this.amountUSD,
       approved: this.approved,
@@ -100,8 +102,8 @@ export class Token implements IToken {
    * @returns {Promise<void>}
    * @memberof Token
    */
-  public fetch = async (): Promise<void> => {
-    await this.fetchMetadata();
+  public fetch = async (usdc?: IToken): Promise<void> => {
+    await this.fetchMetadata(usdc);
     await this.fetchAllowance();
   };
 
@@ -127,12 +129,19 @@ export class Token implements IToken {
    * @returns {Promise<void>}
    * @memberof Token
    */
-  public fetchMetadata = async (): Promise<void> => {
+  public fetchMetadata = async (usdc?: IToken): Promise<void> => {
     try {
       const name: string = await limiter.schedule(() => this.contract.name());
       const symbol: string = await limiter.schedule(() => this.contract.symbol());
       const decimals: number = await limiter.schedule(() => this.contract.decimals());
       const price: number = await limiter.schedule(() => this.manager.getSpotPrice(this.address));
+      
+      if (usdc) {
+        const poolData: any = await limiter.schedule(() => this.manager.getSpotPriceAndPair(this.address));
+        const pool = poolData[1];
+        this.liquidityPool = String(await usdc.balanceOf(pool));
+      }
+
       console.log('getting metadata for token: ', this.address);
 
       let amount = 0;

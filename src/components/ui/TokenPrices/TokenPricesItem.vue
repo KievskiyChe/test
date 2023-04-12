@@ -3,10 +3,16 @@ import { cutString } from "@/common/helpers";
 import TokenIcon from "@/components/ui/TokenIcon.vue";
 const { game } = storeToRefs(useTournamentStore())
 
-defineProps<{
+const props = defineProps<{
   id: number;
   token: IToken;
+  field: string;
 }>();
+
+const data = computed(() => {
+  const t = props.token as any
+  return t[props.field]
+})
 </script>
 
 <template>
@@ -19,7 +25,8 @@ defineProps<{
 
     <div class="token-content">
       <span>{{ token.symbol }}</span>
-      <span>{{ cutString(token.price, 10) }}</span>
+      <span v-if="props.field === 'price'">${{ cutString(parseString(data, 6), 10) }}</span>
+      <span v-if="props.field === 'liquidityPool'">${{ cutString(parseString(data, 4), 10) }}</span>
     </div>
   </div>
 </template>

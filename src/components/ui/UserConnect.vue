@@ -43,7 +43,7 @@ onClickOutside(outside, () => {
           </div>
 
           <!-- <span class="user-address">{{ getShortAddress() }}</span> -->
-          <span>{{ shortAddress }}</span>
+          <span class="user-address">{{ shortAddress }}</span>
         </div>
       </Motion>
     </template>
@@ -60,7 +60,7 @@ onClickOutside(outside, () => {
                 <img src="@/assets/img/icons/yoda.svg" alt="Yoda" />
               </div>
 
-              <!-- <div class="usdt-value">USDT 00.00</div> -->
+              <!-- <div class="usdt-value">USDC {{ data?.value }}</div> -->
               <!-- <div class="dollar-value">$ 00.00</div> -->
             </div>
 

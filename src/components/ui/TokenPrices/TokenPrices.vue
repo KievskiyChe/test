@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { tokens, process, game} = storeToRefs(useTournamentStore());
+const showLiquidity = ref(false);
 
 const formatedTokens = computed(() => {
   if (!game) return []
@@ -19,6 +20,10 @@ const sortedTokens = computed(() => {
     return 0
   })
 })
+
+const toggle = () => {
+  showLiquidity.value = !showLiquidity.value;
+};
 </script>
 
 <template>
@@ -26,17 +31,46 @@ const sortedTokens = computed(() => {
     <TheCard :swapEdges="true">
       <div class="wrapper">
         <div class="title">
-          <span>token prices</span>
+          <span v-if="!showLiquidity">token prices</span>
+          <span v-if="showLiquidity">token liquidities</span>
         </div>
 
-        <Motion class="list" v-if="tokens && tokens.length && !process">
+        <Motion class="list" v-if="tokens && tokens.length && !process && !showLiquidity">
           <TokenPricesItem
             v-for="(token, index) in sortedTokens"
             :key="index"
             :id="index + 1"
             :token="token"
+            field="price"
           />
         </Motion>
+
+        <Motion class="list" v-if="tokens && tokens.length && !process && showLiquidity">
+          <TokenPricesItem
+            v-for="(token, index) in sortedTokens"
+            :key="index"
+            :id="index + 1"
+            :token="token"
+            field="liquidityPool"
+          />
+        </Motion>
+
+        <div class="toggle" v-if="tokens && tokens.length && !process">
+          <div
+            class="toggle-point"
+            :class="{ active: showLiquidity }"
+            @click.stop="toggle"
+          >
+            <span></span>
+          </div>
+          <div
+            class="toggle-point"
+            :class="{ active: !showLiquidity }"
+            @click.stop="toggle"
+          >
+            <span></span>
+          </div>
+        </div>
 
         <div class="load" v-if="process">
           <TheLoader />
@@ -84,6 +118,43 @@ const sortedTokens = computed(() => {
     width: 0;
   }
 }
+
+.toggle {
+  width: 100%;
+  height: 12px;
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.toggle .toggle-point {
+  display: flex;
+  padding: 10px 2.5px;
+
+  span {
+    border-radius: 30px;
+    background: var(--shadow-yellow);
+
+    width: 6px;
+    height: 6px;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+  }
+
+  cursor: pointer;
+
+  &.active {
+    cursor: unset;
+    span {
+      width: 30px;
+      opacity: 1;
+    }
+  }
+}
+
 
 .load {
   position: absolute;

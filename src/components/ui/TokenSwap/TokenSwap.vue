@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useAccount } from 'vagmi';
-
+import { useAccount } from "vagmi";
 
 const { isConnected, address } = useAccount();
 
@@ -13,21 +12,23 @@ const { process, from, to, amountFrom, isValidFrom, slippage } = storeToRefs(
 const { startProcess, successProcess, errorProcess, setProcess, resetForm } =
   useSwapStore();
 
-const canBuy = (token: IToken) => {  
+const canBuy = (token: IToken) => {
   if (!game.value) return false;
   if (round.value === 0) return true;
 
-  const currentRound = game.value.rounds.get(round.value - 1)?.pairs.map((pair) => pair.winner);
+  const currentRound = game.value.rounds
+    .get(round.value - 1)
+    ?.pairs.map((pair) => pair.winner);
   if (!currentRound) return false;
 
-  const tokens = Array.from(currentRound)
-  const arr = tokens.filter((item) => item);  
+  const tokens = Array.from(currentRound);
+  const arr = tokens.filter((item) => item);
 
   return arr.find((item) => item?.symbol === token.symbol) ? true : false;
 };
 
 const swapTokens = async () => {
-  const tournament = getTournament()
+  const tournament = getTournament();
   startProcess();
 
   try {
@@ -67,7 +68,7 @@ const handleApprove = async (token: IToken | undefined) => {
 
   try {
     const receipt = await token.approve();
-    const tournament = getTournament()
+    const tournament = getTournament();
 
     if (receipt && receipt.status) {
       await tournament.update();
@@ -130,7 +131,9 @@ const handleApprove = async (token: IToken | undefined) => {
 
         <TheButton
           v-if="isConnected && from.approved"
-          :disabled="!isConnected || process || process || !isValidFrom || !canBuy(to)"
+          :disabled="
+            !isConnected || process || process || !isValidFrom || !canBuy(to)
+          "
           @click.stop="swapTokens"
         >
           <template #icon>
@@ -145,6 +148,13 @@ const handleApprove = async (token: IToken | undefined) => {
           </template>
           <span>swap</span>
         </TheButton>
+
+        <div class="disclaimer">
+          <!-- <p>
+            Disclaimer: Please be advised that if liquidity pools doesn't have
+            enough liquidity you will receive a reduced amount when swapping
+          </p> -->
+        </div>
       </Motion>
     </TheCard>
 
@@ -182,6 +192,13 @@ const handleApprove = async (token: IToken | undefined) => {
   place-items: center;
 }
 
+.disclaimer {
+  max-width: 300px;
+  font-size: 12px;
+  text-align: right;
+  color: var(--white-600);
+}
+
 .swap-load {
   height: 115px;
   display: grid;
@@ -203,6 +220,7 @@ const handleApprove = async (token: IToken | undefined) => {
 
 .foo {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 20px;
 

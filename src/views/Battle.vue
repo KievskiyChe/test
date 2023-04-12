@@ -11,9 +11,9 @@
       <img src="@/assets/img/backgrounds/5.webp" />
     </div>
 
-    <div class="overlay overlay-mobile">
+    <!-- <div class="overlay overlay-mobile">
       <img src="@/assets/img/backgrounds/1.webp" />
-    </div>
+    </div> -->
 
     <TheHeader />
 
@@ -105,7 +105,7 @@
   }
 
   .overlay {
-    display: none;
+    /* display: none; */
 
     &-mobile {
       display: block;
