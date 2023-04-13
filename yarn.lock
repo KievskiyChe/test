@@ -4307,6 +4307,11 @@ muggle-string@^0.2.2:
   resolved "https://registry.yarnpkg.com/muggle-string/-/muggle-string-0.2.2.tgz#786aa53fea1652c61c6a59e1f839292b262bc72a"
   integrity sha512-YVE1mIJ4VpUMqZObFndk9CJu6DBJR/GB13p3tXuNbwD4XExaI5EOuRl6BHeIDxIqXZVxSfAC+y6U1Z/IxCfKUg==
 
+multicall@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/multicall/-/multicall-1.0.1.tgz#80df074775f5eac0a2b4cb70a166ea592e42dfc3"
+  integrity sha512-+vQfppiZD84OK+r4fBeOJcuZ7bMjKstQNF09BEAG1UvQlS4Kp2DNyHzvg2L+xrMipvcE7f/6YMZDKQAvAEJgRg==
+
 nano-time@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/nano-time/-/nano-time-1.0.0.tgz#b0554f69ad89e22d0907f7a12b0993a5d96137ef"

@@ -7,7 +7,7 @@ export class Mock {
   public GWEI = 1_000_000_000;
 
   constructor() {
-    this.contract = createContractManager(window.__SIGNER__);
+    this.contract = createContractManager();
   }
 
   public mockStart = async () => {

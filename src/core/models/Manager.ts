@@ -1,5 +1,6 @@
 /** Tournament Manager */
 import { ethers } from "ethers";
+// import { Multicall } from 'multicall/v2';
 import router from "@/router";
 
 import { Token } from "./Token";

@@ -17,6 +17,7 @@
     "bottleneck": "^2.19.5",
     "ethers": "^5.7.2",
     "hardhat": "^2.13.0",
+    "multicall": "^1.0.1",
     "pinia": "^2.0.28",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "sass": "^1.57.1",
