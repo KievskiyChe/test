@@ -254,5 +254,9 @@ const handleApprove = async (token: IToken | undefined) => {
       display: block;
     }
   }
+
+  .swap-wrapper {
+    min-height: 400px;
+  }
 }
 </style>

@@ -16,8 +16,9 @@ const metamask = new MetaMaskConnector({
 });
 
 const coinbase = new CoinbaseWalletConnector({
+  chains: [chain.polygon],
   options: {
-    appName: 'vagmi.sh',
+    appName: 'Awakeness',
     jsonRpcUrl: 'https://eth-mainnet.alchemyapi.io/v2/l8pB5q8P2MCYvTvXEjKOyfnwG1eycTku',
   },
 });

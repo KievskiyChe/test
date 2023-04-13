@@ -26,10 +26,10 @@ watch(isConnected, (value) => {
     <TheCard :swapEdges="true">
       <div class="wrapper">
         <Motion class="title" v-if="isConnected && !process">
-          <span>You've got</span>
+          <span>Your Balance</span>
           <div class="balance">
-            <sup>$</sup>
-            <span>{{ totalAmountsUSD() }}</span>
+            <!-- <sup>$</sup>
+            <span>{{ totalAmountsUSD() }}</span> -->
           </div>
         </Motion>
 
@@ -80,13 +80,14 @@ watch(isConnected, (value) => {
   min-width: 320px;
   max-width: 340px;
   display: flex;
+
 }
 
 .wrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   position: relative;
 }
 

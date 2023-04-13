@@ -2,10 +2,14 @@
 import { Popup } from "./common/interfaces";
 import { useAccount, useProvider, useSigner, useNetwork } from "vagmi";
 import Tournament from "./core";
+import { useRoute, useRouter } from "vue-router";
 
 const { exists, showPopup, hidePopup } = usePopupsStore();
 const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
+const route = useRoute()
+const router = useRouter();
+const { isActive } = storeToRefs(useTournamentStore())
 
 const provider = useProvider({
   chainId: 137,
@@ -35,9 +39,19 @@ watchEffect(() => {
 });
 
 onMounted(() => {
-  setTimeout(() => {
+  setTimeout(async () => {
     const tournament = new Tournament();
+    await tournament.fetchStatus()
     setTouranment(tournament);
+
+    if (route.path === '/' && isActive.value) {
+      router.push("/tournament");
+    }
+
+    if (route.path === '/tournament' && !isActive.value) {
+      router.push("/waitplease");
+    }
+
     tournament.update();
   }, 1500);
 })

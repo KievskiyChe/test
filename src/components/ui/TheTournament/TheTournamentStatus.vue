@@ -22,7 +22,7 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
 
         <div class="wrapper">
           <div class="timer-wrapper">
-            <TheTimer title="time of battle" :time="startTime" />
+            <TheTimer title="round time" :time="startTime" />
           </div>
 
           <div class="info-bottom">min 10 h max 30 h</div>

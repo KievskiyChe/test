@@ -15,7 +15,8 @@ const sortedTokens = computed(() => {
 <template>
   <Motion class="list">
     <div class="list-head">
-      <span>balance</span>
+      <!-- <span>balance</span> -->
+      <span></span>
       <small>{{ availableAssets() }} assets</small>
     </div>
 
@@ -35,6 +36,7 @@ const sortedTokens = computed(() => {
 .list {
   display: grid;
 }
+
 .list-head {
   margin-top: -10px;
   padding-bottom: 10px;
