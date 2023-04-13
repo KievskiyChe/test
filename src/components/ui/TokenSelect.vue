@@ -20,7 +20,7 @@ const tokenAmount = computed(() => {
 
 <template>
   <div class="select-wrapper" @click.stop="show()">
-    <div class="select" v-if="token">
+    <div class="select" v-if="token && token.symbol">
       <div class="select-icon">
         <img :src="getImage(`tokens/${token.symbol}.png`)" />
       </div>
@@ -28,6 +28,18 @@ const tokenAmount = computed(() => {
       <div class="select-info">
         <span>{{ token.symbol }}</span>
         <small>Balance: {{ tokenAmount }}</small>
+      </div>
+
+      <div class="chevron"></div>
+    </div>
+
+    <div class="select active" v-else>
+      <div class="select-icon">
+        <img src="@/assets/img/icons/circles.svg" />
+      </div>
+
+      <div class="select-info">
+        <span>Select</span>
       </div>
 
       <div class="chevron"></div>
@@ -56,6 +68,13 @@ const tokenAmount = computed(() => {
 .select:hover {
   cursor: pointer;
   background: var(--white-100);
+}
+
+.select.active {
+  background: var(--white-50);
+  &:hover {
+    background: var(--white-100);
+  }
 }
 
 .select:active,

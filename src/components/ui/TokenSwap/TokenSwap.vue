@@ -2,9 +2,7 @@
 import { useAccount } from "vagmi";
 
 const { isConnected, address } = useAccount();
-
-const { user } = storeToRefs(useUserStore());
-const { fee, round, game } = storeToRefs(useTournamentStore());
+const { round, game } = storeToRefs(useTournamentStore());
 const { process, from, to, amountFrom, isValidFrom, slippage } = storeToRefs(
   useSwapStore()
 );

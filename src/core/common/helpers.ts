@@ -19,9 +19,7 @@ if (!MANAGER_ADDRESS) {
   throw new Error("Missing contract address");
 }
 
-export const createContractManager = (
-  signer: Signer | null = null
-): Contract => {
+export const createContractManager = (): Contract => {
   return new ethers.Contract(
     MANAGER_ADDRESS,
     MANAGER_ABI,

@@ -9,11 +9,11 @@ export const setGlobals = ({
   window.__PROVIDER__ = provider;
   window.__SIGNER__ = signer;
   window.__USER_ADDRESS__ = userAddress ?? "";
-  console.log("Globals setted", {
-    userAddress,
-    provider,
-    signer,
-  })
+  // console.log("Globals setted", {
+  //   userAddress,
+  //   provider,
+  //   signer,
+  // })
 };
 
 export const updateGlobalsAddress = (address: string): void => {

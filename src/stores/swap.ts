@@ -170,7 +170,8 @@ export const useSwapStore = defineStore("swap-module", () => {
 
   const update = (): void => {
     from.value = getTokenFrom(from.value);
-    to.value = getTokenTo(to.value);
+    to.value = {} as IToken;
+    // to.value = getTokenTo(to.value);
   };
 
   return {

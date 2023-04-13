@@ -19,7 +19,7 @@ export class Manager implements IManager {
     this.tournament = tournament;
     this.provider = window.__PROVIDER__;
     this.signer = window.__SIGNER__;
-    this.contract = createContractManager(this.signer);
+    this.contract = createContractManager();
     this.eventListener();
   }
 

@@ -7,14 +7,13 @@ import { useRoute, useRouter } from "vue-router";
 const { exists, showPopup, hidePopup } = usePopupsStore();
 const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
-const route = useRoute()
+const route = useRoute();
 const router = useRouter();
-const { isActive } = storeToRefs(useTournamentStore())
+const { isActive } = storeToRefs(useTournamentStore());
 
 const provider = useProvider({
   chainId: 137,
 }).value;
-
 
 useSigner({
   onSuccess: (signer) => {
@@ -22,7 +21,7 @@ useSigner({
       signer: signer ?? provider,
       provider,
       userAddress: isConnected.value ? address.value! : "",
-    })
+    });
   },
   onError: (e) => {
     console.log(e);
@@ -38,23 +37,45 @@ watchEffect(() => {
   }
 });
 
-onMounted(() => {
-  setTimeout(async () => {
-    const tournament = new Tournament();
-    await tournament.fetchStatus()
-    setTouranment(tournament);
+onMounted(async () => {
+  setGlobals({
+    signer: null,
+    provider,
+    userAddress: isConnected.value ? address.value! : "",
+  });
 
-    if (route.path === '/' && isActive.value) {
-      router.push("/tournament");
-    }
+  const tournament = new Tournament();
+  await tournament.fetchStatus();
+  setTouranment(tournament);
 
-    if (route.path === '/tournament' && !isActive.value) {
-      router.push("/waitplease");
-    }
+  if (route.path === '/' && isActive.value) {
+    router.push("/tournament");
+  }
 
-    tournament.update();
-  }, 1500);
-})
+  if (route.path === '/tournament' && !isActive.value) {
+    router.push("/waitplease");
+  }
+
+  tournament.update();
+});
+
+// onMounted(() => {
+//   setTimeout(async () => {
+//     const tournament = new Tournament();
+//     await tournament.fetchStatus()
+//     setTouranment(tournament);
+
+//     if (route.path === '/' && isActive.value) {
+//       router.push("/tournament");
+//     }
+
+//     if (route.path === '/tournament' && !isActive.value) {
+//       router.push("/waitplease");
+//     }
+
+//     tournament.update();
+//   }, 1000);
+// })
 </script>
 
 <template>
