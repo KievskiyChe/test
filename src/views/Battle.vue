@@ -51,11 +51,11 @@
 
 .overlay {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   left: 0;
 
-  position: absolute;
+  position: fixed;
   overflow: hidden;
 
   z-index: -1;

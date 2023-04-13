@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { tokens, game, round } = storeToRefs(useTournamentStore());
+const { tokens, game } = storeToRefs(useTournamentStore());
 const { hideAllPopups } = usePopupsStore();
 const { setTo, setFrom } = useSwapStore();
 
@@ -19,14 +19,24 @@ const setToken = (token: IToken) => {
   if (props.emitted === "to") setTo(token);
   close();
 };
+const formatedTokens = computed(() => {
+  if (!game) return []
+  return tokens.value.map((token) => {
+    if (game.value?.loosers.includes(token.address)) {
+      token.price = '0.00'
+      token.inactive = true
+    }
+    return token
+  })
+})
 
-// const sortedTokens = computed(() => {
-//   return tokens.value.sort((a, b) => {
-//     if (a.price > b.price) return -1;
-//     if (a.price < b.price) return 1;
-//     return 0;
-//   });
-// });
+const sortedTokens = computed(() => {
+  return formatedTokens.value.sort((a, b) => {
+    if (a.price > b.price) return -1
+    if (a.price < b.price) return 1
+    return 0
+  })
+})
 
 const animation = {
   content: {
@@ -51,7 +61,7 @@ const animation = {
         <div class="list" v-if="game">
           <div
             class="list-item"
-            v-for="(token, index) in tokens"
+            v-for="(token, index) in sortedTokens"
             :key="index"
             :class="{inactive: token.inactive }"
             @click.stop="setToken(token)"

@@ -209,5 +209,18 @@ const getAmountsOutOptions = (type: string) => {
       width: 100%;
     }
   }
+
+  .swap-icon {
+    min-width: 24px;
+    max-width: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    margin-top: 2px;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 </style>
