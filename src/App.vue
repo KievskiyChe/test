@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { Popup } from "./common/interfaces";
 import { useAccount, useProvider, useSigner, useNetwork } from "vagmi";
-import Tournament from "./core";
 import { useRoute, useRouter } from "vue-router";
 
+import Tournament from "./core/v1/";
+import TournamentV2 from "./core/v2";
+
+const route = useRoute();
+const router = useRouter();
 const { exists, showPopup, hidePopup } = usePopupsStore();
 const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
-const route = useRoute();
-const router = useRouter();
 const { isActive } = storeToRefs(useTournamentStore());
 
 const provider = useProvider({
@@ -44,18 +46,23 @@ onMounted(async () => {
     userAddress: isConnected.value ? address.value! : "",
   });
 
+  // const tournamentV2 = new TournamentV2(provider);
+  // setTouranment(tournamentV2 as any)
+  // await tournamentV2.fetchStatus();
+  // await tournamentV2.init();
+  
   const tournament = new Tournament();
   await tournament.fetchStatus();
   setTouranment(tournament);
-
+  
   if (route.path === '/' && isActive.value) {
     router.push("/tournament");
   }
-
+  
   if (route.path === '/tournament' && !isActive.value) {
     router.push("/waitplease");
   }
-
+  
   tournament.update();
 });
 

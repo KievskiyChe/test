@@ -7,7 +7,7 @@
     <div class="title">
       <span class="line"></span>
 
-      <router-link to="/" class="text">awakeness</router-link>
+      <router-link to="/tournament" class="text">awakeness</router-link>
 
       <span class="line"></span>
     </div>
