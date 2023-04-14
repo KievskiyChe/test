@@ -1,6 +1,5 @@
 import router from "@/router";
 import { ethers } from "ethers";
-import main, { preFetch } from "./multicall";
 import { Game } from "./models/Game";
 
 import ROUTER_ABI from "./abis/Router.json";
@@ -8,6 +7,7 @@ import MANAGER_ABI from "./abis/Manager.json";
 import FACTORY_ABI from "./abis/Factory.json";
 import type { Token } from "./models/Token";
 import { randomHash } from "../v1/common/helpers";
+import { Caller } from "./multicall";
 
 const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
@@ -18,34 +18,38 @@ export default class TournamentV2 {
   private readonly router: any;
   private readonly manager: any;
   private readonly factory: any;
+  private readonly caller: Caller;
 
   constructor(provider: Provider) {
     this.provider = provider;
     this.router = new ethers.Contract(ROUTER, ROUTER_ABI, this.provider);
     this.manager = new ethers.Contract(MANAGER, MANAGER_ABI, this.provider);
     this.factory = new ethers.Contract(FACTORY, FACTORY_ABI, this.provider);
+    this.caller = new Caller();
   }
 
   public fetchStatus = async (): Promise<boolean> => {
-    console.log('fetchStatus');
-    return await preFetch(this.provider);
-  }
+    return await this.caller.preFetch();
+  };
 
   async init() {
     this.updateStoreProcess(true);
 
-    const data = await main(this.provider);
-    useTournamentStore().setTokens(data.tokens);
+    console.time('fetching multicall data')
+    const data = await this.caller.main();
+    console.log({ data })
+    console.timeEnd('fetching multicall data')
 
-    const game = new Game(data.round, data.tokens, data.bracket);
+    if (data.tokens) {
+      const game = new Game(data.round, data.tokens as any, data.bracket);
+      game.setWinner(
+        data.tokens.find((token: Token) => token.address === data.winningToken) as any
+      );
+      data.game = game;
+    }
 
-    game.setWinner(
-      data.tokens.find((token: Token) => token.address === data.winningToken)
-    );
-    data.game = game;
-
-    useTournamentStore().update(data);
-    useRewardsStore().update(data.rewards);
+    useTournamentStore().update(data as any);
+    useRewardsStore().update(data.rewards as any);
 
     this.eventListener();
     this.updateStoreProcess(false);

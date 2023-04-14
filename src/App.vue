@@ -12,6 +12,7 @@ const { exists, showPopup, hidePopup } = usePopupsStore();
 const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
 const { isActive } = storeToRefs(useTournamentStore());
+const { multicall } = storeToRefs(useUserStore());
 
 const provider = useProvider({
   chainId: 137,
@@ -46,14 +47,18 @@ onMounted(async () => {
     userAddress: isConnected.value ? address.value! : "",
   });
 
-  // const tournamentV2 = new TournamentV2(provider);
-  // setTouranment(tournamentV2 as any)
-  // await tournamentV2.fetchStatus();
-  // await tournamentV2.init();
+  if (multicall.value) {
+    const tournamentV2 = new TournamentV2(provider);
+    setTouranment(tournamentV2 as any)
+    await tournamentV2.fetchStatus();
+    await tournamentV2.init();
+  } else {
+    const tournament = new Tournament();
+    await tournament.fetchStatus();
+    setTouranment(tournament);
+    tournament.update();
+  }
   
-  const tournament = new Tournament();
-  await tournament.fetchStatus();
-  setTouranment(tournament);
   
   if (route.path === '/' && isActive.value) {
     router.push("/tournament");
@@ -62,27 +67,7 @@ onMounted(async () => {
   if (route.path === '/tournament' && !isActive.value) {
     router.push("/waitplease");
   }
-  
-  tournament.update();
 });
-
-// onMounted(() => {
-//   setTimeout(async () => {
-//     const tournament = new Tournament();
-//     await tournament.fetchStatus()
-//     setTouranment(tournament);
-
-//     if (route.path === '/' && isActive.value) {
-//       router.push("/tournament");
-//     }
-
-//     if (route.path === '/tournament' && !isActive.value) {
-//       router.push("/waitplease");
-//     }
-
-//     tournament.update();
-//   }, 1000);
-// })
 </script>
 
 <template>

@@ -11,6 +11,12 @@
 
 export const useUserStore = defineStore("user-module", () => {
   const user = ref<any | null>();
+  const multicall = ref<boolean>(localStorage.getItem("multicall") === "true" ? true : false);
+
+  const setMulticall = (data: boolean) => {
+    multicall.value = data;
+    localStorage.setItem("multicall", data.toString());
+  };
 
   const setUser = (data: any | null) => {
     const { pushNotification } = useNotificationStore();
@@ -36,6 +42,8 @@ export const useUserStore = defineStore("user-module", () => {
 
   return {
     user,
+    multicall,
+    setMulticall,
     setUser,
     getShortAddress,
   };

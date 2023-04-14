@@ -59,14 +59,14 @@ const scaleAnimation = {
           </div>
         </Motion>
 
-        <Motion :delay="0.8" v-if="tokens">
+        <Motion v-if="tokens">
           <div class="token-list">
             <Motion
               v-for="(token, index) in tokens"
               :key="index"
-              :from="{ y: -10 }"
+              :from="{ y: 10 }"
               :to="{ y: 0 }"
-              :delay="0.15 * index"
+              :delay="0.05 * index"
             >
               <TokenIconCircle
                 v-if="token.symbol"
@@ -238,7 +238,7 @@ main {
 
   .title {
     h1 {
-      font-size: 40px;
+      font-size: 34px;
     }
   }
 

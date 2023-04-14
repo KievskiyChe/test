@@ -1,24 +1,30 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
-import { useAccount, useDisconnect } from 'vagmi'
-import { Popup } from '@/common/interfaces';
+import { useAccount, useDisconnect } from "vagmi";
+import { Popup } from "@/common/interfaces";
 
 const { showPopup } = usePopupsStore();
-const { address, isConnected } = useAccount()
-const { disconnect } = useDisconnect()
+const { address, isConnected } = useAccount();
+const { disconnect } = useDisconnect();
+const { multicall } = storeToRefs(useUserStore());
+const { setMulticall } = useUserStore();
 
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
 
 const shortAddress = computed(() => {
   if (address.value) {
-    return address.value.slice(0, 6) + '...' + address.value.slice(-4);
+    return address.value.slice(0, 6) + "..." + address.value.slice(-4);
   }
 });
 
 onClickOutside(outside, () => {
   showUserInfo.value = false;
 });
+
+const toggleMulticall = () => {
+  setMulticall(!multicall.value);
+};
 </script>
 
 <template>
@@ -60,11 +66,25 @@ onClickOutside(outside, () => {
                 <img src="@/assets/img/icons/yoda.svg" alt="Yoda" />
               </div>
 
+              <div class="multicall">
+                <span>Use V2</span>
+                <div
+                  class="toggle"
+                  :class="{ active: multicall }"
+                  @click="toggleMulticall"
+                >
+                  <div class="circle"></div>
+                </div>
+              </div>
+
               <!-- <div class="usdt-value">USDC {{ data?.value }}</div> -->
               <!-- <div class="dollar-value">$ 00.00</div> -->
             </div>
 
-            <div class="disconnect" @click="disconnect(), showUserInfo = false">
+            <div
+              class="disconnect"
+              @click="disconnect(), (showUserInfo = false)"
+            >
               <span>Disconnect</span>
             </div>
           </ThePopup>
@@ -98,6 +118,50 @@ onClickOutside(outside, () => {
     img {
       width: 100%;
     }
+  }
+}
+
+.multicall {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+
+  span {
+    text-align: center;
+  }
+
+  .toggle {
+    justify-self: center;
+    width: 60px;
+    height: 20px;
+    border: 1px solid var(--white-200);
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+      border-color: var(--shadow-yellow-300);
+      background: var(--shadow-yellow-300);
+      .circle {
+        translate: 34px 0;
+        background: var(--shadow-yellow);
+      }
+    }
+  }
+
+  .toggle .circle {
+    width: 20px;
+    height: 100%;
+    border-radius: 4px;
+    background: var(--white-300);
+    transition: all 0.3s ease;
   }
 }
 

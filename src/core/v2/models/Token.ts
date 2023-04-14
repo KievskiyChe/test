@@ -60,7 +60,7 @@ export class Token {
     this.managerAddress = params.managerAddress;
   }
 
-  public get() {
+  public get(): any {
     return {
       address: this.address,
       userAddress: this.userAddress,

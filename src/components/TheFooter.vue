@@ -52,7 +52,7 @@
 
 .social {
   display: grid;
-  grid-template-columns: repeat(4, auto);
+  grid-template-columns: repeat(3, auto);
   gap: 30px;
   align-items: center;
   justify-content: center;
