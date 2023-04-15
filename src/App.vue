@@ -50,7 +50,8 @@ onMounted(async () => {
   if (multicall.value) {
     const tournamentV2 = new TournamentV2(provider);
     setTouranment(tournamentV2 as any)
-    await tournamentV2.fetchStatus();
+    const status = await tournamentV2.fetchStatus();
+    useTournamentStore().setIsActive(status);
     await tournamentV2.init();
   } else {
     const tournament = new Tournament();

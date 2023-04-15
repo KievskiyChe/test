@@ -49,6 +49,7 @@ export default class TournamentV2 {
     }
 
     useTournamentStore().update(data as any);
+    useSwapStore().update()
     useRewardsStore().update(data.rewards as any);
 
     this.eventListener();
