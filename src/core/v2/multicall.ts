@@ -253,6 +253,9 @@ export class Caller {
   };
 
   fetchTokenPrices = async (tokens: any[], usdc: string) => {
+    if (tokens.some((token: any) => token.address === INVALID_TOKEN_ADDRESS)) {
+      return
+    }
     const tokenPrices = async () => {
       const calls = tokens.map((token) => {
         return {
@@ -277,6 +280,7 @@ export class Caller {
       const { results } = await this.multicall.call(calls);
 
       tokens.map((token) => {
+        if (token.address === INVALID_TOKEN_ADDRESS) return;
         const obj = parseResults<any>(
           results[token.address].callsReturnContext
         );
@@ -341,6 +345,7 @@ export class Caller {
     const { results } = await this.multicall.call(calls);
 
     tokens.map((token) => {
+      if (token.address === INVALID_TOKEN_ADDRESS) return;
       const obj = parseResults<{ balanceOf: string }>(
         results[token.address].callsReturnContext
       );
@@ -384,6 +389,7 @@ export class Caller {
     const { results } = await this.multicall.call(calls);
 
     tokens.map((token) => {
+      if (token.address === INVALID_TOKEN_ADDRESS) return;
       const obj = parseResults<any>(results[token.address].callsReturnContext);
       token.routerAddress = ROUTER;
       token.managerAddress = MANAGER;
