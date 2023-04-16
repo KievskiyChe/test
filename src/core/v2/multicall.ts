@@ -285,7 +285,7 @@ export class Caller {
           results[token.address].callsReturnContext
         );
         token.liquidityPoolAddress = obj.liquidityPool[1];
-        token.price = formatUnits(obj.price.toString(), token.decimals);
+        token.price = formatUnits(obj.price.toString(), 6);
       });
     };
 
