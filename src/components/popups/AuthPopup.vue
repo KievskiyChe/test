@@ -8,22 +8,28 @@ const outside = ref<HTMLElement | null>(null);
 const { hideAllPopups } = usePopupsStore();
 const { pushNotification } = useNotificationStore();
 
-const { address, isConnected } = useAccount()
+const { address, isConnected } = useAccount();
 const { connect, isConnecting, pendingConnector } = useConnect({
   connector: connectors[0].connector,
 });
 
 watch(isConnected, (value) => {
   if (value) {
-    updateGlobalsAddress(address.value ? address.value : '');
+    updateGlobalsAddress(address.value ? address.value : "");
   } else {
     pushNotification({
       status: INotificationStatus.INFO,
       title: "Disconnected",
-      description: "You've been disconnected from the app."
-    })
+      description: "You've been disconnected from the app.",
+    });
   }
   hideAllPopups();
+});
+
+const availableConnectors = computed(() => {
+  return connectors.filter((connector) => {
+    return connector.connector.ready;
+  });
 });
 
 onClickOutside(outside, () => {
@@ -43,7 +49,7 @@ const animation = {
 </script>
 
 <template>
-  <div class="auth-popup" >
+  <div class="auth-popup">
     <div class="popup-overlay"></div>
 
     <Motion v-bind="animation.content" class="content" ref="outside">
@@ -54,12 +60,15 @@ const animation = {
           <div class="connectors">
             <div
               class="connector"
-              v-for="connector in connectors"
-              :class="{
-                connecting:
-                  isConnecting &&
-                  pendingConnector?.id === connector.connector.id,
-              }"
+              v-for="connector in availableConnectors"
+              :class="[
+                {
+                  connecting:
+                    isConnecting &&
+                    pendingConnector?.id === connector.connector.id,
+                },
+                { disabled: !connector.connector.ready },
+              ]"
               @click.stop="connect(connector.connector)"
             >
               <div class="icon">
@@ -182,6 +191,11 @@ const animation = {
     pointer-events: none;
     opacity: 0.5;
   }
+
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .spinner {
@@ -215,6 +229,7 @@ const animation = {
 }
 
 .foo {
+  // margin-top: 10px;
   font-size: 14px;
   text-align: center;
 
