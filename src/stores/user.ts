@@ -12,6 +12,7 @@
 export const useUserStore = defineStore("user-module", () => {
   const user = ref<any | null>();
   const multicall = ref<boolean>(localStorage.getItem("multicall") === "true" ? true : false);
+  const usdcBalance = ref<string>("0.00");
 
   const setMulticall = (data: boolean) => {
     multicall.value = data;
@@ -31,6 +32,10 @@ export const useUserStore = defineStore("user-module", () => {
     user.value = data;
   };
 
+  const setUsdcBalance = (data: string) => {
+    usdcBalance.value = data;
+  };
+
   const getShortAddress = () => {
     if (!user.value) return "";
     return (
@@ -43,8 +48,10 @@ export const useUserStore = defineStore("user-module", () => {
   return {
     user,
     multicall,
+    usdcBalance,
     setMulticall,
     setUser,
+    setUsdcBalance,
     getShortAddress,
   };
 });

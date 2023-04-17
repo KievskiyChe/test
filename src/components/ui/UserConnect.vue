@@ -8,6 +8,7 @@ const { address, isConnected } = useAccount();
 const { disconnect } = useDisconnect();
 const { multicall } = storeToRefs(useUserStore());
 const { setMulticall } = useUserStore();
+const { usdcBalance } = storeToRefs(useUserStore())
 
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
@@ -77,7 +78,7 @@ const toggleMulticall = () => {
                 </div>
               </div>
 
-              <!-- <div class="usdt-value">USDC {{ data?.value }}</div> -->
+              <div class="usdt-value" v-if="isConnected">USDC {{ usdcBalance }}</div>
               <!-- <div class="dollar-value">$ 00.00</div> -->
             </div>
 

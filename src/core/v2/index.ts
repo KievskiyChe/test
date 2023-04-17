@@ -35,36 +35,46 @@ export default class TournamentV2 {
   async init() {
     this.updateStoreProcess(true);
 
-    console.time('fetching multicall data')
+    console.time("fetching multicall data");
     const data = await this.caller.main();
-    console.log({ data })
-    console.timeEnd('fetching multicall data')
+    console.log({ data });
+    console.timeEnd("fetching multicall data");
 
     if (data.tokens) {
       const game = new Game(data.round, data.tokens as any, data.bracket);
       game.setWinner(
-        data.tokens.find((token: Token) => token.address === data.winningToken) as any
+        data.tokens.find(
+          (token: Token) => token.address === data.winningToken
+        ) as any
       );
       data.game = game;
     }
 
     useTournamentStore().update(data as any);
-    useSwapStore().update()
+    useSwapStore().update();
     useRewardsStore().update(data.rewards as any);
+
+    if (data.usdc && data.usdc.amount) {
+      useUserStore().setUsdcBalance(
+        parseFloat(data.usdc.amount.toString()).toFixed(4) ?? "0.00"
+      );
+    }
 
     this.eventListener();
     this.updateStoreProcess(false);
   }
 
   async updateSilent() {
-    console.time('updating')
+    console.time("updating");
     const data = await this.caller.main();
-    console.timeEnd('updating')
+    console.timeEnd("updating");
 
     if (data.tokens) {
       const game = new Game(data.round, data.tokens as any, data.bracket);
       game.setWinner(
-        data.tokens.find((token: Token) => token.address === data.winningToken) as any
+        data.tokens.find(
+          (token: Token) => token.address === data.winningToken
+        ) as any
       );
       data.game = game;
     }
@@ -80,7 +90,6 @@ export default class TournamentV2 {
       const { from, to } = options;
 
       console.log(options);
-      
 
       const path = [from.address, to.address];
       const amountIn = ethers.utils
