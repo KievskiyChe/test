@@ -2,7 +2,7 @@
 import { useAccount } from "vagmi";
 
 const { isConnected, address } = useAccount();
-const { round, game } = storeToRefs(useTournamentStore());
+const { round, game, usdc } = storeToRefs(useTournamentStore());
 const { process, from, to, amountFrom, isValidFrom, slippage } = storeToRefs(
   useSwapStore()
 );
@@ -13,15 +13,17 @@ const { startProcess, successProcess, errorProcess, setProcess, resetForm } =
 const canBuy = (token: IToken) => {
   if (!game.value) return false;
   if (round.value === 0) return true;
+  if (token.address === usdc.value?.address) return true;
 
   const currentRound = game.value.rounds
     .get(round.value - 1)
     ?.pairs.map((pair) => pair.winner);
   if (!currentRound) return false;
 
+  
   const tokens = Array.from(currentRound);
   const arr = tokens.filter((item) => item);
-
+  
   return arr.find((item) => item?.symbol === token.symbol) ? true : false;
 };
 
@@ -161,7 +163,7 @@ const handleApprove = async (token: any) => {
         <TheButton
           v-if="isConnected && from.approved"
           :disabled="
-            !isConnected || process || process || !isValidFrom || !canBuy(to)
+            !isConnected || process || !isValidFrom || !canBuy(to)
           "
           @click.stop="swapTokens"
         >
