@@ -5,7 +5,15 @@ interface Props {
   notification: INotification;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+watchEffect(() => {
+  if (props.notification.closeTimeout) {
+    setTimeout(() => {
+      removeNotification(props.notification);
+    }, props.notification.closeTimeout);
+  }
+})
 </script>
 
 <template>
@@ -14,18 +22,22 @@ defineProps<Props>();
     :to="{ x: 0 }"
     :transition="{ mass: 0.3, shiffness: 1000, damping: 6 }"
   >
-    <div class="notification" :class="`notification-${notification.status}`">
+    <div class="notification" :class="`notification-${props.notification.status}`">
       <div class="icon">
-        <img :src="getImage(`notifications/${notification.status}.svg`)" />
+        <img :src="getImage(`notifications/${props.notification.status}.svg`)" />
       </div>
 
-      <div class="content" :class="`content-${notification.status}`">
+      <div class="content" :class="`content-${props.notification.status}`">
         <div class="body">
-          <div class="close" @click="removeNotification(notification)"></div>
+          <div class="close" @click="removeNotification(props.notification)"></div>
 
-          <div class="title">{{ notification.title }}</div>
+          <div class="title">{{ props.notification.title }}</div>
 
           <div class="description"><slot></slot></div>
+
+          <!-- <div class="time-to-close" :style="`--c: ${props.notification.closeTimeout}ms`">
+            <span></span>
+          </div> -->
         </div>
       </div>
     </div>
@@ -169,7 +181,7 @@ defineProps<Props>();
   background: var(--white-200);
   border-radius: 0 0 4px 0;
   overflow: hidden;
-
+  
   span {
     width: 0%;
     height: calc(100% + 1px);
@@ -179,6 +191,7 @@ defineProps<Props>();
     top: 0;
     border-radius: 0 2px 2px 0;
     transition: all 0.15s ease;
+    animation: loader var(--c) ease forwards;
   }
 }
 

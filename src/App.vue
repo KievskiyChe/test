@@ -68,6 +68,8 @@ onMounted(async () => {
   if (route.path === '/tournament' && !isActive.value) {
     router.push("/waitplease");
   }
+
+  
 });
 </script>
 
