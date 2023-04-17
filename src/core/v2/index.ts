@@ -56,6 +56,23 @@ export default class TournamentV2 {
     this.updateStoreProcess(false);
   }
 
+  async updateSilent() {
+    console.time('updating')
+    const data = await this.caller.main();
+    console.timeEnd('updating')
+
+    if (data.tokens) {
+      const game = new Game(data.round, data.tokens as any, data.bracket);
+      game.setWinner(
+        data.tokens.find((token: Token) => token.address === data.winningToken) as any
+      );
+      data.game = game;
+    }
+
+    useTournamentStore().update(data as any);
+    useRewardsStore().update(data.rewards as any);
+  }
+
   public getAmountsOut = async (
     options: AmountsOutOptions
   ): Promise<string | undefined> => {

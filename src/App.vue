@@ -13,6 +13,7 @@ const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
 const { isActive } = storeToRefs(useTournamentStore());
 const { multicall } = storeToRefs(useUserStore());
+const updateInterval = ref();
 
 const provider = useProvider({
   chainId: 137,
@@ -48,11 +49,19 @@ onMounted(async () => {
   });
 
   if (multicall.value) {
+    clearInterval(updateInterval.value);
+
     const tournamentV2 = new TournamentV2(provider);
     setTouranment(tournamentV2 as any)
     const status = await tournamentV2.fetchStatus();
     useTournamentStore().setIsActive(status);
     await tournamentV2.init();
+
+    updateInterval.value = setInterval(async () => {
+      const status = await tournamentV2.fetchStatus();
+      useTournamentStore().setIsActive(status);
+      await tournamentV2.updateSilent();
+    }, 15000);
   } else {
     const tournament = new Tournament();
     await tournament.fetchStatus();
