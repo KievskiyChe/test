@@ -110,6 +110,10 @@ const handleApprove = async (token: any) => {
     }
   }
 };
+
+onMounted(() => {
+  handleApprove(from.value);
+})
 </script>
 
 <template>
@@ -147,7 +151,7 @@ const handleApprove = async (token: any) => {
 
       <Motion class="foo" v-if="from && to">
         <TheButton
-          v-if="isConnected && !from.approved"
+          v-if="isConnected && (!from.approved || from.needMoreApprove)"
           :disabled="!isConnected || process || process"
           @click.prevent="handleApprove(from)"
         >
@@ -161,7 +165,7 @@ const handleApprove = async (token: any) => {
         </TheButton>
 
         <TheButton
-          v-if="isConnected && from.approved"
+          v-if="isConnected && (from.approved && !from.needMoreApprove)"
           :disabled="
             !isConnected || process || !isValidFrom || !canBuy(to)
           "

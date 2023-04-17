@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const store = useSwapStore();
 const tournament = getTournament() as any;
+const needMoreApprove = ref(false)
 
 const {
   from,
@@ -19,6 +20,10 @@ const handleInput = (e: Event, type: "from" | "to") => {
 
   const target = e.target as HTMLInputElement;
   const value = target.value.toString();
+  
+  if (!from.value) {
+    return setAmountFrom("");
+  }
 
   if (type === "from" && (!value || !isValidFrom)) {
     return setAmountTo("");
@@ -36,6 +41,12 @@ const handleInput = (e: Event, type: "from" | "to") => {
 
   if (Number(value) > Number(from.value?.amount)) {
     setAmountFrom(from.value!.amount);
+  }
+
+  if (Number(value) > Number(from.value?.allowance)) {
+    from.value.needMoreApprove = true;
+  } else {
+    from.value.needMoreApprove = false;
   }
 
   typewatch(async () => {

@@ -464,10 +464,10 @@ export class Caller {
     const userReward = Number(rewards) * Number(userBalance);
 
     // userReward / 1e6
-    const reward = String(userReward / 10 ** token.decimals);
+    const reward = String(userReward / 10 ** 6);
     token.amount = userBalance;
 
-    const approved = token.approvedManager;
+    const approved = Number(token.allowanceManager) >= Number(token.amount);
     const canClaim = parseFloat(userBalance) > 0;
 
     return { tournamentId, token, reward, canClaim, approved };

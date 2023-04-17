@@ -1,4 +1,6 @@
 interface IToken {
+  needMoreApprove?: boolean;
+  allowance?: string;
   address: string;
   name: string;
   symbol: string;
@@ -7,11 +9,12 @@ interface IToken {
   amount: string;
   approved: boolean;
   inactive?: boolean;
+  managerAddress?: string;
   liquidityPool: string;
   get amountUSD(): string;
   balanceOf: (address: string) => Promise<string>;
   totalSupply: () => Promise<string>;
-  approve: () => Promise<TransactionReceipt>;
+  approve: (spender: string) => Promise<TransactionReceipt>;
   approveManager: (amount: string) => Promise<TransactionReceipt>;
   fetchAllowanceManager: () => Promise<boolean>;
 }
