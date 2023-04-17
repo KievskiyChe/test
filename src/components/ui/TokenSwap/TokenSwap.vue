@@ -26,19 +26,34 @@ const canBuy = (token: IToken) => {
 };
 
 const swapTokens = async () => {
-  const tournament = getTournament();
+  const tournament = getTournament() as any;
   startProcess();
 
-  try {
-    const receipt = await tournament.swap(getSwapOptions());
+  const v2 = localStorage.getItem("multicall");
+  if (v2 === "true") {
+    try {
+      const receipt = await tournament.swap(getSwapOptions());
 
-    if (receipt && receipt.status) {
-      await tournament.updateBalances();
-      successProcess();
+      if (receipt && receipt.status) {
+        await tournament.init();
+        successProcess();
+      }
+    } catch (error) {
+      console.log(error);
+      errorProcess();
     }
-  } catch (error) {
-    console.log(error);
-    errorProcess();
+  } else {
+    try {
+      const receipt = await tournament.swap(getSwapOptions());
+
+      if (receipt && receipt.status) {
+        await tournament.updateBalances();
+        successProcess();
+      }
+    } catch (error) {
+      console.log(error);
+      errorProcess();
+    }
   }
 
   resetForm();
@@ -60,21 +75,37 @@ const getSwapOptions = (): SwapOptions | undefined => {
   };
 };
 
-const handleApprove = async (token: IToken | undefined) => {
+const handleApprove = async (token: any) => {
   if (!token) return;
   setProcess(true);
 
-  try {
-    const receipt = await token.approve();
-    const tournament = getTournament();
+  const v2 = localStorage.getItem("multicall");
+  if (v2 === "true") {
+    try {
+      const tournament = getTournament() as any;
+      const receipt = await token.approve(tournament.router.address);
 
-    if (receipt && receipt.status) {
-      await tournament.update();
+      if (receipt && receipt.status) {
+        await tournament.init();
+        setProcess(false);
+      }
+    } catch (error) {
+      console.log(error);
       setProcess(false);
     }
-  } catch (error) {
-    console.log(error);
-    setProcess(false);
+  } else {
+    try {
+      const receipt = await token.approve();
+      const tournament = getTournament();
+
+      if (receipt && receipt.status) {
+        await tournament.update();
+        setProcess(false);
+      }
+    } catch (error) {
+      console.log(error);
+      setProcess(false);
+    }
   }
 };
 </script>

@@ -62,6 +62,9 @@ export default class TournamentV2 {
     try {
       const { from, to } = options;
 
+      console.log(options);
+      
+
       const path = [from.address, to.address];
       const amountIn = ethers.utils
         .parseUnits(options.amount, from.decimals)

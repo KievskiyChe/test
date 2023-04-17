@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const store = useSwapStore();
-const tournament = getTournament()
+const tournament = getTournament() as any;
 
 const {
   from,
@@ -58,7 +58,13 @@ const getAmountsOut = async (type: string): Promise<string | undefined> => {
 
   const options = getAmountsOutOptions(type);
 
-  return await tournament.router.getAmountsOut(options);
+  const v2 = localStorage.getItem('multicall');
+  if (v2 === 'true') {
+    return await tournament.getAmountsOut(options);
+  } else {
+    return await tournament.router.getAmountsOut(options);
+  }
+
 };
 
 const getAmountsOutOptions = (type: string) => {
