@@ -56,12 +56,6 @@ onMounted(async () => {
     const status = await tournamentV2.fetchStatus();
     useTournamentStore().setIsActive(status);
     await tournamentV2.init();
-
-    updateInterval.value = setInterval(async () => {
-      const status = await tournamentV2.fetchStatus();
-      useTournamentStore().setIsActive(status);
-      await tournamentV2.updateSilent();
-    }, 15000);
   } else {
     const tournament = new Tournament();
     await tournament.fetchStatus();
