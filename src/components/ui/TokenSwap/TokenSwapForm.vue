@@ -253,7 +253,7 @@ watch(from, () => {
   .input-form {
     flex-direction: column;
     align-items: flex-start;
-    padding: 5px 0;
+    padding: 15px 5px;
 
     .input {
       flex: 1;
