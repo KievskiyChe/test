@@ -28,8 +28,6 @@ const handleInput = (e: Event, type: "from" | "to") => {
   const target = e.target as HTMLInputElement;
   const value = target.value.toString();
 
-  if (value.length > 16) return amountFrom.value = value.slice(0, 16)
-
   if (!from.value) {
     return resetForm();
   }
