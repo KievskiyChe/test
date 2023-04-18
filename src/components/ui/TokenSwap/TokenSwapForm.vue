@@ -26,15 +26,13 @@ const useMax = () => {
   handleInput({ target: { value: from.value.amount } } as any, "from");
 };
 
-const handleChange = (type: "from" | "to") => {
-  console.log(type);
-};
-
 const handleInput = (e: Event, type: "from" | "to") => {
   if (!type) return;
 
   const target = e.target as HTMLInputElement;
   const value = target.value.toString();
+
+  if (value.length > 16) return amountFrom.value = value.slice(0, 16)
 
   if (!from.value) {
     return resetForm();

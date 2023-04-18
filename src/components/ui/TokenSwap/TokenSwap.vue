@@ -122,7 +122,7 @@ const handleApprove = async (token: IToken | undefined) => {
           <template v-if="!process">
             <span>Approve</span>
             <small>{{ from.symbol }}</small>
-            <small class="allowance-amount" v-if="+amountFrom - +from.allowance > 0">{{ nFormatter(+amountFrom - +from.allowance) }}</small>
+            <!-- <small class="allowance-amount" v-if="+amountFrom - +from.allowance > 0">{{ nFormatter(+amountFrom - +from.allowance) }}</small> -->
           </template>
           <template v-if="process">
             <span>Approving...</span>
@@ -138,7 +138,6 @@ const handleApprove = async (token: IToken | undefined) => {
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>
           <span>swap</span>
-          <small class="allowance-amount" v-if="+amountFrom - +from.allowance > 0">{{ nFormatter(+amountFrom - +from.allowance) }}</small>
         </TheButton>
 
         <TheButton v-if="!isConnected" :disabled="true">
@@ -148,11 +147,10 @@ const handleApprove = async (token: IToken | undefined) => {
           <span>swap</span>
         </TheButton>
 
-        <div class="disclaimer">
-          <!-- <p>
-            Disclaimer: Please be advised that if liquidity pools doesn't have
-            enough liquidity you will receive a reduced amount when swapping
-          </p> -->
+        <div class="disclaimer" v-if="+amountFrom - +from.allowance > 0">
+          <p>
+            You need more ({{ nFormatter(+amountFrom - +from.allowance) }}) {{ from.symbol }} allowance to swap
+          </p>
         </div>
       </Motion>
 
@@ -201,7 +199,7 @@ const handleApprove = async (token: IToken | undefined) => {
 }
 
 .disclaimer {
-  max-width: 300px;
+  width: 260px;
   font-size: 12px;
   text-align: right;
   color: var(--white-600);
