@@ -93,7 +93,7 @@ export class Token implements IToken {
       "100000000000000000000000"
     );
 
-    return await tx.wait().then((receipt: TransactionReceipt) => receipt);
+    return await tx.wait();
   };
 
   public balanceOf = async (address: string): Promise<string> => {

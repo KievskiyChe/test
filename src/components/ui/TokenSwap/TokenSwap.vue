@@ -34,7 +34,7 @@ const swapTokens = async () => {
     const receipt = await tournament.swap(getSwapOptions());
 
     if (receipt && receipt.status) {
-      await tournament.updateSilent();
+      // await tournament.updateSilent();
       successProcess();
     }
   } catch (error) {
@@ -71,17 +71,22 @@ const handleApprove = async (token: IToken | undefined) => {
 
     if (receipt && receipt.status) {
       await tournament.updateSilent();
-      setProcess(false);
     }
   } catch (error) {
     console.log(error);
+  } finally {
     setProcess(false);
   }
 };
+
+const needMoreApprove = computed(() => {
+  if (!from.value) return false;
+  return +amountFrom.value - +from.value.allowance > 0;
+});
 </script>
 
 <template>
-  <div class="swap-wrapper" v-if="!process">
+  <div class="swap-wrapper">
     <TheCard v-if="round !== 3">
       <Motion>
         <TokenSwapTitle />
@@ -107,15 +112,15 @@ const handleApprove = async (token: IToken | undefined) => {
         <TokenSwapTolerance />
       </Motion>
 
-      <Motion class="fee">
+      <Motion class="fee" :class="{ blurred: process }">
         <span>Swap fee</span>
         <span>%1</span>
       </Motion>
 
       <Motion class="foo" v-if="from && to && from.address && to.address">
         <TheButton
-          v-if="isConnected && (!from.approved || from.needMoreApprove)"
-          :disabled="!isConnected || process || process"
+          v-if="isConnected && (!from.approved || needMoreApprove)"
+          :disabled="!isConnected || process || process || !isValidFrom"
           @click.prevent="handleApprove(from)"
         >
           <template v-if="!process">
@@ -128,7 +133,7 @@ const handleApprove = async (token: IToken | undefined) => {
         </TheButton>
 
         <TheButton
-          v-if="isConnected && from.approved && !from.needMoreApprove"
+          v-if="isConnected && from.approved && !needMoreApprove"
           :disabled="!isConnected || process || !isValidFrom || !canBuy(to)"
           @click.stop="swapTokens"
         >
@@ -144,13 +149,6 @@ const handleApprove = async (token: IToken | undefined) => {
           </template>
           <span>swap</span>
         </TheButton>
-
-        <div class="disclaimer">
-          <p v-if="+amountFrom - +from.allowance > 0">
-            You need more ({{ nFormatter(+amountFrom - +from.allowance) }})
-            {{ from.symbol }} allowance to swap
-          </p>
-        </div>
       </Motion>
 
       <Motion class="foo" v-else>
@@ -161,6 +159,14 @@ const handleApprove = async (token: IToken | undefined) => {
           <span>select tokens</span>
         </TheButton>
       </Motion>
+
+      <div class="extra" v-if="from">
+        <p v-if="needMoreApprove">
+          You need more {{ from.symbol }} allowance to swap. Your got
+          {{ nFormatter(+from.allowance) }} . Need more
+          {{ nFormatter(+amountFrom - +from.allowance) }}
+        </p>
+      </div>
     </TheCard>
 
     <TheCard v-else>
@@ -171,14 +177,6 @@ const handleApprove = async (token: IToken | undefined) => {
       <TokenChampion />
     </TheCard>
   </div>
-
-  <div class="swap-wrapper" v-if="process">
-    <TheCard>
-      <div class="process">
-        <TheLoader />
-      </div>
-    </TheCard>
-  </div>
 </template>
 
 <style scoped lang="scss">
@@ -186,16 +184,19 @@ const handleApprove = async (token: IToken | undefined) => {
   filter: blur(3px);
   pointer-events: none;
 }
+
 .swap-wrapper {
   width: 100%;
   display: flex;
   position: relative;
 }
 
-.process {
-  display: grid;
-  place-items: center;
+.extra {
+  font-size: 10px;
+  color: var(--white-400);
+  text-align: center;
 }
+
 
 .disclaimer {
   width: 260px;
@@ -225,7 +226,7 @@ const handleApprove = async (token: IToken | undefined) => {
 
 .foo {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 20px;
 

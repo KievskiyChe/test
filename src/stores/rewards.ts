@@ -17,9 +17,8 @@ export const useRewardsStore = defineStore("rewards-module", () => {
     if (!userReward || !tournament) return;
 
     try {
-      // await userReward.token.approveManager(userReward.token.amount);
       await userReward.token.approve(userReward.token.managerAddress ?? "");
-      await tournament.init();
+      await tournament.updateSilent();
 
       pushNotification({
         status: INotificationStatus.SUBMITTED,
@@ -46,7 +45,6 @@ export const useRewardsStore = defineStore("rewards-module", () => {
 
     try {
       await tournament.redeem(userReward.tournamentId, userReward.token);
-      await tournament.init();
 
       pushNotification({
         status: INotificationStatus.SUBMITTED,

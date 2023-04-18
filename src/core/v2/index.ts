@@ -7,6 +7,7 @@ import MANAGER_ABI from "./abis/Manager.json";
 import FACTORY_ABI from "./abis/Factory.json";
 import type { Token } from "./models/Token";
 import { Caller } from "./multicall";
+import type { ManagerData } from "./common/interfaces";
 
 export const randomHash = (len: number) => {
   const arr = new Uint8Array((len || 40) / 2);
@@ -33,60 +34,61 @@ export default class Tournament implements ITournament {
     this.caller = new Caller();
   }
 
+  async init() {
+    try {
+      await this.update();
+      useSwapStore().init();
+    } catch (error) {
+      console.log(error);
+      console.log("Error while init Tournament");
+    } finally {
+      this.eventListener();
+    }
+  }
+
   public fetchStatus = async (): Promise<boolean> => {
     return await this.caller.preFetch();
   };
 
-  async init() {
-    this.updateStoreProcess(true);
-
-    console.time("fetching multicall data");
+  public fetchData = async (): Promise<ManagerData> => {
     const data = await this.caller.main();
-    console.log({ data });
-    console.timeEnd("fetching multicall data");
 
     if (data.tokens) {
-      const game = new Game(data.round, data.tokens as any, data.bracket);
-      game.setWinner(
-        data.tokens.find(
-          (token: Token) => token.address === data.winningToken
-        ) as any
-      );
+      const { round, tokens, bracket, winningToken } = data;
+      const game = new Game(round, tokens, bracket);
+      const winner = tokens.find((t: Token) => t.address === winningToken);
+
+      if (winner) {
+        game.setWinner(winner);
+      }
+
       data.game = game;
     }
 
-    useTournamentStore().update(data as any);
-    useRewardsStore().update(data.rewards as any);
-    useSwapStore().init();
+    return data;
+  };
 
-    if (data.usdc && data.usdc.amount) {
-      useUserStore().setUsdcBalance(
-        parseFloat(data.usdc.amount.toString()).toFixed(4) ?? "0.00"
-      );
+  public update = async (): Promise<void> => {
+    this.updateStoreProcess(true);
+    try {
+      const data = await this.fetchData();
+      this.updateStore(data);
+    } catch (error: any) {
+      console.log(error);
+      console.log("Error while updating Tournament");
+    } finally {
+      this.updateStoreProcess(false);
     }
+  };
 
-    this.eventListener();
-    this.updateStoreProcess(false);
+  public updateSilent = async () => {
+    const data = await this.fetchData();
+    this.updateStore(data);
   }
 
-  async updateSilent() {
-    console.time("updating");
-    const data = await this.caller.main();
-    console.log({updated: data})
-    console.timeEnd("updating");
-
-    if (data.tokens) {
-      const game = new Game(data.round, data.tokens as any, data.bracket);
-      game.setWinner(
-        data.tokens.find(
-          (token: Token) => token.address === data.winningToken
-        ) as any
-      );
-      data.game = game;
-    }
-
-    useTournamentStore().update(data as any);
-    useRewardsStore().update(data.rewards as any);
+  public updateStore = (data: ManagerData): void => {
+    useTournamentStore().update(data);
+    useRewardsStore().update(data.rewards as Reward[]);
     useSwapStore().update();
 
     if (data.usdc && data.usdc.amount) {
@@ -94,20 +96,24 @@ export default class Tournament implements ITournament {
         parseFloat(data.usdc.amount.toString()).toFixed(4) ?? "0.00"
       );
     }
-  }
+  };
+
+  private updateStoreProcess = (process: boolean): void => {
+    useTournamentStore().setProcess(process);
+    useSwapStore().setProcess(process);
+    useRewardsStore().setProcess(process);
+  };
 
   public getAmountsOut = async (
     options: AmountsOutOptions
   ): Promise<string | undefined> => {
     try {
-      console.log(options)
       const { from, to } = options;
 
       const path = [from.address, to.address];
       const amountIn = ethers.utils
         .parseUnits(options.amount, from.decimals)
         .toString();
-
 
       if (!options.amount || !options.from.address || !options.to.address)
         return;
@@ -130,46 +136,37 @@ export default class Tournament implements ITournament {
     return await this.swapTokens(options);
   };
 
-  /**
-   * Swap tokens
-   */
   public swapTokens = async (
     options: SwapOptions
   ): Promise<TransactionReceipt> => {
-    const gasLimit = 6_000_000;
+    const gasLimit = 100_000;
 
     try {
       const signerContract = this.router.connect(window.__SIGNER__);
       const tx = await signerContract.swapExactTokensForTokens(
-        ...Object.values(options),
-        { gasLimit }
+        ...Object.values(options)
       );
       return await tx.wait();
     } catch (error) {
       console.log(error);
       console.log("Error while swapping tokens");
       return Promise.reject(error);
-    }
-  };
-
-  public update = async (): Promise<void> => {
-    const timer = `updating-${randomHash(4)}`;
-    console.time(timer);
-
-    try {
-      await this.init();
-    } catch (error: any) {
-      console.log(error);
-      console.log("Error while updating Tournament");
     } finally {
-      console.timeEnd(timer);
+      this.updateSilent();
     }
   };
 
-  private updateStoreProcess = (process: boolean): void => {
-    useTournamentStore().setProcess(process);
-    useSwapStore().setProcess(process);
-    useRewardsStore().setProcess(process);
+  public redeem = async (tournamentId: number, token: IToken) => {
+    const amount = ethers.utils.parseUnits(token.amount, token.decimals);
+    try {
+      const signerContract = this.manager.connect(window.__SIGNER__);
+      const tx = await signerContract.redeem(tournamentId, amount);
+      return await tx.wait();
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      this.updateSilent();
+    }
   };
 
   private eventListener = () => {
@@ -186,17 +183,6 @@ export default class Tournament implements ITournament {
     this.manager.on("RoundEnded", this.roundEnded);
     // tournament started
     this.manager.on("TournamentStarted", this.tournamentStarted);
-  };
-
-  public redeem = async (tournamentId: number, token: IToken) => {
-    const amount = ethers.utils.parseUnits(token.amount, token.decimals);
-    try {
-      const signerContract = this.manager.connect(window.__SIGNER__);
-      const tx = await signerContract.redeem(tournamentId, amount);
-      return await tx.wait();
-    } catch (error) {
-      return Promise.reject(error);
-    }
   };
 
   /**
