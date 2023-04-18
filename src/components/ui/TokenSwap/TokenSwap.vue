@@ -110,10 +110,6 @@ const handleApprove = async (token: any) => {
     }
   }
 };
-
-onMounted(() => {
-  handleApprove(from.value);
-})
 </script>
 
 <template>
