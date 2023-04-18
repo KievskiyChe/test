@@ -39,8 +39,8 @@ const formatedTokens = computed(() => {
 
 const sortedTokens = computed(() => {
   return formatedTokens.value.sort((a, b) => {
-    if (a.price > b.price) return -1;
-    if (a.price < b.price) return 1;
+    if (+a.amount > +b.amount) return -1;
+    if (+a.amount < +b.amount) return 1;
     return 0;
   });
 });
