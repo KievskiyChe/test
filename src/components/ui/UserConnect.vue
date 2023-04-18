@@ -67,7 +67,7 @@ const toggleMulticall = () => {
                 <img src="@/assets/img/icons/yoda.svg" alt="Yoda" />
               </div>
 
-              <div class="multicall">
+              <!-- <div class="multicall">
                 <span>Use V2</span>
                 <div
                   class="toggle"
@@ -76,7 +76,7 @@ const toggleMulticall = () => {
                 >
                   <div class="circle"></div>
                 </div>
-              </div>
+              </div> -->
 
               <div class="usdt-value" v-if="isConnected">USDC {{ usdcBalance }}</div>
               <!-- <div class="dollar-value">$ 00.00</div> -->

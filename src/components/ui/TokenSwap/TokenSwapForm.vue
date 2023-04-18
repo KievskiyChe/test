@@ -68,14 +68,7 @@ const getAmountsOut = async (type: string): Promise<string | undefined> => {
     return "0.00";
 
   const options = getAmountsOutOptions(type);
-
-  const v2 = localStorage.getItem('multicall');
-  if (v2 === 'true') {
-    return await tournament.getAmountsOut(options);
-  } else {
-    return await tournament.router.getAmountsOut(options);
-  }
-
+  return await tournament.getAmountsOut(options);
 };
 
 const getAmountsOutOptions = (type: string) => {

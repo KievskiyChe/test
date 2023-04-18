@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-/// <reference path="./core/v1/index.d.ts" />
+/// <reference path="./core/v2/index.d.ts" />
 
 declare global {
   interface Window {

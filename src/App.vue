@@ -3,8 +3,7 @@ import { Popup } from "./common/interfaces";
 import { useAccount, useProvider, useSigner, useNetwork } from "vagmi";
 import { useRoute, useRouter } from "vue-router";
 
-import Tournament from "./core/v1/";
-import TournamentV2 from "./core/v2";
+import Tournament from "./core/v2";
 
 const route = useRoute();
 const router = useRouter();
@@ -48,31 +47,20 @@ onMounted(async () => {
     userAddress: isConnected.value ? address.value! : "",
   });
 
-  if (multicall.value) {
-    clearInterval(updateInterval.value);
+  const tournament = new Tournament(provider);
+  setTouranment(tournament);
 
-    const tournamentV2 = new TournamentV2(provider);
-    setTouranment(tournamentV2 as any)
-    const status = await tournamentV2.fetchStatus();
-    useTournamentStore().setIsActive(status);
-    await tournamentV2.init();
-  } else {
-    const tournament = new Tournament();
-    await tournament.fetchStatus();
-    setTouranment(tournament);
-    tournament.update();
-  }
-  
-  
-  if ((route.path === '/' || route.path === '/waitplease') && isActive.value) {
+  const status = await tournament.fetchStatus();
+  useTournamentStore().setIsActive(status);
+  await tournament.init();
+
+  if ((route.path === "/" || route.path === "/waitplease") && isActive.value) {
     router.push("/tournament");
   }
-  
-  if (route.path === '/tournament' && !isActive.value) {
+
+  if (route.path === "/tournament" && !isActive.value) {
     router.push("/waitplease");
   }
-
-  
 });
 </script>
 

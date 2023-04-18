@@ -138,3 +138,22 @@ export const addTokenToMetaMask = async (symbol: string): Promise<void> => {
     console.log(error);
   }
 };
+
+export const nFormatter = (num: number): string => {
+  const abbreviations = ["", "K", "M", "B", "T", "Qa"];
+  let abbreviatedNum = num;
+  let abbreviationIndex = 0;
+
+  while (abbreviatedNum >= 1000) {
+    abbreviatedNum /= 1000;
+    abbreviationIndex++;
+  }
+
+  if (abbreviationIndex > 0 && abbreviationIndex < abbreviations.length) {
+    return `${abbreviatedNum.toFixed(2)}${abbreviations[abbreviationIndex]}`;
+  } else {
+    return parseFloat(num.toString()).toFixed(2);
+  }
+};
+
+export default nFormatter;

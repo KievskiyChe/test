@@ -13,7 +13,7 @@ const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
 const FACTORY = import.meta.env.VITE_APP_FACTORY_ADDRESS;
 
-export default class TournamentV2 {
+export default class Tournament implements ITournament {
   private readonly provider: any;
   private readonly router: any;
   private readonly manager: any;
@@ -51,7 +51,7 @@ export default class TournamentV2 {
     }
 
     useTournamentStore().update(data as any);
-    useSwapStore().update();
+    useSwapStore().init();
     useRewardsStore().update(data.rewards as any);
 
     if (data.usdc && data.usdc.amount) {
@@ -67,6 +67,7 @@ export default class TournamentV2 {
   async updateSilent() {
     console.time("updating");
     const data = await this.caller.main();
+    console.log({updated: data})
     console.timeEnd("updating");
 
     if (data.tokens) {
@@ -81,27 +82,34 @@ export default class TournamentV2 {
 
     useTournamentStore().update(data as any);
     useRewardsStore().update(data.rewards as any);
+    useSwapStore().update();
+
+    if (data.usdc && data.usdc.amount) {
+      useUserStore().setUsdcBalance(
+        parseFloat(data.usdc.amount.toString()).toFixed(4) ?? "0.00"
+      );
+    }
   }
 
   public getAmountsOut = async (
     options: AmountsOutOptions
   ): Promise<string | undefined> => {
     try {
+      console.log(options)
       const { from, to } = options;
-
-      console.log(options);
 
       const path = [from.address, to.address];
       const amountIn = ethers.utils
         .parseUnits(options.amount, from.decimals)
         .toString();
 
-      if (!options.amount) return;
+
+      if (!options.amount || !options.from.address || !options.to.address)
+        return;
 
       const args = [amountIn, path];
 
       const result = await this.router.getAmountsOutWithFee(...args);
-      // const result = await this.contract.getAmountsInWithFee(...args);
       const [_, value] = result.toString().split(",");
 
       return ethers.utils.formatUnits(value, options.to.decimals);

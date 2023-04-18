@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
-import ABI_ERC_20 from "../abis/ERC20.json";
-import { Multicall } from "ethereum-multicall";
 import { formatUnits } from "ethers/lib/utils";
+import ABI_ERC_20 from "../abis/ERC20.json";
 
 interface TokenCreate {
   address: string;
@@ -20,7 +19,7 @@ interface TokenCreate {
   managerAddress: string;
 }
 
-export class Token {
+export class Token implements IToken {
   private readonly provider = {} as Signer;
   private userAddress: string | undefined;
   private contract: Contract;
@@ -45,6 +44,7 @@ export class Token {
     this.provider = window.__PROVIDER__;
     this.userAddress = window.__USER_ADDRESS__;
     this.contract = new ethers.Contract(params.address, ABI_ERC_20, this.provider);
+
     this.name = params.name;
     this.symbol = params.symbol;
     this.decimals = params.decimals;

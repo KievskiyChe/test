@@ -20,10 +20,9 @@ const canBuy = (token: IToken) => {
     ?.pairs.map((pair) => pair.winner);
   if (!currentRound) return false;
 
-  
   const tokens = Array.from(currentRound);
   const arr = tokens.filter((item) => item);
-  
+
   return arr.find((item) => item?.symbol === token.symbol) ? true : false;
 };
 
@@ -31,31 +30,16 @@ const swapTokens = async () => {
   const tournament = getTournament() as any;
   startProcess();
 
-  const v2 = localStorage.getItem("multicall");
-  if (v2 === "true") {
-    try {
-      const receipt = await tournament.swap(getSwapOptions());
+  try {
+    const receipt = await tournament.swap(getSwapOptions());
 
-      if (receipt && receipt.status) {
-        await tournament.init();
-        successProcess();
-      }
-    } catch (error) {
-      console.log(error);
-      errorProcess();
+    if (receipt && receipt.status) {
+      await tournament.updateSilent();
+      successProcess();
     }
-  } else {
-    try {
-      const receipt = await tournament.swap(getSwapOptions());
-
-      if (receipt && receipt.status) {
-        await tournament.updateBalances();
-        successProcess();
-      }
-    } catch (error) {
-      console.log(error);
-      errorProcess();
-    }
+  } catch (error) {
+    console.log(error);
+    errorProcess();
   }
 
   resetForm();
@@ -77,37 +61,21 @@ const getSwapOptions = (): SwapOptions | undefined => {
   };
 };
 
-const handleApprove = async (token: any) => {
+const handleApprove = async (token: IToken | undefined) => {
   if (!token) return;
   setProcess(true);
 
-  const v2 = localStorage.getItem("multicall");
-  if (v2 === "true") {
-    try {
-      const tournament = getTournament() as any;
-      const receipt = await token.approve(tournament.router.address);
+  try {
+    const tournament = getTournament();
+    const receipt = await token.approve(token.routerAddress);
 
-      if (receipt && receipt.status) {
-        await tournament.init();
-        setProcess(false);
-      }
-    } catch (error) {
-      console.log(error);
+    if (receipt && receipt.status) {
+      await tournament.updateSilent();
       setProcess(false);
     }
-  } else {
-    try {
-      const receipt = await token.approve();
-      const tournament = getTournament();
-
-      if (receipt && receipt.status) {
-        await tournament.update();
-        setProcess(false);
-      }
-    } catch (error) {
-      console.log(error);
-      setProcess(false);
-    }
+  } catch (error) {
+    console.log(error);
+    setProcess(false);
   }
 };
 </script>
@@ -145,7 +113,7 @@ const handleApprove = async (token: any) => {
         <span>%1</span>
       </Motion>
 
-      <Motion class="foo" v-if="from && to">
+      <Motion class="foo" v-if="from && to && from.address && to.address">
         <TheButton
           v-if="isConnected && (!from.approved || from.needMoreApprove)"
           :disabled="!isConnected || process || process"
@@ -154,6 +122,7 @@ const handleApprove = async (token: any) => {
           <template v-if="!process">
             <span>Approve</span>
             <small>{{ from.symbol }}</small>
+            <small class="allowance-amount">{{ nFormatter(+from.allowance) }}</small>
           </template>
           <template v-if="process">
             <span>Approving...</span>
@@ -161,16 +130,15 @@ const handleApprove = async (token: any) => {
         </TheButton>
 
         <TheButton
-          v-if="isConnected && (from.approved && !from.needMoreApprove)"
-          :disabled="
-            !isConnected || process || !isValidFrom || !canBuy(to)
-          "
+          v-if="isConnected && from.approved && !from.needMoreApprove"
+          :disabled="!isConnected || process || !isValidFrom || !canBuy(to)"
           @click.stop="swapTokens"
         >
           <template #icon>
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>
           <span>swap</span>
+          <small class="allowance-amount">{{ nFormatter(+from.allowance) }}</small>
         </TheButton>
 
         <TheButton v-if="!isConnected" :disabled="true">
@@ -186,6 +154,15 @@ const handleApprove = async (token: any) => {
             enough liquidity you will receive a reduced amount when swapping
           </p> -->
         </div>
+      </Motion>
+
+      <Motion class="foo" v-else>
+        <TheButton :disabled="true">
+          <template #icon>
+            <img src="@/assets/img/icons/chart.svg" alt="" />
+          </template>
+          <span>select tokens</span>
+        </TheButton>
       </Motion>
     </TheCard>
 

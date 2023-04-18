@@ -170,9 +170,13 @@ export const useSwapStore = defineStore("swap-module", () => {
 
   const update = (): void => {
     from.value = getTokenFrom(from.value);
-    to.value = {} as IToken;
-    // to.value = getTokenTo(to.value);
+    to.value = getTokenTo(to.value);
   };
+
+  const init = (): void => {
+    from.value = getTokenFrom(from.value);
+    to.value = {} as IToken;
+  }
 
   return {
     process,
@@ -197,5 +201,6 @@ export const useSwapStore = defineStore("swap-module", () => {
     successProcess,
     errorProcess,
     update,
+    init
   };
 });
