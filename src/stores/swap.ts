@@ -54,8 +54,11 @@ export const useSwapStore = defineStore("swap-module", () => {
       to.value = usdc.value;
     }
 
+    if (value === usdc.value) {
+      to.value = tokens.value[0];
+    }
+
     from.value = value;
-    resetForm();
   };
 
   // set token to
@@ -71,8 +74,11 @@ export const useSwapStore = defineStore("swap-module", () => {
       from.value = usdc.value;
     }
 
+    if (value === usdc.value) {
+      from.value = tokens.value[0];
+    }
+
     to.value = value;
-    resetForm();
   };
 
   // set amount from

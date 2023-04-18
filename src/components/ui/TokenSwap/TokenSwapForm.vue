@@ -13,11 +13,21 @@ const {
   isValidFrom,
   isValidTo,
 } = storeToRefs(store);
-const { swapPositions, setAmountFrom, setAmountTo } = store;
+const { swapPositions, setAmountFrom, setAmountTo, resetForm } = store;
 
 const handleSwapPositions = () => {
   swapPositions();
   handleInput({ target: { value: amountFrom.value } } as any, "from")
+};
+
+const useMax = () => {
+  console.log('useMax', from.value)
+  if (!from.value) return;
+  handleInput({ target: { value: from.value.amount } } as any, "from")
+}
+
+const handleChange = (type: "from" | "to") => {
+  console.log(type)
 };
 
 const handleInput = (e: Event, type: "from" | "to") => {
@@ -27,7 +37,7 @@ const handleInput = (e: Event, type: "from" | "to") => {
   const value = target.value.toString();
   
   if (!from.value) {
-    return setAmountFrom("");
+    return resetForm();
   }
 
   if (type === "from" && (!value || !isValidFrom)) {
@@ -42,10 +52,6 @@ const handleInput = (e: Event, type: "from" | "to") => {
     setAmountFrom(value);
   } else {
     setAmountTo(value);
-  }
-
-  if (Number(value) > Number(from.value?.amount)) {
-    setAmountFrom(from.value!.amount);
   }
 
   if (Number(value) > Number(from.value?.allowance)) {
@@ -83,6 +89,16 @@ const getAmountsOutOptions = (type: string) => {
     to: type === "from" ? to.value : from.value,
   };
 };
+
+watch(to, () => {
+  if (!to.value) return;
+  handleInput({ target: { value: amountFrom.value } } as any, "from")
+})
+
+watch(from, () => {
+  if (!from.value) return;
+  handleInput({ target: { value: amountFrom.value } } as any, "from")
+})
 </script>
 
 <template>
@@ -96,9 +112,9 @@ const getAmountsOutOptions = (type: string) => {
           v-model.trim="amountFrom"
           @input="handleInput($event, 'from')"
         />
-        <!-- <small class="usd">$ {{ amountFromUSD }}</small> -->
       </div>
       <div class="input-select" v-if="from">
+        <div class="use-max" @click.stop="useMax">Use max</div>
         <TokenSelect :token="from" emitted="from" />
       </div>
     </div>
@@ -115,7 +131,6 @@ const getAmountsOutOptions = (type: string) => {
           v-model.trim="amountTo"
           disabled
         />
-        <!-- <small class="usd">$ {{ amountToUSD }}</small> -->
       </div>
       <div class="input-select" v-if="to">
         <TokenSelect :token="to" emitted="to" />
@@ -181,8 +196,7 @@ const getAmountsOutOptions = (type: string) => {
     width: 100%;
     height: 100%;
     background: transparent;
-    color: #fff;
-    /* padding: 0 10px 10px 10px; */
+    color: var(--white-900);
     padding: 10px;
     font-size: 20px;
     font-weight: 600;
@@ -204,18 +218,35 @@ const getAmountsOutOptions = (type: string) => {
       color: var(--shadow-yellow);
     }
   }
-
-  small {
-    position: absolute;
-    bottom: 7px;
-    left: 12.5px;
-    font-size: 12px;
-    color: var(--white-600);
-  }
 }
 
 .input-select {
   width: 200px;
+  position: relative;
+}
+
+.use-max {
+  font-size: 8px;
+  color: var(--white-500);
+  background: var(--white-100);
+  border: 1px solid var(--white-100);
+  border-radius: 30px;
+  width: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index: 1;
+  padding: 2px 0;
+
+  top: 10px;
+  right: 30px;
+
+  &:hover {
+    border: 1px solid var(--shadow-yellow);
+    color: var(--shadow-yellow);
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 768px) {
