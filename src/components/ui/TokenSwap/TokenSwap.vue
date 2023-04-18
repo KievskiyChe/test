@@ -260,6 +260,10 @@ const handleApprove = async (token: IToken | undefined) => {
     }
   }
 
+  .disclaimer {
+    text-align: center;
+  }
+
   .swap-wrapper {
     min-height: 400px;
   }
