@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
-import { useAccount, useDisconnect } from "vagmi";
+import { useAccount, useBalance, useDisconnect } from "vagmi";
 import { Popup } from "@/common/interfaces";
 
 const { showPopup } = usePopupsStore();
 const { address, isConnected } = useAccount();
+const { data } = useBalance({
+  addressOrName: address,
+  chainId: 137
+});
 const { disconnect } = useDisconnect();
-const { multicall } = storeToRefs(useUserStore());
-const { setMulticall } = useUserStore();
-const { usdcBalance } = storeToRefs(useUserStore())
+const { usdcBalance } = storeToRefs(useUserStore());
 
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
@@ -22,10 +24,6 @@ const shortAddress = computed(() => {
 onClickOutside(outside, () => {
   showUserInfo.value = false;
 });
-
-const toggleMulticall = () => {
-  setMulticall(!multicall.value);
-};
 </script>
 
 <template>
@@ -48,8 +46,6 @@ const toggleMulticall = () => {
           <div class="icon">
             <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
-
-          <!-- <span class="user-address">{{ getShortAddress() }}</span> -->
           <span class="user-address">{{ shortAddress }}</span>
         </div>
       </Motion>
@@ -67,19 +63,12 @@ const toggleMulticall = () => {
                 <img src="@/assets/img/icons/yoda.svg" alt="Yoda" />
               </div>
 
-              <!-- <div class="multicall">
-                <span>Use V2</span>
-                <div
-                  class="toggle"
-                  :class="{ active: multicall }"
-                  @click="toggleMulticall"
-                >
-                  <div class="circle"></div>
-                </div>
-              </div> -->
-
-              <div class="usdt-value" v-if="isConnected">USDC {{ usdcBalance }}</div>
-              <!-- <div class="dollar-value">$ 00.00</div> -->
+              <div class="usdt-value" v-if="isConnected">
+                USDC {{ usdcBalance }}
+              </div>
+              <div class="usdt-value" v-if="isConnected && data">
+                MATIC {{ nFormatter(+data.formatted ?? 0) }}
+              </div>
             </div>
 
             <div

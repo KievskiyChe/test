@@ -45,7 +45,7 @@ onMounted(async () => {
     signer: null,
     provider,
     userAddress: isConnected.value ? address.value! : "",
-  });
+  });  
 
   const tournament = new Tournament(provider);
   setTouranment(tournament);

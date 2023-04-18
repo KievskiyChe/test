@@ -16,6 +16,8 @@ const { connect, isConnecting, pendingConnector } = useConnect({
 watch(isConnected, (value) => {
   if (value) {
     updateGlobalsAddress(address.value ? address.value : "");
+    const tournament = getTournament()
+    tournament.update()
   } else {
     pushNotification({
       status: INotificationStatus.INFO,

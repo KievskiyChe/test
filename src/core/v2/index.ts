@@ -56,8 +56,8 @@ export default class Tournament implements ITournament {
     }
 
     useTournamentStore().update(data as any);
-    useSwapStore().init();
     useRewardsStore().update(data.rewards as any);
+    useSwapStore().init();
 
     if (data.usdc && data.usdc.amount) {
       useUserStore().setUsdcBalance(

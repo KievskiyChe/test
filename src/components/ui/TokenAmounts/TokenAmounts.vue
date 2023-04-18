@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { updateGlobalsAddress } from '@/common/helpers';
 import { useAccount } from 'vagmi'
 
-const { isConnected, address } = useAccount()
+const { isConnected } = useAccount()
 const { process } = storeToRefs(useTournamentStore());
 
 const showChart = ref(false);
@@ -10,14 +9,6 @@ const showChart = ref(false);
 const toggle = () => {
   showChart.value = !showChart.value;
 };
-
-watch(isConnected, (value) => {
-  if (value) {
-    updateGlobalsAddress(address.value ? address.value : '');
-    const tournament = getTournament()
-    tournament.update()
-  }
-});
 </script>
 
 <template>

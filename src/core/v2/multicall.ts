@@ -17,8 +17,8 @@ const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
 const FACTORY = import.meta.env.VITE_APP_FACTORY_ADDRESS;
 
 export class Caller {
-  private readonly multicall: Multicall;
-  private readonly userAddress: string;
+  private multicall: Multicall;
+  private userAddress: string;
 
   constructor() {
     const provider = window.__PROVIDER__;
@@ -29,6 +29,16 @@ export class Caller {
     });
     this.userAddress = userAddress;
   }
+
+  private init = () => {
+    const provider = window.__PROVIDER__;
+    const userAddress = window.__USER_ADDRESS__;
+    this.multicall = new Multicall({
+      ethersProvider: provider,
+      tryAggregate: true,
+    });
+    this.userAddress = userAddress;
+  };
 
   preFetch = async (): Promise<boolean> => {
     const { status } = await this.fetchStatusAndId();
@@ -71,6 +81,7 @@ export class Caller {
   };
 
   main = async () => {
+    this.init();
     const { id, status } = await this.fetchStatusAndId();
 
     const request = [
@@ -254,7 +265,7 @@ export class Caller {
 
   fetchTokenPrices = async (tokens: any[], usdc: string) => {
     if (tokens.some((token: any) => token.address === INVALID_TOKEN_ADDRESS)) {
-      return
+      return;
     }
     const tokenPrices = async () => {
       const calls = tokens.map((token) => {
