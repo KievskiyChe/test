@@ -66,21 +66,11 @@ export const useTournamentStore = defineStore("tournament-module", () => {
     }, 0);
   };
 
-  const totalAmountsUSD = (): string => {
-    if (!tokens.value) return "0.0000";
-
-    const total = tokens.value.reduce((acc, token) => {
-      return acc + (!token.inactive ? Number(token.amountUSD) : 0);
-    }, 0);
-
-    return parseFloat(total.toString()).toFixed(4);
-  };
-
   const percentage = (amount: string): number => {
     return (parseFloat(amount) / totalAmounts()) * 100;
   };
 
-  const update = (params: Params): void => {
+  const update = (params: any): void => {
     const { id, status, fee, tokens, usdc, game, round, startTime, totalPrize } = params;
 
     setId(id);
@@ -115,7 +105,6 @@ export const useTournamentStore = defineStore("tournament-module", () => {
     setFee,
     availableAssets,
     totalAmounts,
-    totalAmountsUSD,
     percentage,
     update,
   };

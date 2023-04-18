@@ -30,6 +30,7 @@ declare global {
   const getImage: typeof import('../src/common/helpers')['getImage']
   const getTournament: typeof import('../src/composables/index')['getTournament']
   const h: typeof import('vue')['h']
+  const helpers: typeof import('../src/common/helpers')['default']
   const inject: typeof import('vue')['inject']
   const isProxy: typeof import('vue')['isProxy']
   const isReactive: typeof import('vue')['isReactive']
@@ -130,6 +131,7 @@ declare module 'vue' {
     readonly getImage: UnwrapRef<typeof import('../src/common/helpers')['getImage']>
     readonly getTournament: UnwrapRef<typeof import('../src/composables/index')['getTournament']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly helpers: UnwrapRef<typeof import('../src/common/helpers')['default']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly isProxy: UnwrapRef<typeof import('vue')['isProxy']>
     readonly isReactive: UnwrapRef<typeof import('vue')['isReactive']>

@@ -14,5 +14,6 @@ interface IToken {
   public routerAddress: string;
   public managerAddress: string;
   public needMoreApprove?: boolean;
+  public inactive?: boolean;
   public approve: (spender: string) => Promise<TransactionReceipt>;
 }

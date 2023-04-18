@@ -4,7 +4,6 @@ import { useAccount } from 'vagmi'
 
 const { isConnected, address } = useAccount()
 const { process } = storeToRefs(useTournamentStore());
-const { totalAmountsUSD } = useTournamentStore();
 
 const showChart = ref(false);
 
