@@ -122,7 +122,7 @@ const handleApprove = async (token: IToken | undefined) => {
           <template v-if="!process">
             <span>Approve</span>
             <small>{{ from.symbol }}</small>
-            <small class="allowance-amount">{{ nFormatter(+from.allowance) }}</small>
+            <small class="allowance-amount" v-if="+amountFrom - +from.allowance > 0">{{ nFormatter(+amountFrom - +from.allowance) }}</small>
           </template>
           <template v-if="process">
             <span>Approving...</span>
@@ -138,7 +138,7 @@ const handleApprove = async (token: IToken | undefined) => {
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>
           <span>swap</span>
-          <small class="allowance-amount">{{ nFormatter(+from.allowance) }}</small>
+          <small class="allowance-amount" v-if="+amountFrom - +from.allowance > 0">{{ nFormatter(+amountFrom - +from.allowance) }}</small>
         </TheButton>
 
         <TheButton v-if="!isConnected" :disabled="true">
