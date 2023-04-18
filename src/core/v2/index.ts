@@ -6,8 +6,13 @@ import ROUTER_ABI from "./abis/Router.json";
 import MANAGER_ABI from "./abis/Manager.json";
 import FACTORY_ABI from "./abis/Factory.json";
 import type { Token } from "./models/Token";
-import { randomHash } from "../v1/common/helpers";
 import { Caller } from "./multicall";
+
+export const randomHash = (len: number) => {
+  const arr = new Uint8Array((len || 40) / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, (dec) => dec.toString(16).padStart(2, "0")).join("");
+};
 
 const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;

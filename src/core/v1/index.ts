@@ -1,4 +1,5 @@
 /** Tournament */
+// @ts-ignore
 import { Router } from "./models/Router";
 import { Factory } from "./models/Factory";
 import { Manager } from "./models/Manager";
