@@ -17,6 +17,7 @@ interface TokenCreate {
   allowanceManager: string;
   routerAddress: string;
   managerAddress: string;
+  needMoreApprove: boolean;
 }
 
 export class Token implements IToken {
@@ -38,6 +39,7 @@ export class Token implements IToken {
   public allowanceManager!: string;
   public routerAddress!: string;
   public managerAddress!: string;
+  public needMoreApprove = false;
 
   constructor(params: TokenCreate) {
     this.address = params.address;
@@ -58,6 +60,7 @@ export class Token implements IToken {
     this.allowanceManager = params.allowanceManager;
     this.routerAddress = params.routerAddress;
     this.managerAddress = params.managerAddress;
+    this.needMoreApprove = params.needMoreApprove;
   }
 
   public get(): any {
