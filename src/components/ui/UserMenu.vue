@@ -2,7 +2,6 @@
 import { onClickOutside } from "@vueuse/core";
 import { useAccount } from "vagmi";
 const { isConnected } = useAccount();
-const { user } = storeToRefs(useUserStore());
 
 const showMenu = ref(false);
 const outside = ref<HTMLElement | null>(null);
