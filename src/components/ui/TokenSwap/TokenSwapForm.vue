@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const store = useSwapStore();
 const tournament = getTournament() as any;
-const needMoreApprove = ref(false)
+const needMoreApprove = ref(false);
 
 const {
   from,
@@ -17,17 +17,17 @@ const { swapPositions, setAmountFrom, setAmountTo, resetForm } = store;
 
 const handleSwapPositions = () => {
   swapPositions();
-  handleInput({ target: { value: amountFrom.value } } as any, "from")
+  handleInput({ target: { value: amountFrom.value } } as any, "from");
 };
 
 const useMax = () => {
-  console.log('useMax', from.value)
+  console.log("useMax", from.value);
   if (!from.value) return;
-  handleInput({ target: { value: from.value.amount } } as any, "from")
-}
+  handleInput({ target: { value: from.value.amount } } as any, "from");
+};
 
 const handleChange = (type: "from" | "to") => {
-  console.log(type)
+  console.log(type);
 };
 
 const handleInput = (e: Event, type: "from" | "to") => {
@@ -35,7 +35,7 @@ const handleInput = (e: Event, type: "from" | "to") => {
 
   const target = e.target as HTMLInputElement;
   const value = target.value.toString();
-  
+
   if (!from.value) {
     return resetForm();
   }
@@ -92,13 +92,13 @@ const getAmountsOutOptions = (type: string) => {
 
 watch(to, () => {
   if (!to.value) return;
-  handleInput({ target: { value: amountFrom.value } } as any, "from")
-})
+  handleInput({ target: { value: amountFrom.value } } as any, "from");
+});
 
 watch(from, () => {
   if (!from.value) return;
-  handleInput({ target: { value: amountFrom.value } } as any, "from")
-})
+  handleInput({ target: { value: amountFrom.value } } as any, "from");
+});
 </script>
 
 <template>
@@ -203,7 +203,7 @@ watch(from, () => {
     border: none;
     outline: none;
     letter-spacing: 0.05em;
-    
+
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
