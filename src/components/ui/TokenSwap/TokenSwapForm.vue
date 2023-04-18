@@ -266,6 +266,11 @@ watch(from, () => {
     }
   }
 
+  .use-max {
+    top: 19px;
+    right: 40px;
+  }
+
   .swap-icon {
     min-width: 24px;
     max-width: 24px;
