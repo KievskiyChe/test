@@ -411,6 +411,7 @@ export class Caller {
         token.decimals
       );
       token.approvedManager = !!+token.allowanceManager;
+      token.needMoreApprove = +token.allowance < +token.amount;
     });
   };
 

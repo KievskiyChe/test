@@ -109,7 +109,6 @@ const handleApprove = async (token: IToken | undefined) => {
 
       <Motion class="fee">
         <span>Swap fee</span>
-        <!-- <span>%{{ fee ? fee / 1000 : 0 }}</span> -->
         <span>%1</span>
       </Motion>
 
@@ -122,7 +121,6 @@ const handleApprove = async (token: IToken | undefined) => {
           <template v-if="!process">
             <span>Approve</span>
             <small>{{ from.symbol }}</small>
-            <!-- <small class="allowance-amount" v-if="+amountFrom - +from.allowance > 0">{{ nFormatter(+amountFrom - +from.allowance) }}</small> -->
           </template>
           <template v-if="process">
             <span>Approving...</span>
@@ -147,9 +145,10 @@ const handleApprove = async (token: IToken | undefined) => {
           <span>swap</span>
         </TheButton>
 
-        <div class="disclaimer" v-if="+amountFrom - +from.allowance > 0">
-          <p>
-            You need more ({{ nFormatter(+amountFrom - +from.allowance) }}) {{ from.symbol }} allowance to swap
+        <div class="disclaimer">
+          <p v-if="+amountFrom - +from.allowance > 0">
+            You need more ({{ nFormatter(+amountFrom - +from.allowance) }})
+            {{ from.symbol }} allowance to swap
           </p>
         </div>
       </Motion>

@@ -1,15 +1,12 @@
 <script setup lang="ts">
 const store = useSwapStore();
 const tournament = getTournament() as any;
-const needMoreApprove = ref(false);
 
 const {
   from,
   to,
   amountFrom,
   amountTo,
-  amountFromUSD,
-  amountToUSD,
   isValidFrom,
   isValidTo,
 } = storeToRefs(store);
@@ -21,7 +18,6 @@ const handleSwapPositions = () => {
 };
 
 const useMax = () => {
-  console.log("useMax", from.value);
   if (!from.value) return;
   handleInput({ target: { value: from.value.amount } } as any, "from");
 };
@@ -63,7 +59,7 @@ const handleInput = (e: Event, type: "from" | "to") => {
     if (!result) return;
 
     type === "from" ? setAmountTo(result) : setAmountFrom(result);
-  }, 500);
+  }, 300);
 };
 
 const getAmountsOut = async (type: string): Promise<string | undefined> => {
