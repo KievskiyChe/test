@@ -15,6 +15,11 @@ const {
 } = storeToRefs(store);
 const { swapPositions, setAmountFrom, setAmountTo } = store;
 
+const handleSwapPositions = () => {
+  swapPositions();
+  handleInput({ target: { value: amountFrom.value } } as any, "from")
+};
+
 const handleInput = (e: Event, type: "from" | "to") => {
   if (!type) return;
 
@@ -118,7 +123,7 @@ const getAmountsOutOptions = (type: string) => {
     </div>
 
     <!-- centered swap icon -->
-    <div class="swap-icon" @click.stop="swapPositions">
+    <div class="swap-icon" @click.stop="handleSwapPositions">
       <img src="@/assets/img/icons/swap.svg" alt="" />
     </div>
   </div>

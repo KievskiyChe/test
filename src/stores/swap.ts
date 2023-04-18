@@ -101,13 +101,8 @@ export const useSwapStore = defineStore("swap-module", () => {
   // swap tokens position
   const swapPositions = () => {
     const temp = from.value;
-    const tempAmount = amountFrom.value;
-
     from.value = to.value;
     to.value = temp;
-
-    amountFrom.value = amountTo.value;
-    amountTo.value = tempAmount;
   };
 
   const startProcess = () => {
