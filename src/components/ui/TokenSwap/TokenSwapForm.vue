@@ -246,6 +246,24 @@ watch(from, () => {
     .input-form .input input {
       width: 100%;
     }
+
+    height: 100%;
+  }
+
+  .input-form {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px 0;
+
+    .input {
+      flex: 1;
+      width: 100%;
+      order: 1;
+    }
+
+    .input-select {
+      width: 100%;
+    }
   }
 
   .swap-icon {
