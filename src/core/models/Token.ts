@@ -45,7 +45,11 @@ export class Token implements IToken {
     this.address = params.address;
     this.provider = window.__PROVIDER__;
     this.userAddress = window.__USER_ADDRESS__;
-    this.contract = new ethers.Contract(params.address, ABI_ERC_20, this.provider);
+    this.contract = new ethers.Contract(
+      params.address,
+      ABI_ERC_20,
+      this.provider
+    );
 
     this.name = params.name;
     this.symbol = params.symbol;
@@ -81,23 +85,20 @@ export class Token implements IToken {
       routerAddress: this.routerAddress,
       managerAddress: this.managerAddress,
       approve: this.approve,
-      balanceOf: this.balanceOf
+      balanceOf: this.balanceOf,
     };
   }
 
   public approve = async (spender: string): Promise<TransactionReceipt> => {
+    const approvedValue = "100000000000000000000000";
     const signerContract = this.contract.connect(window.__SIGNER__);
 
-    const tx = await signerContract.approve(
-      spender,
-      "100000000000000000000000"
-    );
-
+    const tx = await signerContract.approve(spender, approvedValue);
     return await tx.wait();
   };
 
   public balanceOf = async (address: string): Promise<string> => {
     const balance = await this.contract.balanceOf(address);
     return formatUnits(balance, this.decimals);
-  }
+  };
 }

@@ -1,9 +1,8 @@
 <script setup lang="ts">
+import Tournament from "./core";
 import { Popup } from "./common/interfaces";
 import { useAccount, useProvider, useSigner, useNetwork } from "vagmi";
 import { useRoute, useRouter } from "vue-router";
-
-import Tournament from "./core/v2";
 
 const route = useRoute();
 const router = useRouter();
@@ -11,8 +10,6 @@ const { exists, showPopup, hidePopup } = usePopupsStore();
 const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
 const { isActive } = storeToRefs(useTournamentStore());
-const { multicall } = storeToRefs(useUserStore());
-const updateInterval = ref();
 
 const provider = useProvider({
   chainId: 137,
@@ -45,7 +42,7 @@ onMounted(async () => {
     signer: null,
     provider,
     userAddress: isConnected.value ? address.value! : "",
-  });  
+  });
 
   const tournament = new Tournament(provider);
   setTouranment(tournament);

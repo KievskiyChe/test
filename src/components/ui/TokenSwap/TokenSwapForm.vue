@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const store = useSwapStore();
-const tournament = getTournament() as any;
+const tournament = getTournament();
 
 const {
   from,
@@ -71,7 +71,7 @@ const getAmountsOut = async (type: string): Promise<string | undefined> => {
     return "0.00";
 
   const options = getAmountsOutOptions(type);
-  return await tournament.getAmountsOut(options);
+  return await tournament.getAmountsOut(options as AmountsOutOptions);
 };
 
 const getAmountsOutOptions = (type: string) => {

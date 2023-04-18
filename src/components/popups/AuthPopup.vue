@@ -17,7 +17,7 @@ watch(isConnected, (value) => {
   if (value) {
     updateGlobalsAddress(address.value ? address.value : "");
     const tournament = getTournament();
-    tournament.update();
+    tournament.init();
   } else {
     pushNotification({
       status: INotificationStatus.INFO,
