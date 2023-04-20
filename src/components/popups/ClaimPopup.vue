@@ -18,8 +18,7 @@ const animation = {
       stiffness: 800,
     },
   },
-};
-
+}
 
 </script>
 
