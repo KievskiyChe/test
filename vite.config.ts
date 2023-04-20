@@ -38,16 +38,4 @@ export default defineConfig({
     global: "window",
     "process.env": {},
   },
-  build: {
-    rollupOptions: {
-      plugins: [
-        // ↓ Needed for build
-        nodePolyfills()
-      ]
-    },
-    // ↓ Needed for build if using WalletConnect and other providers
-    commonjsOptions: {
-      transformMixedEsModules: true
-    }
-  }
 });
