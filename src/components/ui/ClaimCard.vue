@@ -79,10 +79,9 @@ defineProps<Props>();
   width: 100%;
   height: 75px;
   display: grid;
-  grid-template-columns: 180px 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 180px 1fr 160px;
+  gap: 10px;
 }
-
 .card {
   transition: all 0.3s ease;
 }
@@ -171,6 +170,48 @@ defineProps<Props>();
   }
 }
 
+@media screen and (max-width: 1200px) {
+  .claim-card {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    .prize, .info {
+      min-width: 200px;
+    }
+
+    .claim {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .prize {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .claim-card {
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    .prize, .info {
+      min-width: 40%;
+    }
+
+    .claim {
+      flex: 1;
+      justify-content: center;
+    }
+
+    .prize {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   .claim-card {
     display: flex;
@@ -196,6 +237,7 @@ defineProps<Props>();
 
   .claim-card .prize {
     gap: 5px;
+    justify-content: center;
   }
 }
 </style>
