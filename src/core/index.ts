@@ -111,9 +111,10 @@ export default class Tournament implements ITournament {
       const { from, to } = options;
 
       const path = [from.address, to.address];
+      console.log(options)
       const amountIn = ethers.utils
-        .parseUnits(options.amount, from.decimals)
-        .toString();
+        .parseUnits(parseFloat(options.amount).toFixed(from.decimals), from.decimals)
+        .toString()
 
       if (!options.amount || !options.from.address || !options.to.address)
         return;
