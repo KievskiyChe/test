@@ -31,7 +31,7 @@ const animation = {
         <div class="title">Claim</div>
 
         <div class="body">
-          <div class="winner" v-if="game && game.winner" :name="game.winner.symbol">
+          <div class="winner" v-if="game && game.winner">
             <TokenIcon :name="game.winner.symbol" :big="true" />
             <span>{{ game.winner.name }}</span>
           </div>
