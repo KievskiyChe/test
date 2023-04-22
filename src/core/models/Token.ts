@@ -53,7 +53,7 @@ export class Token implements IToken {
     Object.assign(this, params);
   }
 
-  public get(): any {
+  public getAsset(): any {
     return {
       address: this.address,
       userAddress: this.userAddress,

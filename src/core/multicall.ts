@@ -250,7 +250,7 @@ export class Caller {
 
     return formattedTokens.map((token) => {
       const t = new Token(token as any);
-      return t.get();
+      return t.getAsset();
     });
   };
 
