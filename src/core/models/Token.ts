@@ -50,21 +50,7 @@ export class Token implements IToken {
       ABI_ERC_20,
       this.provider
     );
-
-    this.name = params.name;
-    this.symbol = params.symbol;
-    this.decimals = params.decimals;
-    this.price = params.price;
-    this.liquidityPool = params.liquidityPool;
-    this.liquidityPoolAddress = params.liquidityPoolAddress;
-    this.amount = params.amount;
-    this.approved = params.approved;
-    this.allowance = params.allowance;
-    this.approvedManager = params.approvedManager;
-    this.allowanceManager = params.allowanceManager;
-    this.routerAddress = params.routerAddress;
-    this.managerAddress = params.managerAddress;
-    this.needMoreApprove = params.needMoreApprove;
+    Object.assign(this, params);
   }
 
   public get(): any {
