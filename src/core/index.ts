@@ -1,5 +1,5 @@
 import router from "@/router";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { Game } from "./models/Game";
 
 import ROUTER_ABI from "./abis/Router.json";
@@ -9,21 +9,18 @@ import type { Token } from "./models/Token";
 import { Caller } from "./multicall";
 import type { ManagerData } from "./common/interfaces";
 
-export const randomHash = (len: number) => {
-  const arr = new Uint8Array((len || 40) / 2);
-  window.crypto.getRandomValues(arr);
-  return Array.from(arr, (dec) => dec.toString(16).padStart(2, "0")).join("");
-};
-
 const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
 const FACTORY = import.meta.env.VITE_APP_FACTORY_ADDRESS;
 
+type Contract = ethers.Contract;
+type Provider = ethers.providers.Provider;
+
 export default class Tournament implements ITournament {
-  private readonly provider: any;
-  private readonly router: any;
-  private readonly manager: any;
-  private readonly factory: any;
+  private readonly provider: Provider;
+  private readonly router: Contract;
+  private readonly manager: Contract;
+  private readonly factory: Contract;
   private readonly caller: Caller;
 
   constructor(provider: Provider) {
@@ -82,8 +79,13 @@ export default class Tournament implements ITournament {
   };
 
   public updateSilent = async () => {
-    const data = await this.fetchData();
-    this.updateStore(data);
+    try {
+      const data = await this.fetchData();
+      this.updateStore(data);
+    } catch (error) {
+      console.log(error);
+      console.log("Error while silent updating Tournament");
+    }
   }
 
   public updateStore = (data: ManagerData): void => {
