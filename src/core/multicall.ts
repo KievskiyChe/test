@@ -296,7 +296,7 @@ export class Caller {
           results[token.address].callsReturnContext
         );
         token.liquidityPoolAddress = obj.liquidityPool[1];
-        token.price = formatUnits(obj.price.toString(), 16);
+        token.price = formatUnits(obj.price.toString(), 18);
       });
     };
 
@@ -322,7 +322,7 @@ export class Caller {
         const obj = parseResults<{ liquidityPool: string }>(
           results[token.address].callsReturnContext
         );
-        token.liquidityPool = formatUnits(obj.liquidityPool, 16);
+        token.liquidityPool = formatUnits(obj.liquidityPool, 18);
       });
     };
 
@@ -476,7 +476,7 @@ export class Caller {
     const userReward = Number(rewards) * Number(userBalance);
 
     // userReward / 1e16
-    const reward = String(userReward / 10 ** 16);
+    const reward = String(userReward / 10 ** 6);
     token.amount = userBalance;
 
     const approved = Number(token.allowanceManager) >= Number(token.amount);
