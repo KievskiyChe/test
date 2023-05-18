@@ -19,7 +19,7 @@ const totalPrize = computed(() => {
           </div>
           <div class="stats-title">
             <span>total prize <br />pool</span>
-            <h2><sup>$</sup>{{ process ? '0.00' : parseString(String(totalPrize), 2) }}</h2>
+            <h2><sup>$</sup>{{ process ? '0.00' : nFormatter(totalPrize) }}</h2>
           </div>
 
           <!-- <div class="info-icon"></div> -->
