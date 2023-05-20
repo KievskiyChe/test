@@ -475,8 +475,8 @@ export class Caller {
     const userBalance = await token.balanceOf(this.userAddress);
     const userReward = Number(rewards) * Number(userBalance);
 
-    // userReward / 1e16
-    const reward = String(userReward / 10 ** 6);
+    // userReward / 1e18
+    const reward = String(userReward / 10 ** 18);
     token.amount = userBalance;
 
     const approved = Number(token.allowanceManager) >= Number(token.amount);
