@@ -62,7 +62,7 @@ onMounted(() => {
       </div>
 
       <div class="actions" v-if="isActive">
-        <router-link to="/battle">
+        <router-link to="/tournament">
           <TheButton>
             <span>Back to tournament</span>
           </TheButton>
