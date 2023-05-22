@@ -227,6 +227,11 @@ export default class Tournament implements ITournament {
 
     // last round
     if (Number(round) === 2) {
+      const data = await this.fetchData();
+      console.log({ data });
+
+      await this.update();
+
       pushNotification({
         title: "Tournament ended",
         status: INotificationStatus.EXPIRED,
@@ -239,8 +244,6 @@ export default class Tournament implements ITournament {
         status: INotificationStatus.PENDING,
         description: `Wait for updating...`,
       });
-
-      await this.update();
 
       const { showPopup } = usePopupsStore();
       showPopup(Popup.CLAIM);
