@@ -230,6 +230,8 @@ export default class Tournament implements ITournament {
 
     // last round
     if (Number(round) === 2) {
+      await sleep(30000);
+
       pushNotification({
         title: "Tournament ended",
         status: INotificationStatus.EXPIRED,
@@ -243,9 +245,8 @@ export default class Tournament implements ITournament {
         description: `Wait for updating...`,
       });
 
-      await sleep(20000);
-      const data = await this.fetchData();
-      console.log({ data });
+      const { winningToken } = await this.fetchData();
+      console.log({ winningToken });
 
       await this.init();
 
