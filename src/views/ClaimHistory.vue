@@ -12,6 +12,11 @@ const animation = {
     "backdrop-filter": "blur(20px)",
   },
 };
+
+onMounted(() => {
+  const t = getTournament();
+  t.updateSilent();
+})
 </script>
 <template>
   <div class="history">
