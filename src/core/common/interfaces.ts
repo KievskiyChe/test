@@ -13,6 +13,7 @@ export interface ManagerDataResults {
   startTime: string;
   usdc: string;
   winningToken: string;
+  startingLiquidity: string;
 }
 export interface ManagerData {
   id: number;
@@ -31,4 +32,5 @@ export interface ManagerData {
   usdc?: Token,
   winningToken?: string,
   game?: Game,
+  startingLiquidity: string
 }

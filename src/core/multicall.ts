@@ -11,6 +11,7 @@ import FACTORY_ABI from "./abis/Factory.json";
 
 import { Token } from "./models/Token";
 import type { ManagerData, ManagerDataResults } from "./common/interfaces";
+import { ethers } from "ethers";
 
 const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
@@ -132,6 +133,11 @@ export class Caller {
         methodName: "pendingRewards()",
         methodParameters: [],
       },
+      {
+        reference: "startingLiquidity",
+        methodName: "startingLiquidity()",
+        methodParameters: [],
+      },
     ];
 
     const { results } = await this.multicall.call([
@@ -156,6 +162,7 @@ export class Caller {
       startTime,
       usdc,
       winningToken,
+      startingLiquidity,
     } = parseResults<ManagerDataResults>(callsReturnContext);
 
     const manager: ManagerData = {
@@ -170,13 +177,19 @@ export class Caller {
       round,
       startTime: Number(startTime) * 1000,
       winningToken,
+      startingLiquidity,
     };
 
     if (tokens.some((token: any) => token === INVALID_TOKEN_ADDRESS)) {
-      manager.tokens = await this.fetchTokens(baseTokens, usdc);
+      manager.tokens = await this.fetchTokens(baseTokens, usdc, false);
       manager.usdc = await this.fetchToken(usdc, null, false);
     } else {
-      manager.tokens = await this.fetchTokens(tokens, usdc);
+      manager.tokens = await this.fetchTokens(
+        tokens,
+        usdc,
+        true,
+        manager.startingLiquidity
+      );
       manager.usdc = await this.fetchToken(usdc, null, false);
     }
     manager.usdc.price = "1.00";
@@ -210,7 +223,8 @@ export class Caller {
   fetchTokens = async (
     tokens: string[],
     usdc: string | any,
-    needSpotPrice = true
+    needSpotPrice = true,
+    startingLiquidity?: string
   ): Promise<Token[]> => {
     const calls = tokens.map((token) => {
       return {
@@ -241,7 +255,9 @@ export class Caller {
 
     const promises = [];
     if (needSpotPrice) {
-      promises.push(this.fetchTokenPrices(formattedTokens, usdc));
+      promises.push(
+        this.fetchTokenPrices(formattedTokens, usdc, startingLiquidity)
+      );
     }
     promises.push(this.fetchTokenAmounts(formattedTokens));
     promises.push(this.fetchTokenAllowances(formattedTokens));
@@ -263,7 +279,11 @@ export class Caller {
     return tokens[0];
   };
 
-  fetchTokenPrices = async (tokens: any[], usdc: string) => {
+  fetchTokenPrices = async (
+    tokens: any[],
+    usdc: string,
+    startingLiquidity?: string
+  ) => {
     if (tokens.some((token: any) => token.address === INVALID_TOKEN_ADDRESS)) {
       return;
     }
@@ -322,7 +342,11 @@ export class Caller {
         const obj = parseResults<{ liquidityPool: string }>(
           results[token.address].callsReturnContext
         );
-        token.liquidityPool = formatUnits(obj.liquidityPool, 18);
+        const total =
+          +formatUnits(obj.liquidityPool, 18) -
+          +formatUnits(startingLiquidity ?? "0", 18);
+
+        token.liquidityPool = total > 0 ? total.toString() : "0";
       });
     };
 
