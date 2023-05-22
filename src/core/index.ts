@@ -86,7 +86,7 @@ export default class Tournament implements ITournament {
       console.log(error);
       console.log("Error while silent updating Tournament");
     }
-  }
+  };
 
   public updateStore = (data: ManagerData): void => {
     useTournamentStore().update(data);
@@ -113,10 +113,13 @@ export default class Tournament implements ITournament {
       const { from, to } = options;
 
       const path = [from.address, to.address];
-      console.log(options)
+      console.log(options);
       const amountIn = ethers.utils
-        .parseUnits(parseFloat(options.amount).toFixed(from.decimals), from.decimals)
-        .toString()
+        .parseUnits(
+          parseFloat(options.amount).toFixed(from.decimals),
+          from.decimals
+        )
+        .toString();
 
       if (!options.amount || !options.from.address || !options.to.address)
         return;
@@ -208,7 +211,7 @@ export default class Tournament implements ITournament {
       description: `Wait for updating...`,
     });
 
-    await this.update();
+    await this.init();
     removeAllNotifications();
   };
 
@@ -226,7 +229,7 @@ export default class Tournament implements ITournament {
     });
 
     // last round
-    if (Number(round) === 2) {      
+    if (Number(round) === 2) {
       pushNotification({
         title: "Tournament ended",
         status: INotificationStatus.EXPIRED,
@@ -240,11 +243,11 @@ export default class Tournament implements ITournament {
         description: `Wait for updating...`,
       });
 
-      await sleep(8000);
+      await sleep(20000);
       const data = await this.fetchData();
       console.log({ data });
 
-      await this.update();
+      await this.init();
 
       const { showPopup } = usePopupsStore();
       showPopup(Popup.CLAIM);
