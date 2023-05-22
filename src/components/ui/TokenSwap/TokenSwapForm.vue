@@ -232,7 +232,7 @@ watch(from, () => {
   padding: 2px 0;
 
   top: 10px;
-  right: 30px;
+  right: 26px;
 
   &:hover {
     border: 1px solid var(--shadow-yellow);
