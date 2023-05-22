@@ -240,7 +240,7 @@ export default class Tournament implements ITournament {
         description: `Wait for updating...`,
       });
 
-      await sleep(5000);
+      await sleep(8000);
       const data = await this.fetchData();
       console.log({ data });
 
