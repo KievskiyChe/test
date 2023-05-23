@@ -248,6 +248,11 @@ export default class Tournament implements ITournament {
       const { winningToken } = await this.fetchData();
       console.log({ winningToken });
 
+      if (!winningToken) {
+        console.log(`Error while getting winning token. Winning token: ${winningToken}`);
+        return router.push("/claim-history");
+      }
+
       await this.init();
 
       const { showPopup } = usePopupsStore();

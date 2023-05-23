@@ -66,9 +66,9 @@ onClickOutside(outside, () => {
               <div class="usdt-value" v-if="isConnected">
                 miMATIC {{ usdcBalance }}
               </div>
-              <div class="usdt-value" v-if="isConnected && data">
+              <!-- <div class="usdt-value" v-if="isConnected && data">
                 MATIC {{ nFormatter(+data.formatted ?? 0) }}
-              </div>
+              </div> -->
             </div>
 
             <div
