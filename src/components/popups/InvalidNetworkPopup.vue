@@ -34,7 +34,7 @@ const animation = {
 
     <Motion v-bind="animation.content" class="content">
       <div class="popup-content">
-        <div class="title">Invalid Netwrok</div>
+        <div class="title">Invalid Network</div>
 
         <div class="body">
           <img src="@/assets/img/icons/yoda.svg" alt="" />
