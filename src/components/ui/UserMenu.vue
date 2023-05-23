@@ -11,7 +11,6 @@ onClickOutside(outside, () => {
 });
 
 const toggleMenu = () => {
-  if (!isConnected.value) return;
   showMenu.value = !showMenu.value;
 };
 </script>
