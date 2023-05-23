@@ -14,6 +14,7 @@
     "@types/uuid": "^9.0.0",
     "@vueuse/core": "^9.11.0",
     "@vueuse/motion": "^2.0.0-beta.12",
+    "@vueuse/sound": "^2.0.1",
     "bottleneck": "^2.19.5",
     "ethereum-multicall": "^2.16.1",
     "ethers": "^5.7.2",

@@ -38,4 +38,7 @@ export default defineConfig({
     global: "window",
     "process.env": {},
   },
+  optimizeDeps: {
+    exclude: ['vue-demi']
+  }
 });

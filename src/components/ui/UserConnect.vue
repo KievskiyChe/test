@@ -1,14 +1,24 @@
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
+import { onClickOutside, useStorage } from "@vueuse/core";
 import { useAccount, useBalance, useDisconnect } from "vagmi";
 import { Popup } from "@/common/interfaces";
+import { useSound } from "@vueuse/sound";
+
+import sound1 from "@/assets/sounds/1.mp3";
+import sound2 from "@/assets/sounds/2.mp3";
+
+const soundStorage = useStorage("sound", 1);
+const useSoundStorage = useStorage('useSound', false);
+
+const { play: playSound1 } = useSound(sound1, {
+  loop: true,
+});
+const { play: playSound2 } = useSound(sound2, {
+  loop: true,
+});
 
 const { showPopup } = usePopupsStore();
 const { address, isConnected } = useAccount();
-const { data } = useBalance({
-  addressOrName: address,
-  chainId: 137
-});
 const { disconnect } = useDisconnect();
 const { usdcBalance } = storeToRefs(useUserStore());
 
@@ -24,6 +34,23 @@ const shortAddress = computed(() => {
 onClickOutside(outside, () => {
   showUserInfo.value = false;
 });
+
+const playSound = () => {
+  if (!useSoundStorage.value) return;
+
+  switch (soundStorage.value) {
+    case 1:
+      setTimeout(() => playSound1(), 500);
+      break;
+    case 2:
+      setTimeout(() => playSound2(), 500);
+      break;
+    default:
+      break;
+  }
+}
+
+onMounted(() => playSound());
 </script>
 
 <template>
@@ -66,9 +93,6 @@ onClickOutside(outside, () => {
               <div class="usdt-value" v-if="isConnected">
                 miMATIC {{ usdcBalance }}
               </div>
-              <!-- <div class="usdt-value" v-if="isConnected && data">
-                MATIC {{ nFormatter(+data.formatted ?? 0) }}
-              </div> -->
             </div>
 
             <div
