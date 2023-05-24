@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     ClaimPopup: typeof import('./../src/components/popups/ClaimPopup.vue')['default']
     InvalidNetworkPopup: typeof import('./../src/components/popups/InvalidNetworkPopup.vue')['default']
     Motion: typeof import('./../src/components/motion/index.vue')['default']
+    MusicControl: typeof import('./../src/components/ui/MusicControl/MusicControl.vue')['default']
     NotificationList: typeof import('./../src/components/ui/NotificationList.vue')['default']
     NotificationListItem: typeof import('./../src/components/ui/NotificationListItem.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

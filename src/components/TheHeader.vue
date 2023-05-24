@@ -2,7 +2,10 @@
 
 <template>
   <header class="header container">
-    <UserMenu />
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <UserMenu />
+      <MusicControl />
+    </div>
 
     <div class="title">
       <span class="line"></span>
@@ -49,7 +52,7 @@
 
 @media screen and (max-width: 768px) {
   .header {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 60px 1fr 60px;
     gap: 20px;
   }
 
@@ -61,7 +64,7 @@
     }
 
     .line {
-      width: 50px;
+      width: 30px;
     }
   }
 }
