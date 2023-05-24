@@ -19,8 +19,6 @@ const scaleAnimation = {
       <img src="@/assets/img/backgrounds/5.webp" />
     </div>
 
-    <TheHeader />
-
     <main class="container">
       <TheCircle />
 
@@ -97,7 +95,7 @@ const scaleAnimation = {
   height: 100%;
   min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   position: relative;
   overflow: hidden;
 }

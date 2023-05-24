@@ -11,12 +11,6 @@
       <img src="@/assets/img/backgrounds/5.webp" />
     </div>
 
-    <!-- <div class="overlay overlay-mobile">
-      <img src="@/assets/img/backgrounds/1.webp" />
-    </div> -->
-
-    <TheHeader />
-
     <main class="container content">
       <div class="board">
         <TokenSwap />

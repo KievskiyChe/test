@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onClickOutside } from "@vueuse/core";
+import { onClickOutside, useStorage } from "@vueuse/core";
 
 const outside = ref<HTMLElement | null>(null);
 
@@ -7,13 +7,18 @@ const isPlaying = ref(false);
 const sound = ref<HTMLAudioElement>();
 const currentTime = ref(0);
 const duration = ref(0);
-const volumeOn = ref(true);
+const volumeOn = useStorage("volume", true);
 
 const showCard = ref(false);
 
-const play = () => {
-  isPlaying.value = true;
-  sound.value?.play();
+const play = async () => {
+  try {
+    isPlaying.value = true;
+    sound.value?.play();
+    Promise.resolve();
+  } catch (error) {
+    Promise.reject(error);
+  }
 };
 
 const pause = () => {
@@ -57,22 +62,40 @@ onClickOutside(outside, () => {
   showCard.value = false;
 });
 
+const tryToPlay = setInterval(() => {
+  play()
+    .then(() => {
+      clearInterval(tryToPlay);
+    })
+    .catch((error) => {
+      console.info("User has not interacted with document yet.");
+    });
+}, 1000);
+
 onMounted(() => {
   sound.value = unref(sound);
   sound.value?.addEventListener("ended", () => {
     isPlaying.value = false;
   });
+
+  sound.value?.addEventListener("loadedmetadata", () => {
+    duration.value = sound.value?.duration || 0;
+  });
+
+  setTimeout(() => {
+    play();
+  }, 3000);
 });
 </script>
 
 <template>
-  <div ref="outside">
+  <div ref="outside" class="music-control" :class="{ active: showCard }">
     <audio
       src="/sounds/sound.wav"
       hidden
       ref="sound"
-      :ontimeupdate="update"
       loop
+      :ontimeupdate="update"
     ></audio>
 
     <div class="icon" @click="showCard = !showCard">
@@ -85,22 +108,25 @@ onMounted(() => {
           <div class="player-content">
             <div class="player-head">
               <div class="left">
-                <div class="sound-name">Slippage</div>
-                <div class="sound-desc">Slippage tolerance</div>
+                <div class="sound-name">Awakness</div>
+                <div class="sound-desc">Epic music</div>
               </div>
               <div class="right">
-                <img
-                  v-if="volumeOn"
-                  src="@/assets/img/icons/sound-on.svg"
-                  alt=""
-                  @click="volumeOn = false"
-                />
-                <img
-                  v-if="!volumeOn"
-                  src="@/assets/img/icons/sound-off.svg"
-                  alt=""
-                  @click="volumeOn = true"
-                />
+                <div class="action-icon mute" v-if="volumeOn">
+                  <img
+                    src="@/assets/img/icons/sound-on.svg"
+                    alt=""
+                    @click="volumeOn = false"
+                  />
+                </div>
+
+                <div class="action-icon mute" v-if="!volumeOn">
+                  <img
+                    src="@/assets/img/icons/sound-off.svg"
+                    alt=""
+                    @click="volumeOn = true"
+                  />
+                </div>
               </div>
             </div>
 
@@ -116,18 +142,21 @@ onMounted(() => {
             </div>
 
             <div class="player-actions">
-              <img
-                v-if="isPlaying"
-                src="@/assets/img/icons/sound-pause.svg"
-                alt=""
-                @click.stop="pause()"
-              />
-              <img
-                v-if="!isPlaying"
-                src="@/assets/img/icons/sound-play.svg"
-                alt=""
-                @click.stop="play()"
-              />
+              <div class="action-icon" v-if="isPlaying">
+                <img
+                  src="@/assets/img/icons/sound-pause.svg"
+                  alt=""
+                  @click.stop="pause()"
+                />
+              </div>
+
+              <div class="action-icon" v-if="!isPlaying">
+                <img
+                  src="@/assets/img/icons/sound-play.svg"
+                  alt=""
+                  @click.stop="play()"
+                />
+              </div>
             </div>
           </div>
         </TheCard>
@@ -137,13 +166,40 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
+.music-control {
+  position: relative;
+
+  &.active {
+    .icon {
+      &::after {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        box-shadow: 0px 0px 8px 2px #f9d66750;
+      }
+    }
+  }
+}
+
 .icon {
-  height: 20px;
+  padding: 6px;
   cursor: pointer;
+  position: relative;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    rotate: 45deg;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
 }
 
 .sound-name {
@@ -156,7 +212,7 @@ onMounted(() => {
 
 .time {
   opacity: 0.6;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 .player {
@@ -164,9 +220,22 @@ onMounted(() => {
   height: 160px;
   position: absolute;
   margin-top: 20px;
+}
+
+.action-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 
   img {
-    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &.mute {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -186,6 +255,7 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  margin-top: 10px;
 }
 
 .player-actions {
@@ -197,7 +267,7 @@ onMounted(() => {
 
 .progress {
   width: 100%;
-  height: 8px;
+  height: 6px;
   border-radius: 8px;
   overflow: hidden;
 
@@ -214,11 +284,15 @@ onMounted(() => {
     border-radius: 8px;
     background-color: var(--shadow-yellow);
   }
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .player {
-    left: -47px;
+    left: -44px;
   }
 }
 </style>

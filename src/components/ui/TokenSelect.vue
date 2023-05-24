@@ -33,7 +33,7 @@ const tokenAmount = computed(() => {
       <div class="chevron"></div>
     </div>
 
-    <div class="select active" v-else>
+    <div class="select active" v-if="!token || !token.symbol">
       <div class="select-icon">
         <img src="@/assets/img/icons/circles.svg" />
       </div>

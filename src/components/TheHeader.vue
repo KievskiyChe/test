@@ -30,6 +30,8 @@
   justify-content: space-between;
   position: relative;
   z-index: 1;
+
+  margin-bottom: 40px;
 }
 
 .title {
@@ -54,6 +56,7 @@
   .header {
     grid-template-columns: 60px 1fr 60px;
     gap: 20px;
+    margin-bottom: 0;
   }
 
   .title {

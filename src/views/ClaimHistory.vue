@@ -24,8 +24,6 @@ onMounted(() => {
       <img src="@/assets/img/claim-history-bg.png" alt="" v-lazyload />
     </div>
 
-    <TheHeader />
-
     <main class="content container">
       <div class="title">
         <h1>Battle History</h1>
@@ -80,7 +78,7 @@ onMounted(() => {
   min-height: 100vh;
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr 80px;
+  grid-template-rows: 1fr 80px;
   overflow: hidden;
   gap: 30px;
 }

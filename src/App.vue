@@ -63,6 +63,8 @@ onMounted(async () => {
 </script>
 
 <template>
+  <TheHeader />
+
   <router-view></router-view>
 
   <!-- notifications -->
