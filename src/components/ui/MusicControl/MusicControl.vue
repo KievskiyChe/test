@@ -2,6 +2,7 @@
 import { onClickOutside, useStorage, useElementBounding } from "@vueuse/core";
 
 const DEFAULT_VOLUME = 0.5;
+const INCREMENT_VOLUME = 0.1;
 
 const outside = ref<HTMLElement | null>(null);
 const progressRef = ref<HTMLElement | null>(null);
@@ -44,7 +45,7 @@ const update = () => {
 };
 
 const volumeUp = () => {
-  volume.value! += 0.1;
+  volume.value! = parseFloat((volume.value! + INCREMENT_VOLUME).toFixed(1));
   volumeOn.value = true;
   if (volume.value >= 1) {
     volume.value = 1;
@@ -54,7 +55,7 @@ const volumeUp = () => {
 const volumeDown = () => {
   if (!volume.value) return;
 
-  volume.value -= 0.1;
+  volume.value = parseFloat((volume.value - INCREMENT_VOLUME).toFixed(1));
   if (volume.value <= 0.1) {
     volume.value = 0;
     volumeOn.value = false;
