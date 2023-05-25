@@ -118,7 +118,7 @@ onMounted(() => {
           console.info("User has not interacted with document yet.");
         });
     }, 300);
-  }, 1000);
+  }, 3000);
 });
 </script>
 
