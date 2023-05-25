@@ -159,7 +159,6 @@ export const useSwapStore = defineStore("swap-module", () => {
 
   const getTokenTo = (to: IToken | undefined): IToken | undefined => {
     const { tokens, usdc } = storeToRefs(useTournamentStore());
-
     if (!tokens.value || !usdc.value) return;
 
     if (!usdc.value) return tokens.value[0];
@@ -171,7 +170,7 @@ export const useSwapStore = defineStore("swap-module", () => {
 
   const update = (): void => {
     from.value = getTokenFrom(from.value);
-    to.value = getTokenTo(to.value);
+    to.value = getTokenTo(to.value) ?? {} as IToken;
   };
 
   const init = (): void => {
