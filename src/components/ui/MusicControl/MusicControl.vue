@@ -6,6 +6,7 @@ const DEFAULT_VOLUME = 0.5;
 const outside = ref<HTMLElement | null>(null);
 const progressRef = ref<HTMLElement | null>(null);
 
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 const isPlaying = ref(false);
 const sound = ref<HTMLAudioElement>();
 const currentTime = ref(0);
@@ -111,6 +112,11 @@ onMounted(() => {
 
   setTimeout(() => {
     const tryToPlay = setInterval(() => {
+      if (isSafari) {
+        clearInterval(tryToPlay);
+        return;
+      }
+
       play()
         .then(() => {
           clearInterval(tryToPlay);
@@ -409,7 +415,7 @@ onMounted(() => {
 
 @media screen and (max-width: 768px) {
   .player {
-    left: -44px;
+    width: 280px;
   }
 }
 </style>
