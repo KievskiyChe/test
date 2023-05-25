@@ -16,8 +16,10 @@ const showCard = ref(false);
 const play = async () => {
   try {
     isPlaying.value = true;
-    sound.value?.play();
-    Promise.resolve();
+    sound.value
+      ?.play()
+      .then(() => Promise.resolve())
+      .catch(() => Promise.reject());
   } catch (error) {
     Promise.reject(error);
   }
@@ -92,7 +94,11 @@ onClickOutside(outside, () => {
 });
 
 onMounted(() => {
-  localStorage.removeItem("volume");
+  const item = localStorage.getItem("volume");
+  if (!item || !parseFloat(item)) {
+    volume.value = 0.5;
+  }
+
   sound.value = unref(sound);
   sound.value?.addEventListener("ended", () => {
     isPlaying.value = false;
