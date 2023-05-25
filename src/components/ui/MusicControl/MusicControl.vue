@@ -32,10 +32,6 @@ const update = () => {
   currentTime.value = sound.value?.currentTime || 0;
   duration.value = sound.value?.duration || 0;
 
-  if (!parseInt(volume.value.toString())) {
-    volume.value = 0.5
-  }
-
   if (!volumeOn.value) {
     sound.value!.volume = 0;
     return;
@@ -96,6 +92,7 @@ onClickOutside(outside, () => {
 });
 
 onMounted(() => {
+  localStorage.removeItem("volume");
   sound.value = unref(sound);
   sound.value?.addEventListener("ended", () => {
     isPlaying.value = false;
