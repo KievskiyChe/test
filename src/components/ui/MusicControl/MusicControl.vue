@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onClickOutside, useStorage, useElementBounding } from "@vueuse/core";
 
+const DEFAULT_VOLUME = 0.5;
+
 const outside = ref<HTMLElement | null>(null);
 const progressRef = ref<HTMLElement | null>(null);
 
@@ -9,19 +11,17 @@ const sound = ref<HTMLAudioElement>();
 const currentTime = ref(0);
 const duration = ref(0);
 const volumeOn = useStorage("volumeOn", true);
-const volume = useStorage("volume", 0.5) || 0.5;
+const volume = useStorage("volume", DEFAULT_VOLUME) || DEFAULT_VOLUME;
 
 const showCard = ref(false);
 
-const play = async () => {
+const play = async (): Promise<void> => {
   try {
     isPlaying.value = true;
-    sound.value
-      ?.play()
-      .then(() => Promise.resolve())
-      .catch(() => Promise.reject());
+    await sound.value?.play();
+    return Promise.resolve();
   } catch (error) {
-    Promise.reject(error);
+    return Promise.reject(error);
   }
 };
 
@@ -94,9 +94,10 @@ onClickOutside(outside, () => {
 });
 
 onMounted(() => {
-  const item = localStorage.getItem("volume");
-  if (!item || !parseFloat(item)) {
-    volume.value = 0.5;
+  const volumeItem = localStorage.getItem("volume");
+
+  if (!volumeItem || !parseFloat(volumeItem)) {
+    volume.value = DEFAULT_VOLUME;
   }
 
   sound.value = unref(sound);
