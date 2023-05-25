@@ -19,7 +19,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="history">
+  <div class="view history">
     <div class="overlay">
       <img src="@/assets/img/claim-history-bg.png" alt="" v-lazyload />
     </div>
@@ -74,8 +74,6 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .history {
-  height: 100%;
-  min-height: 100vh;
   position: relative;
   display: grid;
   grid-template-rows: 1fr 80px;

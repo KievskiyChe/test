@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { onClickOutside, useStorage } from "@vueuse/core";
+import { onClickOutside, useStorage, useElementBounding } from "@vueuse/core";
 
 const outside = ref<HTMLElement | null>(null);
+const progressRef = ref<HTMLElement | null>(null);
 
 const isPlaying = ref(false);
 const sound = ref<HTMLAudioElement>();
 const currentTime = ref(0);
 const duration = ref(0);
-const volumeOn = useStorage("volume", true);
+const volumeOn = useStorage("volumeOn", true);
+const volume = useStorage("volume", 0.5) || 0.5;
 
 const showCard = ref(false);
 
@@ -32,14 +34,37 @@ const update = () => {
 
   if (!volumeOn.value) {
     sound.value!.volume = 0;
+    return;
   } else {
-    sound.value!.volume = 1;
+    sound.value!.volume = volume.value;
+  }
+};
+
+const volumeUp = () => {
+  volume.value! += 0.1;
+  volumeOn.value = true;
+  if (volume.value >= 1) {
+    volume.value = 1;
+  }
+};
+
+const volumeDown = () => {
+  if (!volume.value) return;
+
+  volume.value -= 0.1;
+  if (volume.value <= 0.1) {
+    volume.value = 0;
+    volumeOn.value = false;
   }
 };
 
 const percent = computed(() => {
   if (!duration.value || !currentTime.value) return 0;
   return (currentTime.value / duration.value) * 100;
+});
+
+const volumePercent = computed(() => {
+  return parseInt((volume.value * 100).toString(), 10);
 });
 
 const parseTime = (time: number) => {
@@ -50,27 +75,21 @@ const parseTime = (time: number) => {
 };
 
 const handleChangePlayTime = (e: MouseEvent) => {
-  const target = e.target as HTMLElement;
-  const rect = target.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const percent = x / target.offsetWidth;
-  const newTime = percent * duration.value;
-  sound.value!.currentTime = newTime;
+  const { width } = useElementBounding(progressRef);
+
+  const percent = (e.offsetX / width.value) * 100;
+  const time = (percent * duration.value) / 100;
+
+  sound.value!.currentTime = time;
+
+  if (!isPlaying.value) {
+    play();
+  }
 };
 
 onClickOutside(outside, () => {
   showCard.value = false;
 });
-
-const tryToPlay = setInterval(() => {
-  play()
-    .then(() => {
-      clearInterval(tryToPlay);
-    })
-    .catch((error) => {
-      console.info("User has not interacted with document yet.");
-    });
-}, 1000);
 
 onMounted(() => {
   sound.value = unref(sound);
@@ -83,8 +102,16 @@ onMounted(() => {
   });
 
   setTimeout(() => {
-    play();
-  }, 3000);
+    const tryToPlay = setInterval(() => {
+      play()
+        .then(() => {
+          clearInterval(tryToPlay);
+        })
+        .catch((error) => {
+          console.info("User has not interacted with document yet.");
+        });
+    }, 300);
+  }, 1000);
 });
 </script>
 
@@ -112,27 +139,39 @@ onMounted(() => {
                 <div class="sound-desc">Epic music</div>
               </div>
               <div class="right">
-                <div class="action-icon mute" v-if="volumeOn">
-                  <img
-                    src="@/assets/img/icons/sound-on.svg"
-                    alt=""
-                    @click="volumeOn = false"
-                  />
+                <div class="right-state">
+                  <div class="action-icon mute" v-if="volumeOn">
+                    <img
+                      src="@/assets/img/icons/sound-on.svg"
+                      alt=""
+                      @click="volumeOn = false"
+                    />
+                  </div>
+
+                  <div class="action-icon mute" v-if="!volumeOn">
+                    <img
+                      src="@/assets/img/icons/sound-off.svg"
+                      alt=""
+                      @click="volumeOn = true"
+                    />
+                  </div>
+                  <div class="volume-progress">{{ volumePercent }}</div>
                 </div>
 
-                <div class="action-icon mute" v-if="!volumeOn">
-                  <img
-                    src="@/assets/img/icons/sound-off.svg"
-                    alt=""
-                    @click="volumeOn = true"
-                  />
+                <div class="volume">
+                  <div class="up" @click.stop="volumeUp()"></div>
+                  <div class="down" @click.stop="volumeDown()"></div>
                 </div>
               </div>
             </div>
 
             <div class="player-body">
               <div class="time">{{ parseTime(currentTime) }}</div>
-              <div class="progress" @click="handleChangePlayTime($event)">
+              <div
+                class="progress"
+                @click="handleChangePlayTime($event)"
+                ref="progressRef"
+              >
                 <div
                   class="progress-bar"
                   :style="{ width: percent + '%' }"
@@ -202,6 +241,59 @@ onMounted(() => {
   }
 }
 
+.volume {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+
+  .up {
+    &::after {
+      content: "+";
+    }
+  }
+
+  .down {
+    &::after {
+      content: "-";
+    }
+  }
+
+  .up,
+  .down {
+    border: 1px solid transparent;
+    opacity: 0.3;
+    width: 12px;
+    height: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-size: 14px;
+  }
+
+  .up:hover,
+  .down:hover {
+    cursor: pointer;
+    opacity: 1;
+    color: var(--shadow-yellow);
+  }
+
+  .up:active,
+  .down:active {
+    transform: scale(0.9);
+  }
+}
+
+.volume-progress {
+  opacity: 0.6;
+  font-size: 7px;
+  text-align: center;
+  user-select: none;
+}
+
 .sound-name {
   font-weight: 600;
 }
@@ -213,6 +305,23 @@ onMounted(() => {
 .time {
   opacity: 0.6;
   font-size: 11px;
+  width: 50px;
+  text-align: center;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 4px;
+
+  &-state {
+    height: 34px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
 }
 
 .player {

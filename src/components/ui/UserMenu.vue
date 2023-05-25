@@ -28,7 +28,7 @@ const toggleMenu = () => {
         <Motion :from="{ y: -20 }" :to="{ y: 0 }">
           <ThePopup>
             <div class="body">
-              <router-link :to="{ name: 'claim-history' }" class="item">
+              <router-link :to="{ name: 'claim-history' }" class="item" @click="showMenu = false">
                 <div class="icon">
                   <img src="@/assets/img/icons/claim.svg" />
                 </div>
