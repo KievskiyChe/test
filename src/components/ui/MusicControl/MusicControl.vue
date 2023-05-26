@@ -46,7 +46,11 @@ const update = () => {
 
 const volumeUp = () => {
   volume.value! = parseFloat((volume.value! + INCREMENT_VOLUME).toFixed(1));
-  volumeOn.value = true;
+
+  if (!volumeOn.value) {
+    volumeOn.value = true;
+  }
+
   if (volume.value >= 1) {
     volume.value = 1;
   }
