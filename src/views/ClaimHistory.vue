@@ -29,7 +29,7 @@ onMounted(() => {
     </div>
 
     <main class="content container">
-      <div class="circles" v-if="!isConnected">
+      <div class="circles">
         <img src="@/assets/img/circles.svg" alt="" />
       </div>
 
