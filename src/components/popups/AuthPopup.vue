@@ -183,7 +183,7 @@ const animation = {
   &.connecting,
   &.active {
     background: var(--accent-100);
-    border: 1px solid var(--white-400);
+    border: 1px solid var(--accent-400);
     box-shadow: 0px 0px 10px var(--accent-300);
   }
 
