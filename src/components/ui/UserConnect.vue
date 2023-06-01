@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
-import { useAccount, useDisconnect } from "vagmi";
+import { useAccount, useDisconnect, useProvider } from "vagmi";
 import { Popup } from "@/common/interfaces";
 
 const { showPopup } = usePopupsStore();
 const { address, isConnected } = useAccount();
 const { disconnect } = useDisconnect();
 const { usdcBalance } = storeToRefs(useUserStore());
+const chainId = ref(0);
+
+const { getNetwork } = useProvider().value;
+getNetwork().then((res) => {
+  chainId.value = res.chainId;
+});
 
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
@@ -28,7 +34,8 @@ onClickOutside(outside, () => {
       <Motion>
         <div class="content" @click="showPopup(Popup.AUTH)">
           <div class="icon">
-            <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
+            <img v-if="chainId === 5" src="@/assets/img/icons/eth.svg" alt="Ethereum" />
+            <img v-else src="@/assets/img/icons/polygon.svg" alt="Polygon" />
           </div>
 
           <span class="connect">Connect</span>
@@ -40,7 +47,8 @@ onClickOutside(outside, () => {
       <Motion>
         <div class="content" @click.stop="showUserInfo = !showUserInfo">
           <div class="icon">
-            <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
+            <img v-if="chainId === 5" src="@/assets/img/icons/eth.svg" alt="Ethereum" />
+            <img v-else src="@/assets/img/icons/polygon.svg" alt="Polygon" />
           </div>
           <span class="user-address">{{ shortAddress }}</span>
         </div>
