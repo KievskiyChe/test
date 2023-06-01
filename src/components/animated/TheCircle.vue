@@ -67,7 +67,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 0px solid rgba(249, 214, 103, 0.4);
+  border: 0px solid var(--accent-400);
   position: relative;
 
   animation: showOutCircle 1s ease forwards;
@@ -79,7 +79,7 @@
     width: calc(100% + 30px);
     height: calc(100% + 30px);
     border-radius: 50%;
-    border: 0px dotted rgba(249, 214, 103, 0.2);
+    border: 0px dotted var(--accent-200);
     top: -17px;
     left: -17px;
     animation: showOutCircleDotted 1s ease forwards, spin 100s linear infinite;
@@ -91,7 +91,7 @@
   width: calc(100% - 60px);
   height: calc(100% - 60px);
   border-radius: 50%;
-  border: 1px solid rgba(249, 214, 103, 0.5);
+  border: 1px solid var(--accent-500);
   position: absolute;
 
   top: 50%;
@@ -108,7 +108,7 @@
     width: calc(100% - 32px);
     height: calc(100% - 32px);
     border-radius: 50%;
-    border: 2px dotted rgba(249, 214, 103, 0.2);
+    border: 2px dotted var(--accent-200);
     top: 15px;
     left: 15px;
     animation: spin-reverse 120s linear infinite;
@@ -118,7 +118,7 @@
     content: "";
     width: 1px;
     height: 0px;
-    background: rgba(249, 214, 103, 0.5);
+    background: var(--accent-500);
     position: absolute;
 
     top: 0;

@@ -231,7 +231,7 @@ onMounted(() => {
     .icon {
       &::after {
         border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0px 0px 8px 2px #f9d66750;
+        box-shadow: 0px 0px 8px 2px var(--accent-500);
       }
     }
   }
@@ -297,7 +297,7 @@ onMounted(() => {
   .down:hover {
     cursor: pointer;
     opacity: 1;
-    color: var(--shadow-yellow);
+    color: var(--accent);
   }
 
   .up:active,
@@ -410,7 +410,7 @@ onMounted(() => {
   &-bar {
     height: 100%;
     border-radius: 8px;
-    background-color: var(--shadow-yellow);
+    background-color: var(--accent);
   }
 
   &:hover {

@@ -182,9 +182,9 @@ const animation = {
   &:hover,
   &.connecting,
   &.active {
-    background: rgba(249, 214, 103, 0.1);
+    background: var(--accent-100);
     border: 1px solid var(--white-400);
-    box-shadow: 0px 0px 10px rgba(249, 214, 103, 0.3);
+    box-shadow: 0px 0px 10px var(--accent-300);
   }
 
   &.connecting {

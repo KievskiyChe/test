@@ -25,7 +25,7 @@ const toggleMenu = () => {
 
     <template v-if="showMenu">
       <div class="popup-wrapper">
-        <Motion :from="{ y: -20 }" :to="{ y: 0 }">
+        <Motion :from="{ y: -20, 'backdrop-filter': 'blur(0)' }" :to="{ y: 0, 'backdrop-filter': 'blur(10px)' }">
           <ThePopup>
             <div class="body">
               <router-link :to="{ name: 'claim-history' }" class="item" @click="showMenu = false">
@@ -64,8 +64,8 @@ const toggleMenu = () => {
   &:hover,
   &.active {
     span {
-      background-color: var(--shadow-yellow);
-      box-shadow: 0px 0px 8px var(--shadow-yellow);
+      background-color: var(--accent);
+      box-shadow: 0px 0px 8px var(--accent);
     }
   }
 }

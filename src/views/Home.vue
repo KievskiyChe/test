@@ -160,7 +160,7 @@ main {
     font-size: 60px;
     font-weight: 600;
     letter-spacing: 0.35em;
-    color: var(--shadow-yellow);
+    color: var(--accent);
     text-transform: uppercase;
   }
 }

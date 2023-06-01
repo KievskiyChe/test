@@ -141,7 +141,7 @@ defineProps<Props>();
   }
 
   .winner-info {
-    color: #ac9f78;
+    color: var(--accent-800);
     display: flex;
     flex-direction: column;
     justify-content: center;

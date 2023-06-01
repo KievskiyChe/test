@@ -50,7 +50,7 @@ onClickOutside(outside, () => {
     <!-- show popup -->
     <template v-if="showUserInfo">
       <div class="popup-wrapper">
-        <Motion :from="{ y: -20 }" :to="{ y: 0 }">
+        <Motion :from="{ y: -20, 'backdrop-filter': 'blur(0)' }" :to="{ y: 0, 'backdrop-filter': 'blur(10px)' }">
           <ThePopup>
             <b>Your wallet</b>
 

@@ -22,7 +22,6 @@ defineProps<{
   width: var(--token-list-item-size);
   height: var(--token-list-item-size);
   position: relative;
-  /* cursor: pointer; */
 }
 
 .circle {
@@ -31,7 +30,7 @@ defineProps<{
   border-radius: 50%;
   background: var(--white-50);
 
-  border: 1px solid var(--shadow-yellow);
+  border: 1px solid var(--accent);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(2px);
   position: relative;
@@ -40,9 +39,9 @@ defineProps<{
     content: "";
     width: 86%;
     height: 86%;
-    border: 1px dashed var(--shadow-yellow);
+    border: 1px dashed var(--accent);
     border-radius: 50%;
-    filter: drop-shadow(0px 0px 4px var(--shadow-yellow));
+    filter: drop-shadow(0px 0px 4px var(--accent));
 
     position: absolute;
     top: 50%;

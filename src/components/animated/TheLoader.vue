@@ -25,7 +25,7 @@
   top: 0;
   bottom: 0;
   margin: auto;
-  border: 3px dotted var(--shadow-yellow);
+  border: 3px dotted var(--accent);
   border-style: solid solid dotted;
   width: 24px;
   height: 24px;

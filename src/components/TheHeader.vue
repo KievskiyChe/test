@@ -41,8 +41,9 @@
   gap: 55px;
 
   .text {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
+    text-transform: uppercase;
   }
 
   .line {
