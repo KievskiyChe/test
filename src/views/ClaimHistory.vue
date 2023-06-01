@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useAccount } from "vagmi";
 const { showPopup } = usePopupsStore();
+const { pushNotification } = useNotificationStore();
 const { rewards } = storeToRefs(useRewardsStore());
 const { process, isActive } = storeToRefs(useTournamentStore());
 const { isConnected } = useAccount();

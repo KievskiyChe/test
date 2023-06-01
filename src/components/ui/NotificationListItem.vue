@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { blurryRight } from '@/common/animations';
+
 const { removeNotification } = useNotificationStore();
 
 interface Props {
@@ -13,121 +15,150 @@ watchEffect(() => {
       removeNotification(props.notification);
     }, props.notification.closeTimeout);
   }
-})
+});
 </script>
 
 <template>
-  <Motion
-    :from="{ x: 100, opacity: 1 }"
-    :to="{ x: 0 }"
-    :transition="{ mass: 0.3, shiffness: 1000, damping: 6 }"
+  <div
+    class="notification"
+    :class="`notification-${props.notification.status}`"
   >
-    <div class="notification" :class="`notification-${props.notification.status}`">
-      <div class="icon">
-        <img :src="getImage(`notifications/${props.notification.status}.svg`)" />
+    <Motion class="icon" :class="`icon-${props.notification.status}`" :from="blurryRight.from"
+    :to="blurryRight.to">
+      <div class="icon-circle">
+        <img
+          :src="getImage(`notifications/icon-${props.notification.status}.svg`)"
+        />
       </div>
+    </Motion>
 
-      <div class="content" :class="`content-${props.notification.status}`">
-        <div class="body">
-          <div class="close" @click="removeNotification(props.notification)"></div>
-
-          <div class="title">{{ props.notification.title }}</div>
-
-          <div class="description"><slot></slot></div>
-
-          <!-- <div class="time-to-close" :style="`--c: ${props.notification.closeTimeout}ms`">
-            <span></span>
-          </div> -->
-        </div>
+    <Motion class="content" :from="blurryRight.from"
+    :to="blurryRight.to">
+      <div class="layer"></div>
+      <div class="body" :class="`body-${props.notification.status}`">
+        <div class="title">{{ notification.title }}</div>
+        <slot></slot>
+        <div class="close" @click="removeNotification(notification)"></div>
       </div>
-    </div>
-  </Motion>
+    </Motion>
+  </div>
 </template>
 
 <style scoped lang="scss">
 .notification {
-  display: flex;
+  display: grid;
   position: relative;
+  align-items: center;
+  grid-template-columns: 92px 1fr;
   width: 100%;
-  height: 90px;
+  height: 94px;
 }
 
 .icon {
   position: relative;
   overflow: hidden;
+  width: 92px;
+  height: 92px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 50%;
+  z-index: 1;
+  margin-left: 18px;
+  padding: 6px;
 
-  img {
-    width: 100%;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  &::before {
+  &::after {
     content: "";
     position: absolute;
-    top: 0;
     left: 0;
-    width: 106px;
-    height: 90px;
-    z-index: -1;
+    top: 0;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    border: 6px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+  }
 
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+  &-circle {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: 1px solid var(--white-500);
 
-    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
+.icon-info,
+.body-info {
+  background: var(--notification-info-bg) !important;
+}
+
+.icon-submitted,
+.body-submitted {
+  background: var(--notification-submitted-bg) !important;
+}
+
+.icon-error,
+.body-error {
+  background: var(--notification-error-bg) !important;
+}
+
+.icon-pending,
+.body-pending {
+  background: var(--notification-pending-bg) !important;
+}
+
+.icon-expired,
+.body-expired {
+  background: var(--notification-expired-bg) !important;
+}
+
 .content {
-  width: calc(100% - 110px);
+  position: relative;
+  width: 100%;
+  height: 90px;
+}
 
-  &-info {
-    background: var(--notification-info-bg);
-  }
-
-  &-submitted {
-    background: var(--notification-submitted-bg);
-  }
-
-  &-error {
-    background: var(--notification-error-bg);
-  }
-
-  &-pending {
-    background: var(--notification-pending-bg);
-  }
-
-  &-expired {
-    background: var(--notification-expired-bg);
-  }
-
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  clip-path: polygon(0 0, 100% 0, 100% 50%, 100% 100%, 0 100%, 25px 50%);
-
+.layer {
   position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
   height: 100%;
-  left: 90px;
-
-  border-radius: 0 8px 8px 0;
-
-  &::before {
-    content: "";
-    position: absolute;
-    clip-path: polygon(0 0, 1px 0, 25px 50%, 1px 100%, 0 100%, 24px 50%);
-    width: 40px;
-    height: 88px;
-    background: rgba(255, 255, 255, 0.2);
-    left: 0;
-    top: 0;
-  }
 }
 
 .body {
   width: 100%;
   height: 100%;
-  padding: 15px 45px;
-  position: relative;
+  background: rgba(0, 0, 0, 0.015);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  border-left: 0;
+
+  margin-left: -18px;
+
+  padding: 20px 50px;
+  overflow: hidden;
+
+  /* &::after {
+    content: '';
+    position: absolute;
+    left: -81px;
+    top: -9px;
+    width: 104px;
+    height: 104px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+  } */
 }
 
 .close {
@@ -181,7 +212,7 @@ watchEffect(() => {
   background: var(--white-200);
   border-radius: 0 0 4px 0;
   overflow: hidden;
-  
+
   span {
     width: 0%;
     height: calc(100% + 1px);

@@ -25,7 +25,7 @@ const { notifications } = storeToRefs(useNotificationStore());
   top: var(--header-height);
   right: 0;
   width: 100%;
-  max-width: 540px;
+  max-width: 520px;
   overflow-y: auto;
   overflow-x: hidden;
 
