@@ -2,12 +2,15 @@
 
 <template>
   <header class="header container">
-    <UserMenu />
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <UserMenu />
+      <MusicControl />
+    </div>
 
     <div class="title">
       <span class="line"></span>
 
-      <router-link to="/" class="text">awakeness</router-link>
+      <router-link to="/tournament" class="text">awakeness</router-link>
 
       <span class="line"></span>
     </div>
@@ -27,6 +30,8 @@
   justify-content: space-between;
   position: relative;
   z-index: 1;
+
+  margin-bottom: 40px;
 }
 
 .title {
@@ -49,8 +54,9 @@
 
 @media screen and (max-width: 768px) {
   .header {
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 60px 1fr 60px;
     gap: 20px;
+    margin-bottom: 0;
   }
 
   .title {
@@ -61,7 +67,7 @@
     }
 
     .line {
-      width: 50px;
+      width: 30px;
     }
   }
 }

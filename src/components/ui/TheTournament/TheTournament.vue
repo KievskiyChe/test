@@ -20,11 +20,13 @@ const isWinner = (token: IToken, winner: IToken) => {
       <div class="sidebar">
         <div class="sidebar-title">tournament <br />stats:</div>
 
-        <!-- prize and players -->
-        <TheTournamentStats />
-
-        <!-- status and timer -->
-        <TheTournamentStatus />
+        <div class="sidebar-data">
+          <!-- prize and players -->
+          <TheTournamentStats />
+  
+          <!-- status and timer -->
+          <TheTournamentStatus />
+        </div>
       </div>
 
       <!-- players -->
@@ -43,6 +45,12 @@ const isWinner = (token: IToken, winner: IToken) => {
               :winner="isWinner(pair.token2, pair.winner)"
               :past="i < round"
             />
+
+            <span class="pair-name" v-if="pair.token1">
+              <small>{{ pair.token1?.symbol }}</small>
+              <small>vs</small>
+              <small>{{ pair.token2?.symbol }}</small>
+            </span>
 
             <div class="battle-icon">
               <Motion v-if="r.active">
@@ -71,7 +79,7 @@ const isWinner = (token: IToken, winner: IToken) => {
   text-align: center;
   padding: 80px 0;
   font-size: 32px;
-  font-family: "Aurebesh", sans-serif;
+  // font-family: "Aurebesh", sans-serif;
 }
 
 .content {
@@ -84,6 +92,12 @@ const isWinner = (token: IToken, winner: IToken) => {
   display: flex;
   flex-direction: column;
   gap: 25px;
+
+  &-data {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
 }
 
 .sidebar-title {
@@ -134,6 +148,41 @@ const isWinner = (token: IToken, winner: IToken) => {
   display: grid;
   gap: 10px;
   position: relative;
+
+  &-name {
+    display: none;
+
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    top: 50%;
+    left: 50%;
+    font-size: 12px;
+    text-align: center;
+    position: absolute;
+    translate: -50% -50%;
+
+    gap: 5px;
+
+    small {
+      font-weight: 900;
+      text-align: center;
+      font-size: 14px;
+      text-transform: uppercase;
+      color: #1e1e1e;
+      text-shadow: -1px -1px 0 var(--shadow-yellow), 1px -1px 0 var(--shadow-yellow),
+      -1px 1px 0 var(--shadow-yellow), 1px 1px 0 var(--shadow-yellow);
+
+      &:nth-child(2) {
+        color: var(--shadow-yellow);
+        font-size: 9px;
+        text-shadow: none;
+        text-transform: lowercase;
+        font-weight: 500;
+      }
+    }
+  }
 }
 
 .battle-icon {
@@ -147,10 +196,38 @@ const isWinner = (token: IToken, winner: IToken) => {
   .content {
     justify-content: center;
   }
-  .content,
-  .players {
+  .content {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+
+  .players {
+    gap: unset;
+    padding: 40px 20px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--white-50);
+
+    .section {
+      padding-right: 14px;
+      gap: 25px;
+    }
+
+    .pair {
+      gap: 60px;
+      padding: 0;
+
+      &-name {
+        display: flex;
+      }
+    }
+
+    .battle-icon {
+      top: 48%;
+      right: calc(50% - 61px);
+    }
   }
 
   .timer-wrapper {

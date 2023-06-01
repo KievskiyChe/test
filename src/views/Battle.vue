@@ -1,4 +1,5 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <div class="battle-view">
@@ -9,8 +10,6 @@
       <img src="@/assets/img/backgrounds/4.webp" />
       <img src="@/assets/img/backgrounds/5.webp" />
     </div>
-
-    <TheHeader />
 
     <main class="container content">
       <div class="board">
@@ -46,11 +45,11 @@
 
 .overlay {
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   left: 0;
 
-  position: absolute;
+  position: fixed;
   overflow: hidden;
 
   z-index: -1;
@@ -62,6 +61,20 @@
     height: 100%;
     background: rgba(37, 39, 47, 0.5);
     filter: contrast(120%);
+  }
+
+  &-mobile {
+    display: none;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 10px);
+    min-height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
 
@@ -83,6 +96,14 @@
   .board {
     height: 100%;
     justify-content: center;
+  }
+
+  .overlay {
+    /* display: none; */
+
+    &-mobile {
+      display: block;
+    }
   }
 }
 </style>

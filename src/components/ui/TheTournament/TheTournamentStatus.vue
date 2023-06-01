@@ -20,11 +20,13 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
           </div>
         </div>
 
-        <div class="timer-wrapper">
-          <TheTimer title="time of battle" :time="startTime" />
-        </div>
+        <div class="wrapper">
+          <div class="timer-wrapper">
+            <TheTimer title="round time" :time="startTime" />
+          </div>
 
-        <div class="info-bottom">min 12 h max 30 h</div>
+          <div class="info-bottom">min 10 h max 30 h</div>
+        </div>
       </div>
     </TheCard>
 
@@ -64,7 +66,7 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
     span,
     small {
       font-size: 24px;
-      font-family: "Aurebesh";
+      /* font-family: "Aurebesh"; */
     }
 
     small {
@@ -83,6 +85,11 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
   background: var(--black-200);
   text-align: center;
   padding: 2px 0;
+}
+
+.wrapper {
+  display: grid;
+  gap: 5px;
 }
 
 .badge {
@@ -116,5 +123,38 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (max-width: 768px) {
+  .info {
+    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .info-head {
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    gap: 5px;
+    text-align: center;
+    align-items: center;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 1px;
+      top: 20%;
+      height: 60%;
+      background: var(--white-100);
+      right: -40px;
+      border-radius: 2px;
+    }
+  }
+
+  .wrapper {
+    display: grid;
+    gap: 5px;
+  }
 }
 </style>

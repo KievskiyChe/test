@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import type { Connector } from "vue-dapp-connector";
-
-const connector = inject<Connector>("Connector")!;
-
-const handleConnect = () => {
-  connector.connect().then((data) => {
-    window.location.reload();
-  });
-};
+import { Popup } from '@/common/interfaces';
+const showPopup = usePopupsStore().showPopup;
 </script>
 
 <template>
@@ -17,7 +10,7 @@ const handleConnect = () => {
     </div>
     <p>To see your balance and participate in the battle, connect wallet</p>
     <div class="foo">
-      <TheButton @click.prevent="handleConnect()">
+      <TheButton @click.prevent="showPopup(Popup.AUTH)">
         <span>connect wallet</span>
       </TheButton>
     </div>

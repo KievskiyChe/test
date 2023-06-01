@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { addTokenToMetaMask } from "@/common/helpers";
-const { id, round, isActive, tokens, process } = storeToRefs(
+const { isActive, tokens } = storeToRefs(
   useTournamentStore()
 );
 
@@ -11,7 +10,7 @@ const scaleAnimation = {
 </script>
 
 <template>
-  <div class="home-view">
+  <div class="view home-view">
     <div class="overlay" v-overlay>
       <img src="@/assets/img/backgrounds/1.webp" />
       <img src="@/assets/img/backgrounds/2.webp" />
@@ -20,58 +19,38 @@ const scaleAnimation = {
       <img src="@/assets/img/backgrounds/5.webp" />
     </div>
 
-    <TheHeader />
-
     <main class="container">
       <TheCircle />
 
       <div class="content">
         <div class="info" v-if="isActive">
-          <Motion
-            class="text text-right"
-            v-if="!process"
-            :delay="0.5"
-            v-bind="scaleAnimation"
-          >
-            <router-link to="/battle">tournament # {{ id + 1 }}</router-link>
-          </Motion>
-          <div class="text" v-else></div>
-
+          <div class="text"></div>
           <div class="splitter">
             <span></span>
             <span></span>
             <span></span>
           </div>
-
-          <Motion
-            class="text text-left"
-            v-if="!process"
-            :delay="0.65"
-            v-bind="scaleAnimation"
-          >
-            <router-link to="/battle">round # {{ round + 1 }}</router-link>
-          </Motion>
-          <div class="text" v-else></div>
+          <div class="text"></div>
         </div>
 
         <Motion :delay="0.35" v-bind="scaleAnimation">
           <div class="title">
-            <h1>The Galactic War is <br />upon us...</h1>
+            <h1>Wait for the next <br />tournament to start...</h1>
           </div>
         </Motion>
 
-        <Motion :delay="0.8" v-if="tokens">
+        <Motion v-if="tokens">
           <div class="token-list">
             <Motion
               v-for="(token, index) in tokens"
               :key="index"
-              :from="{ y: -10 }"
+              :from="{ y: 10 }"
               :to="{ y: 0 }"
-              :delay="0.15 * index"
+              :delay="0.05 * index"
             >
               <TokenIconCircle
+                v-if="token.symbol"
                 :token="token.symbol"
-                @click.stop="addTokenToMetaMask(token.symbol)"
               />
             </Motion>
           </div>
@@ -83,22 +62,14 @@ const scaleAnimation = {
       </div>
     </main>
 
-    <!-- <Motion :delay="2" :from="{ y: 20 }" :to="{ y: 0 }">
-      <div class="timer-wrapper">
-        <TheTimer title="time from last battle" />
-      </div>
-    </Motion> -->
-
     <TheFooter />
   </div>
 </template>
 
 <style scoped lang="scss">
 .home-view {
-  height: 100%;
-  min-height: 100vh;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: 1fr auto;
   position: relative;
   overflow: hidden;
 }
@@ -239,7 +210,7 @@ main {
 
   .title {
     h1 {
-      font-size: 40px;
+      font-size: 34px;
     }
   }
 

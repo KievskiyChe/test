@@ -1,259 +1,279 @@
-/** Tournament */
-import { Router } from "./models/Router";
-import { Factory } from "./models/Factory";
-import { Manager } from "./models/Manager";
+import router from "@/router";
+import { BigNumber, ethers } from "ethers";
 import { Game } from "./models/Game";
-import { randomHash } from "./common/helpers";
 
-const LAST_ROUND = 3;
+import ROUTER_ABI from "./abis/Router.json";
+import MANAGER_ABI from "./abis/Manager.json";
+import FACTORY_ABI from "./abis/Factory.json";
+import type { Token } from "./models/Token";
+import { Caller } from "./multicall";
+import type { ManagerData } from "./common/interfaces";
+
+const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
+const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
+const FACTORY = import.meta.env.VITE_APP_FACTORY_ADDRESS;
+
+type Contract = ethers.Contract;
+type Provider = ethers.providers.Provider;
 
 export default class Tournament implements ITournament {
-  private readonly sleepTime = 100;
+  private readonly provider: Provider;
+  private readonly router: Contract;
+  private readonly manager: Contract;
+  private readonly factory: Contract;
+  private readonly caller: Caller;
 
-  public readonly router = {} as IRouter;
-  public readonly factory = {} as IFactory;
-  public readonly manager = {} as IManager;
-  public readonly params: TournamentParams = new Map();
-
-  constructor() {
-    this.router = new Router();
-    this.manager = new Manager(this);
-    this.factory = new Factory();
+  constructor(provider: Provider) {
+    this.provider = provider;
+    this.router = new ethers.Contract(ROUTER, ROUTER_ABI, this.provider);
+    this.manager = new ethers.Contract(MANAGER, MANAGER_ABI, this.provider);
+    this.factory = new ethers.Contract(FACTORY, FACTORY_ABI, this.provider);
+    this.caller = new Caller();
   }
 
-  /**
-   * Update tournament data
-   * @dev Each time the tournament data is updated, the store is updated.
-   * @returns {Promise<void>}
-   */
-  private setParam = <T>(key: keyof Params, value: T): T => {
-    this.params.set(key, value);
-    this.updateStore();
-    return value;
-  };
-
-  private getParam = <T>(key: keyof Params): T => {
-    return this.params.get(key) as T;
-  };
-
-  public fetchStatus = async (): Promise<void> => {
-    const { fetchRound, fetchStatus } = this.manager;
-    await this.fetchParam("round", fetchRound);
-    await this.fetchParam("status", fetchStatus);
-  };
-
-  /**
-   * Main function.
-   * Calls all necessary functions to update tournament data.
-   * Get tournament id, status, fee, round, tokens, bracket, usdc.
-   * @returns {Promise<void>}
-   */
-  private fetch = async (): Promise<void> => {
-    this.updateStoreProcess(true);
-
-    const slt = this.sleepTime;
-    const {
-      fetchId,
-      fetchRound,
-      fetchUSDC,
-      fetchStatus,
-      fetchTokens,
-      fetchBracket,
-      fetchStartTime,
-      fetchRewards,
-    } = this.manager;
-    const { fetchFee } = this.factory;
-
+  async init() {
     try {
-      await this.fetchParam("id", fetchId);
-      await this.fetchParam("round", fetchRound);
-      await this.fetchParam("startTime", fetchStartTime);
-      await this.fetchParam("fee", fetchFee);
-      await this.fetchParam("usdc", fetchUSDC);
-      await this.fetchParam("status", fetchStatus);
+      await this.update();
+      useSwapStore().init();
+    } catch (error) {
+      console.log(error);
+      console.log("Error while init Tournament");
+    } finally {
+      this.eventListener();
+    }
+  }
 
-      const round = this.getParam<number>("round");
-      const currentId = this.getParam<number>("id");
-      const id = round !== LAST_ROUND ? currentId : currentId - 1;
+  public fetchStatus = async (): Promise<boolean> => {
+    return await this.caller.preFetch();
+  };
 
-      await this.fetchParam("tokens", () => fetchTokens(id), slt);
-      await this.fetchParam("bracket", () => fetchBracket(id));
-      await this.fetchParam("rewards", () => fetchRewards(currentId));
-      await this.fetchWinner(id);
+  public fetchData = async (): Promise<ManagerData> => {
+    const data = await this.caller.main();
 
-      const tokens = this.getParam<IToken[]>("tokens");
-      const bracket = this.getParam<number[]>("bracket");
+    if (data.tokens) {
+      const { round, tokens, bracket, winningToken } = data;
       const game = new Game(round, tokens, bracket);
+      const winner = tokens.find((t: Token) => t.address === winningToken);
 
-      if (round === LAST_ROUND) {
-        const winner = this.getParam<IToken>("winner");
+      if (winner) {
         game.setWinner(winner);
-        game.update(LAST_ROUND, bracket);
       }
 
-      this.setParam("game", game);
-    } catch (error) {
-      console.log("error");
-      await Promise.reject("Error while fetching Tournament");
+      data.game = game;
+    }
+
+    return data;
+  };
+
+  public update = async (): Promise<void> => {
+    this.updateStoreProcess(true);
+    try {
+      const data = await this.fetchData();
+      this.updateStore(data);
+    } catch (error: any) {
+      console.log(error);
+      console.log("Error while updating Tournament");
     } finally {
       this.updateStoreProcess(false);
     }
   };
 
-  /**
-   * Fetch param and set it to the store on the fly
-   * @param {keyof Params} key
-   * @param {Promise<any>} fn - callable function
-   * @param {number} sleepTime - sleep time in ms
-   * @dev 'sleepTime' need for correct work of
-   * the fetching process. By example, polygon_mumbai testnet is very slow and
-   * have request limits for calls (40 per second). So, we need to wait a
-   * little bit between calls.
-   * @returns {Promise<void>}
-   */
-  private fetchParam = async (
-    key: keyof Params,
-    fn: () => Promise<any>,
-    sleepTime: number = 0
-  ): Promise<void> => {
-    const timer = `getting ${key}-${randomHash(4)}`;
-    console.time(timer);
+  public updateSilent = async () => {
     try {
-      await sleep(sleepTime);
-      return this.setParam(key, await fn());
+      const data = await this.fetchData();
+      this.updateStore(data);
     } catch (error) {
       console.log(error);
-      console.log(`Error while getting ${key}`);
-    } finally {
-      console.timeEnd(timer);
+      console.log("Error while silent updating Tournament");
     }
   };
 
-  /**
-   * Fetch winner by tournament id
-   * @param {number} tournamentId
-   * @returns {Promise<void>}
-   */
-  private fetchWinner = async (tournamentId: number): Promise<void> => {
-    if (this.getParam<number>("round") !== LAST_ROUND)
-      return Promise.resolve(undefined);
-
-    const winnerAddress = await this.manager.getWinningToken(tournamentId);
-    const winner = this.getParam<IToken[]>("tokens").find(
-      (token) => token.address === winnerAddress
-    );
-
-    this.setParam("winner", winner);
-  };
-
-  /**
-   * Claim rewards by user address
-   * and tournament id
-   */
-  public claimRewards = async (tournamentId: number, token: IToken) => {
-    try {
-      return await this.manager.redeem(tournamentId, token);
-    } catch (error) {
-      console.log(error);
-      return Promise.reject("Error while claiming rewards");
-    }
-  };
-
-  /**
-   * Update tournament data
-   * @returns {Promise<void>}
-   */
-  public update = async (): Promise<void> => {
-    const timer = `updating-${randomHash(4)}`;
-    console.time(timer);
-
-    try {
-      await this.fetch();
-      this.updateStore();
-    } catch (error: any) {
-      console.log(error);
-      console.log("Error while updating Tournament");
-    } finally {
-      console.timeEnd(timer);
-    }
-  };
-
-  /**
-   * Update user balances
-   * @returns {Promise<void>}
-   */
-  public updateBalances = async (): Promise<void> => {
-    const timer = `updating-${randomHash(4)}`;
-    console.time(timer);
-
-    const id = this.getParam<number>("id");
-    const { fetchFee } = this.factory;
-    const { fetchUSDC, fetchTokens } = this.manager;
-
-    try {
-      await this.fetchParam("fee", fetchFee);
-      await this.fetchParam("usdc", fetchUSDC);
-      await this.fetchParam("tokens", () => fetchTokens(id));
-    } catch (error: any) {
-      console.log(error);
-      console.log("Error while updating Tournament");
-    } finally {
-      console.timeEnd(timer);
-    }
-  };
-
-  /**
-   * Update user rewards
-   * @returns {Promise<void>}
-   */
-  public updateRewards = async (): Promise<void> => {
-    const timer = `updating-${randomHash(4)}`;
-    console.time(timer);
-
-    const id = this.getParam<number>("id");
-    const { fetchRewards } = this.manager;
-
-    try {
-      await this.fetchParam("rewards", () => fetchRewards(id));
-    } catch (error: any) {
-      console.log(error);
-      console.log("Error while updating Tournament");
-    } finally {
-      console.timeEnd(timer);
-    }
-  };
-
-  /**
-   * Swap tokens
-   * @param {SwapOptions} options
-   * @returns {Promise<TransactionReceipt>}
-   */
-  public swap = async (
-    options: SwapOptions | undefined
-  ): Promise<TransactionReceipt> => {
-    if (!options) return Promise.reject("No options provided");
-    return await this.router.swapTokens(options);
-  };
-
-  /**
-   * Update tournament data in stores (pinia)
-   * @returns {void}
-   */
-  private updateStore = (): void => {
-    const data = Object.fromEntries(this.params) as Params;
+  public updateStore = (data: ManagerData): void => {
     useTournamentStore().update(data);
+    useRewardsStore().update(data.rewards as Reward[]);
     useSwapStore().update();
-    useRewardsStore().update(data.rewards);
+
+    if (data.usdc && data.usdc.amount) {
+      useUserStore().setUsdcBalance(
+        parseFloat(data.usdc.amount.toString()).toFixed(4) ?? "0.00"
+      );
+    }
   };
 
-  /**
-   * Update tournament process in stores (pinia)
-   * @param {boolean} process
-   * @returns {void}
-   */
   private updateStoreProcess = (process: boolean): void => {
     useTournamentStore().setProcess(process);
     useSwapStore().setProcess(process);
     useRewardsStore().setProcess(process);
+  };
+
+  public getAmountsOut = async (
+    options: AmountsOutOptions
+  ): Promise<string | undefined> => {
+    try {
+      const { from, to } = options;
+
+      const path = [from.address, to.address];
+      console.log(options);
+      const amountIn = ethers.utils
+        .parseUnits(
+          parseFloat(options.amount).toFixed(from.decimals),
+          from.decimals
+        )
+        .toString();
+
+      if (!options.amount || !options.from.address || !options.to.address)
+        return;
+
+      const args = [amountIn, path];
+
+      const result = await this.router.getAmountsOutWithFee(...args);
+      const [_, value] = result.toString().split(",");
+
+      return ethers.utils.formatUnits(value, options.to.decimals);
+    } catch (error) {
+      console.log(`Error while getting amounts out: ${error}`);
+    }
+  };
+
+  public swap = async (
+    options: SwapOptions | undefined
+  ): Promise<TransactionReceipt> => {
+    if (!options) return Promise.reject("No options provided");
+    return await this.swapTokens(options);
+  };
+
+  public swapTokens = async (
+    options: SwapOptions
+  ): Promise<TransactionReceipt> => {
+    const gasLimit = 100_000;
+
+    try {
+      const signerContract = this.router.connect(window.__SIGNER__);
+      const tx = await signerContract.swapExactTokensForTokens(
+        ...Object.values(options)
+      );
+      return await tx.wait();
+    } catch (error) {
+      console.log(error);
+      console.log("Error while swapping tokens");
+      return Promise.reject(error);
+    } finally {
+      this.updateSilent();
+    }
+  };
+
+  public redeem = async (tournamentId: number, token: IToken) => {
+    const amount = ethers.utils.parseUnits(token.amount, token.decimals);
+    try {
+      const signerContract = this.manager.connect(window.__SIGNER__);
+      const tx = await signerContract.redeem(tournamentId, amount);
+      return await tx.wait();
+    } catch (error) {
+      return Promise.reject(error);
+    } finally {
+      this.updateSilent();
+    }
+  };
+
+  private eventListener = () => {
+    console.log("Start listening for manager events");
+
+    if (!this.provider) {
+      console.error("Provider is not defined");
+      return;
+    }
+
+    // round started
+    this.manager.on("RoundStarted", this.roundStarted);
+    // round ended
+    this.manager.on("RoundEnded", this.roundEnded);
+    // tournament started
+    this.manager.on("TournamentStarted", this.tournamentStarted);
+  };
+
+  /**
+   * Events functions
+   */
+  private roundStarted = async (tournamentId: number, round: number) => {
+    const { pushNotification, removeAllNotifications } = useNotificationStore();
+
+    await sleep(750);
+    pushNotification({
+      title: "Round started",
+      status: INotificationStatus.SUBMITTED,
+      description: `Round ${Number(round) + 1} started`,
+    });
+
+    await sleep(750);
+    pushNotification({
+      title: "Updating",
+      status: INotificationStatus.PENDING,
+      description: `Wait for updating...`,
+    });
+
+    await this.init();
+    removeAllNotifications();
+  };
+
+  private roundEnded = async (
+    tournamentId: number,
+    round: number,
+    bracket: number[]
+  ) => {
+    const { pushNotification } = useNotificationStore();
+
+    pushNotification({
+      title: "Round ended",
+      status: INotificationStatus.PENDING,
+      description: `Round ${Number(round) + 1} ended`,
+    });
+
+    // last round
+    if (Number(round) === 2) {
+      await sleep(30000);
+
+      pushNotification({
+        title: "Tournament ended",
+        status: INotificationStatus.EXPIRED,
+        description: `Tournament ${Number(tournamentId)} ended`,
+      });
+
+      await sleep(750);
+      pushNotification({
+        title: "Updating",
+        status: INotificationStatus.PENDING,
+        description: `Wait for updating...`,
+      });
+
+      const { winningToken } = await this.fetchData();
+      console.log({ winningToken });
+
+      if (!winningToken) {
+        console.log(`Error while getting winning token. Winning token: ${winningToken}`);
+        return router.push("/claim-history");
+      }
+
+      await this.init();
+
+      const { showPopup } = usePopupsStore();
+      showPopup(Popup.CLAIM);
+    }
+  };
+
+  private tournamentStarted = async (tournamentId: number) => {
+    const { pushNotification } = useNotificationStore();
+    await this.update();
+
+    pushNotification({
+      title: "Tournament started",
+      status: INotificationStatus.SUBMITTED,
+      description: `Tournament ${Number(tournamentId)} started`,
+    });
+
+    await sleep(2000);
+
+    if (router.currentRoute.value.name !== "claim-rewards") {
+      router.push("/battle");
+    }
   };
 }

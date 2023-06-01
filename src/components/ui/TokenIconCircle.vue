@@ -22,7 +22,7 @@ defineProps<{
   width: var(--token-list-item-size);
   height: var(--token-list-item-size);
   position: relative;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .circle {

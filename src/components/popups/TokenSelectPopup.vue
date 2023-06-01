@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const { tokens, game, round } = storeToRefs(useTournamentStore());
+const {
+  tokens,
+  game,
+  usdc,
+} = storeToRefs(useTournamentStore());
 const { hideAllPopups } = usePopupsStore();
 const { setTo, setFrom } = useSwapStore();
 
@@ -13,12 +17,33 @@ const close = () => {
   hideAllPopups();
 };
 
-
 const setToken = (token: IToken) => {
   if (props.emitted === "from") setFrom(token);
   if (props.emitted === "to") setTo(token);
   close();
 };
+
+
+const formatedTokens = computed(() => {
+  if (!game) return [];
+  return tokens.value
+    .filter((t) => t?.address !== usdc.value?.address)
+    .map((token) => {
+      if (game.value?.loosers.includes(token.address)) {
+        token.price = "0.00";
+        token.inactive = true;
+      }
+      return token;
+    });
+});
+
+const sortedTokens = computed(() => {
+  return formatedTokens.value.sort((a, b) => {
+    if (+a.amount > +b.amount) return -1;
+    if (+a.amount < +b.amount) return 1;
+    return 0;
+  });
+});
 
 const animation = {
   content: {
@@ -40,11 +65,30 @@ const animation = {
       <div class="popup-content">
         <div class="title">Select token</div>
 
-        <div class="list">
+        <div class="list" v-if="game">
+          <div
+            v-if="usdc"
+            class="list-item"
+            :class="{ inactive: usdc.inactive }"
+            @click.stop="setToken(usdc as IToken)"
+          >
+            <div class="token-icon">
+              <TokenIcon
+                :name="usdc.symbol"
+                :hexagon="false"
+                :border="false"
+              />
+            </div>
+            <div class="token-data">
+              <span class="token-name">{{ usdc.name }}</span>
+              <span class="token-amount">{{ cutString(usdc.amount, 6) }}</span>
+            </div>
+          </div>
           <div
             class="list-item"
-            v-for="(token, index) in tokens"
+            v-for="(token, index) in sortedTokens"
             :key="index"
+            :class="{ inactive: token.inactive }"
             @click.stop="setToken(token)"
           >
             <div class="token-icon">
@@ -129,8 +173,13 @@ const animation = {
   transition: all 0.3s ease;
   padding: 0 8px;
   border-radius: 8px;
-}
 
+  &.inactive {
+    opacity: 0.5;
+    user-select: none;
+    pointer-events: none;
+  }
+}
 
 .list-item:hover {
   cursor: pointer;

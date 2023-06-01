@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
 
+const DEFAULT_TIMEOUT = 5000;
+
 export const useNotificationStore = defineStore("notification-module", () => {
   const notifications = ref<INotification[]>([]);
 
   const pushNotification = (notification: INotification) => {
     const id = uuidv4();
-    notifications.value.push({ ...notification, id });
+    notifications.value.push({ ...notification, id, closeTimeout: DEFAULT_TIMEOUT });
     return id;
   };
 

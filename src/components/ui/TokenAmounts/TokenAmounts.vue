@@ -1,9 +1,10 @@
 <script setup lang="ts">
-const { user } = storeToRefs(useUserStore());
-const { process } = storeToRefs(useTournamentStore());
-const { totalAmountsUSD } = useTournamentStore();
+import { useAccount } from 'vagmi'
 
-const showChart = ref(true);
+const { isConnected } = useAccount()
+const { process } = storeToRefs(useTournamentStore());
+
+const showChart = ref(false);
 
 const toggle = () => {
   showChart.value = !showChart.value;
@@ -14,23 +15,23 @@ const toggle = () => {
   <div class="token-amounts">
     <TheCard :swapEdges="true">
       <div class="wrapper">
-        <Motion class="title" v-if="user && !process">
-          <span>You've got</span>
+        <Motion class="title" v-if="isConnected && !process">
+          <span>Your Balance</span>
           <div class="balance">
-            <sup>$</sup>
-            <span>{{ totalAmountsUSD() }}</span>
+            <!-- <sup>$</sup>
+            <span>{{ totalAmountsUSD() }}</span> -->
           </div>
         </Motion>
 
-        <template v-if="showChart && user && !process">
+        <template v-if="showChart && isConnected && !process">
           <TokenAmountsChart />
         </template>
 
-        <template v-if="!showChart && user && !process">
+        <template v-if="!showChart && isConnected && !process">
           <TokenAmountsList />
         </template>
 
-        <div class="toggle" v-if="user && !process">
+        <div class="toggle" v-if="isConnected && !process">
           <div
             class="toggle-point"
             :class="{ active: showChart }"
@@ -48,12 +49,12 @@ const toggle = () => {
         </div>
 
         <!-- loader -->
-        <div class="load" v-if="user && process">
+        <div class="load" v-if="isConnected && process">
           <TheLoader />
         </div>
 
         <!-- user not connected -->
-        <template v-if="!user">
+        <template v-if="!isConnected">
           <Motion :delay="0.4" class="no-connected">
             <UserNotConnected />
           </Motion>
@@ -69,13 +70,14 @@ const toggle = () => {
   min-width: 320px;
   max-width: 340px;
   display: flex;
+
 }
 
 .wrapper {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 30px;
   position: relative;
 }
 
@@ -92,14 +94,15 @@ const toggle = () => {
   display: flex;
   align-items: center;
   margin-top: 10px;
-
+  
   sup {
     font-size: 14px;
   }
-
+  
   span {
-    font-family: "Aurebesh";
-    font-size: 32px;
+    /* font-family: "Aurebesh"; */
+    font-size: 30px;
+    font-weight: bold;
     padding: 0;
     margin-top: -14px;
   }

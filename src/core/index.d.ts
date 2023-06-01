@@ -1,7 +1,4 @@
 /// <reference path="./models/Token.d.ts" />
-/// <reference path="./models/Router.d.ts" />
-/// <reference path="./models/Factory.d.ts" />
-/// <reference path="./models/Manager.d.ts" />
 /// <reference path="./models/Game.d.ts" />
 
 type Contract = ethers.Contract;
@@ -11,36 +8,13 @@ type ContractTransaction = ethers.ContractTransaction;
 type TransactionReceipt = ethers.TransactionReceipt;
 
 interface ITournament {
-  router: IRouter;
-  factory: IFactory;
-  manager: IManager;
-  params: TournamentParams;
-  fetchStatus: () => Promise<void>;
-  claimRewards: (
-    tournamentId: number,
-    token: IToken
-  ) => Promise<TransactionReceipt>;
+  fetchStatus: () => Promise<boolean>;
+  init: () => Promise<void>;
+  updateSilent: () => Promise<void>;
   update: () => Promise<void>;
-  updateBalances: () => Promise<void>;
-  updateRewards: () => Promise<void>;
-  swap: (options: SwapOptions | undefined) => Promise<TransactionReceipt>;
-}
-
-interface Params {
-  id: number;
-  round: number;
-  bracket: number[];
-
-  status: boolean;
-  fee: number;
-  startTime: number;
-
-  tokens: IToken[];
-  usdc: IToken;
-
-  game: IGame;
-  rewards: Reward[];
-  winner: IToken;
+  getAmountsOut: (options: AmountsOutOptions) => Promise<string | undefined>;
+  swap: (options: SwapOptions) => Promise<ContractTransaction>;
+  swapTokens: (options: SwapOptions) => Promise<ContractTransaction>;
 }
 
 interface Reward {
@@ -51,4 +25,16 @@ interface Reward {
   approved: boolean;
 }
 
-type TournamentParams = Map<keyof Params, (typeof Params)[keyof Params]>;
+interface SwapOptions {
+  amount: string;
+  slippage: string;
+  path: string[];
+  to: string;
+  deadline: number;
+}
+
+interface AmountsOutOptions {
+  amount: string;
+  from: IToken;
+  to: IToken;
+}

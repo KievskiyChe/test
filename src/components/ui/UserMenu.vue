@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
-const { user } = storeToRefs(useUserStore());
 
 const showMenu = ref(false);
 const outside = ref<HTMLElement | null>(null);
@@ -10,7 +9,6 @@ onClickOutside(outside, () => {
 });
 
 const toggleMenu = () => {
-  if (!user.value) return;
   showMenu.value = !showMenu.value;
 };
 </script>
@@ -30,7 +28,7 @@ const toggleMenu = () => {
         <Motion :from="{ y: -20 }" :to="{ y: 0 }">
           <ThePopup>
             <div class="body">
-              <router-link :to="{ name: 'claim-history' }" class="item">
+              <router-link :to="{ name: 'claim-history' }" class="item" @click="showMenu = false">
                 <div class="icon">
                   <img src="@/assets/img/icons/claim.svg" />
                 </div>

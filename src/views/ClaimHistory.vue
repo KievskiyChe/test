@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { rewards } = storeToRefs(useRewardsStore());
-const { process } = storeToRefs(useTournamentStore());
+const { process, isActive } = storeToRefs(useTournamentStore());
 
 const animation = {
   from: {
@@ -12,23 +12,26 @@ const animation = {
     "backdrop-filter": "blur(20px)",
   },
 };
+
+onMounted(() => {
+  const t = getTournament();
+  t.updateSilent();
+})
 </script>
 <template>
-  <div class="history">
+  <div class="view history">
     <div class="overlay">
       <img src="@/assets/img/claim-history-bg.png" alt="" v-lazyload />
     </div>
 
-    <TheHeader />
-
     <main class="content container">
       <div class="title">
         <h1>Battle History</h1>
-        <p>prizes information</p>
+        <p>prizes</p>
       </div>
 
       <div class="rewards" v-if="!process">
-        <template v-if="rewards.length">
+        <template v-if="rewards && rewards.length">
           <div class="list">
             <Motion
               v-bind="animation"
@@ -41,7 +44,7 @@ const animation = {
           </div>
         </template>
 
-        <template v-if="!rewards.length">
+        <template v-if="!rewards || !rewards.length">
           <Motion>
             <div class="wrapper">
               <p>No rewards yet</p>
@@ -55,6 +58,14 @@ const animation = {
           <TheLoader />
         </div>
       </div>
+
+      <div class="actions" v-if="isActive">
+        <router-link to="/tournament">
+          <TheButton>
+            <span>Back to tournament</span>
+          </TheButton>
+        </router-link>
+      </div>
     </main>
 
     <TheFooter />
@@ -63,11 +74,9 @@ const animation = {
 
 <style scoped lang="scss">
 .history {
-  height: 100%;
-  min-height: 100vh;
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr 80px;
+  grid-template-rows: 1fr 80px;
   overflow: hidden;
   gap: 30px;
 }
@@ -76,6 +85,10 @@ const animation = {
   height: 100%;
   display: grid;
   place-items: center;
+}
+
+.actions {
+  margin-top: 100px;
 }
 
 .process .wrapper {
@@ -92,7 +105,7 @@ const animation = {
 }
 
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;

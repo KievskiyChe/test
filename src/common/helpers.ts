@@ -8,7 +8,16 @@ export const setGlobals = ({
 }: Globals): void => {
   window.__PROVIDER__ = provider;
   window.__SIGNER__ = signer;
-  window.__USER_ADDRESS__ = userAddress;
+  window.__USER_ADDRESS__ = userAddress ?? "";
+  // console.log("Globals setted", {
+  //   userAddress,
+  //   provider,
+  //   signer,
+  // })
+};
+
+export const updateGlobalsAddress = (address: string): void => {
+  window.__USER_ADDRESS__ = address;
 };
 
 export const typewatch = (() => {
@@ -113,8 +122,6 @@ export const addTokenToMetaMask = async (symbol: string): Promise<void> => {
     deaw: "0x9Fae8e060A51e2f96Ba34658627E7dC29844F347",
   };
 
-  console.log(symbol);
-
   const options = {
     address: tokens[symbol.toLowerCase()],
     symbol: symbol.toUpperCase(),
@@ -131,3 +138,22 @@ export const addTokenToMetaMask = async (symbol: string): Promise<void> => {
     console.log(error);
   }
 };
+
+export const nFormatter = (num: number): string => {
+  const abbreviations = ["", "K", "M", "B", "T", "Qa"];
+  let abbreviatedNum = num;
+  let abbreviationIndex = 0;
+
+  while (abbreviatedNum >= 1000) {
+    abbreviatedNum /= 1000;
+    abbreviationIndex++;
+  }
+
+  if (abbreviationIndex > 0 && abbreviationIndex < abbreviations.length) {
+    return `${abbreviatedNum.toFixed(2)}${abbreviations[abbreviationIndex]}`;
+  } else {
+    return parseFloat(num.toString()).toFixed(2);
+  }
+};
+
+export default nFormatter;

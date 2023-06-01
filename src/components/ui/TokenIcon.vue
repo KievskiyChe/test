@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface Props {
-  name: string;
+  name?: string;
   active?: boolean;
   hexagon?: boolean;
   big?: boolean;
@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const token = computed(() => {
-  return props.name.toLowerCase();
+  return props.name?.toLowerCase();
 });
 </script>
 
@@ -30,7 +30,7 @@ const token = computed(() => {
     ]"
   >
     <div class="token-image">
-      <img :src="getImage(`tokens/${token}.png`)" :alt="name" />
+      <img :src="getImage(`tokens/${token}.png`)" :alt="name" v-if="name"/>
     </div>
   </div>
 </template>

@@ -13,6 +13,8 @@
   -webkit-text-size-adjust: 100%;
   font-family: Inter;
   letter-spacing: 0.02em;
+
+  -webkit-tab-highlight-color: transparent;
 }
 
 body {
@@ -40,6 +42,15 @@ body {
   overflow-x: hidden;
 }
 
+.view {
+  height: 100%;
+  min-height: calc(100vh - calc(var(--header-height) + var(--footer-height)));
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+}
+
 .container {
   max-width: 1440px;
   margin: 0 auto;
@@ -51,6 +62,9 @@ a {
   text-decoration: none;
 }
 
+.allowance-amount {
+  font-size: 8px !important;
+}
 
 
 @media screen and (max-width: 768px) {

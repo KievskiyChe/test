@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useWindowSize } from "@vueuse/core";
+
+const { width, height } = useWindowSize();
+
 interface Props {
   active?: boolean;
   token?: IToken;
@@ -18,6 +22,10 @@ const color = computed(() => {
   if (!props.active && props.past) return "#aab2cc50";
   if (!props.active && !props.past) return "#aab2cc";
   return "#aab2cc";
+});
+
+const mobile = computed(() => {
+  return width.value < 768;
 });
 </script>
 
@@ -271,8 +279,8 @@ const color = computed(() => {
         </defs>
       </svg>
 
-      <div class="icon" v-if="token">
-        <TokenIcon :name="token.symbol" :active="props.active" />
+      <div class="icon">
+        <TokenIcon :name="token?.symbol" :active="props.active" :big="mobile" />
       </div>
 
       <div class="player-name" v-if="token">
@@ -456,6 +464,65 @@ const color = computed(() => {
 
   #layer {
     fill: url(#gradientActive);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .player {
+    svg {
+      display: none;
+    }
+
+    &-name {
+      display: none;
+    }
+
+    .icon {
+      top: unset;
+      left: unset;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+    
+
+    // odd (1,3,5,7)
+  &:nth-child(odd) .connect-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+
+    &::after {
+      height: 100%;
+      top: 48%;
+      right: calc(50% - 50px);
+      border-radius: 0;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
+
+  // even (2,4,6,8)
+  &:nth-child(even) .connect-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+
+    &::after {
+      height: 100%;
+      bottom: 47%;
+      right: calc(50% - 50px);
+      border-radius: 0;
+    }
+
+    &::before {
+      display: none;
+    }
+  }
   }
 }
 </style>

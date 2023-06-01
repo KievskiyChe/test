@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:net": "yarn dev --host 0.0.0.0",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
     "test": "jest"
@@ -13,13 +14,18 @@
     "@types/uuid": "^9.0.0",
     "@vueuse/core": "^9.11.0",
     "@vueuse/motion": "^2.0.0-beta.12",
+    "@vueuse/sound": "^2.0.1",
+    "bottleneck": "^2.19.5",
+    "ethereum-multicall": "^2.16.1",
     "ethers": "^5.7.2",
     "hardhat": "^2.13.0",
     "pinia": "^2.0.28",
+    "rollup-plugin-polyfill-node": "^0.12.0",
     "sass": "^1.57.1",
     "uuid": "^9.0.0",
+    "vagmi": "^0.1.20",
     "vue": "^3.2.45",
-    "vue-dapp-connector": "2.4.6",
+    "vue-query": "^1.26.0",
     "vue-router": "4"
   },
   "devDependencies": {

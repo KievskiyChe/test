@@ -1,24 +1,32 @@
 <script setup lang="ts">
 import { cutString } from "@/common/helpers";
 import TokenIcon from "@/components/ui/TokenIcon.vue";
+const { game } = storeToRefs(useTournamentStore())
 
-defineProps<{
+const props = defineProps<{
   id: number;
   token: IToken;
+  field: string;
 }>();
+
+const data = computed(() => {
+  const t = props.token as any
+  return t[props.field]
+})
 </script>
 
 <template>
-  <div class="token-price">
+  <div class="token-price" v-if="game" :class="{inactive: token.inactive }">
     <div class="token-id">{{ id }}.</div>
 
-    <div class="icon" @click.stop="addTokenToMetaMask(token.symbol)">
+    <div class="icon">
       <TokenIcon :name="token.symbol" />
     </div>
 
     <div class="token-content">
       <span>{{ token.symbol }}</span>
-      <span>{{ cutString(token.price, 12) }}</span>
+      <span v-if="props.field === 'price'">${{ cutString(parseString(data, 6), 10) }}</span>
+      <span v-if="props.field === 'liquidityPool'">${{ cutString(parseString(data, 4), 10) }}</span>
     </div>
   </div>
 </template>
@@ -30,20 +38,19 @@ defineProps<{
   align-items: center;
   position: relative;
   height: 38px;
+
+  &.inactive {
+    opacity: 0.5;
+    user-select: none;
+    pointer-events: none;
+  }
 }
 
 .icon {
   position: relative;
-  cursor: pointer;
   user-select: none;
   z-index: 1;
-
   transition: all 0.3s ease;
-
-  &:focus,
-  &:active {
-    scale: 0.9;
-  }
 }
 
 .token-content {

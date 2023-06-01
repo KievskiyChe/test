@@ -12,13 +12,13 @@ export const useRewardsStore = defineStore("rewards-module", () => {
 
   const approveReward = async (userReward: Reward | undefined) => {
     process.value = true;
-    const tournament = getTournament();
+    const tournament = getTournament() as any;
 
     if (!userReward || !tournament) return;
 
     try {
-      await userReward.token.approveManager(userReward.token.amount);
-      await tournament.updateRewards();
+      await userReward.token.approve(userReward.token.managerAddress ?? "");
+      await tournament.updateSilent();
 
       pushNotification({
         status: INotificationStatus.SUBMITTED,
@@ -39,13 +39,12 @@ export const useRewardsStore = defineStore("rewards-module", () => {
 
   async function claimReward(userReward: Reward | undefined) {
     process.value = true;
-    const tournament = getTournament();
+    const tournament = getTournament() as any;
 
     if (!userReward || !tournament) return;
 
     try {
-      await tournament.claimRewards(userReward.tournamentId, userReward.token);
-      await tournament.updateRewards();
+      await tournament.redeem(userReward.tournamentId, userReward.token);
 
       pushNotification({
         status: INotificationStatus.SUBMITTED,

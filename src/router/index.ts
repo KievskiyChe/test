@@ -1,32 +1,28 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { HomeQuard, BattleQuard, ClaimHistoryQuard } from "./quards";
 
 const routes = [
   {
-    path: "/",
+    path: "/waitplease",
     name: "home",
     component: () => import("../views/Home.vue"),
-    beforeEnter: HomeQuard,
   },
   {
     path: "/offline",
     component: () => import("../views/Offline.vue"),
   },
   {
-    path: "/battle",
+    path: "/tournament",
     name: "battle",
     component: () => import("../views/Battle.vue"),
-    beforeEnter: BattleQuard,
   },
   {
     path: "/claim-history",
     name: "claim-history",
     component: () => import("../views/ClaimHistory.vue"),
-    beforeEnter: ClaimHistoryQuard,
   },
   {
     path: "/:pathMatch(.*)*",
-    redirect: { name: "home" },
+    redirect: { name: "battle" },
   },
 ];
 
@@ -34,5 +30,27 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+router.beforeEach(async (to, from, next) => {
+  const tournament = getTournament();
+
+  if (!tournament) {
+    return next();
+  }
+
+  await tournament.fetchStatus()
+
+  const { isActive } = storeToRefs(useTournamentStore());
+
+  if (to.name === "home" && isActive.value) {
+    return next('/tournament');
+  }
+
+  if (to.name === "battle" && !isActive.value) {
+    return next('/waitplease');
+  }
+
+  next()
+})
 
 export default router;

@@ -4,6 +4,8 @@ import { defineConfig } from "vite";
 import Vue from "@vitejs/plugin-vue";
 import Components from "unplugin-vue-components/vite";
 import AutoImport from "unplugin-auto-import/vite";
+import nodePolyfills from "rollup-plugin-polyfill-node";
+const production = process.env.NODE_ENV === "production";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,6 +21,10 @@ export default defineConfig({
       vueTemplate: true,
       dts: "./config/auto-imports.d.ts",
     }),
+    !production &&
+      nodePolyfills({
+        include: ["node_modules/**/*.js", new RegExp("node_modules/.vite/.*js")]
+      })
   ],
   resolve: {
     alias: [
@@ -32,4 +38,7 @@ export default defineConfig({
     global: "window",
     "process.env": {},
   },
+  optimizeDeps: {
+    exclude: ['vue-demi']
+  }
 });

@@ -1,21 +1,19 @@
 interface IToken {
-  address: string;
-  name: string;
-  symbol: string;
-  decimals: number;
-  price: string;
-  amount: string;
-  approved: boolean;
-  get amountUSD(): string;
-  balanceOf: (address: string) => Promise<string>;
-  totalSupply: () => Promise<string>;
-  approve: () => Promise<TransactionReceipt>;
-  approveManager: (amount: string) => Promise<TransactionReceipt>;
-  fetchAllowanceManager: () => Promise<boolean>;
-}
-
-interface TokenCreate {
-  address: string;
-  router: Contract;
-  manager: Contract;
+  public address: string;
+  public name: string;
+  public symbol: string;
+  public decimals: number;
+  public price: string;
+  public amount: string;
+  public liquidityPool: string;
+  public liquidityPoolAddress: string;
+  public approved: boolean;
+  public approvedManager: boolean;
+  public allowance: string;
+  public allowanceManager: string;
+  public routerAddress: string;
+  public managerAddress: string;
+  public needMoreApprove?: boolean;
+  public inactive?: boolean;
+  public approve: (spender: string) => Promise<TransactionReceipt>;
 }

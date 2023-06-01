@@ -80,12 +80,11 @@ onMounted(() => {
 }
 
 .title {
-  text-align: right;
+  text-align: center;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-size: 13px;
   line-height: 150%;
-  padding-right: 10px;
 }
 
 .digits {

@@ -1,4 +1,21 @@
 <script setup lang="ts">
+import { INotificationStatus } from "@/common/interfaces";
+import { useSwitchNetwork } from "vagmi";
+
+const { pushNotification } = useNotificationStore();
+
+const { isLoading, switchNetwork } =
+  useSwitchNetwork({
+    chainId: 137,
+    onSuccess: () => {
+      pushNotification({
+        status: INotificationStatus.SUBMITTED,
+        title: "Success",
+        description: 'Network switched successfully'
+      })
+    },
+  });
+
 const animation = {
   content: {
     from: {
@@ -17,7 +34,7 @@ const animation = {
 
     <Motion v-bind="animation.content" class="content">
       <div class="popup-content">
-        <div class="title">Invalid Netwrok</div>
+        <div class="title">Invalid Network</div>
 
         <div class="body">
           <img src="@/assets/img/icons/yoda.svg" alt="" />
@@ -25,8 +42,8 @@ const animation = {
 
         <div class="foo">
           <p>switch to</p>
-          <TheButton @click.stop="switchNetwork(5)">
-            <span>goerli testnet</span>
+          <TheButton @click.stop="switchNetwork()" :disabled="isLoading">
+            <span>{{ isLoading ? "switching..." : "Polygon" }}</span>
           </TheButton>
         </div>
       </div>
@@ -70,8 +87,6 @@ const animation = {
   background-color: #111111;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-
-  animation: animate 30s ease infinite;
 }
 
 .popup-content {

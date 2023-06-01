@@ -54,8 +54,11 @@ export const useSwapStore = defineStore("swap-module", () => {
       to.value = usdc.value;
     }
 
+    if (value === usdc.value) {
+      to.value = tokens.value[0];
+    }
+
     from.value = value;
-    resetForm();
   };
 
   // set token to
@@ -71,8 +74,11 @@ export const useSwapStore = defineStore("swap-module", () => {
       from.value = usdc.value;
     }
 
+    if (value === usdc.value) {
+      from.value = tokens.value[0];
+    }
+
     to.value = value;
-    resetForm();
   };
 
   // set amount from
@@ -86,7 +92,8 @@ export const useSwapStore = defineStore("swap-module", () => {
   };
 
   // set slippage
-  const setSlippage = (value: number) => {
+  const setSlippage = (value: number | null) => {
+    if (!value) return;
     slippage.value = value;
   };
 
@@ -100,13 +107,8 @@ export const useSwapStore = defineStore("swap-module", () => {
   // swap tokens position
   const swapPositions = () => {
     const temp = from.value;
-    const tempAmount = amountFrom.value;
-
     from.value = to.value;
     to.value = temp;
-
-    amountFrom.value = amountTo.value;
-    amountTo.value = tempAmount;
   };
 
   const startProcess = () => {
@@ -157,7 +159,6 @@ export const useSwapStore = defineStore("swap-module", () => {
 
   const getTokenTo = (to: IToken | undefined): IToken | undefined => {
     const { tokens, usdc } = storeToRefs(useTournamentStore());
-
     if (!tokens.value || !usdc.value) return;
 
     if (!usdc.value) return tokens.value[0];
@@ -169,8 +170,13 @@ export const useSwapStore = defineStore("swap-module", () => {
 
   const update = (): void => {
     from.value = getTokenFrom(from.value);
-    to.value = getTokenTo(to.value);
+    to.value = getTokenTo(to.value) ?? {} as IToken;
   };
+
+  const init = (): void => {
+    from.value = getTokenFrom(from.value);
+    to.value = {} as IToken;
+  }
 
   return {
     process,
@@ -195,5 +201,6 @@ export const useSwapStore = defineStore("swap-module", () => {
     successProcess,
     errorProcess,
     update,
+    init
   };
 });

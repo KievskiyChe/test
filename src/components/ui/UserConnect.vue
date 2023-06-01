@@ -1,27 +1,21 @@
 <script setup lang="ts">
-import type { Connector } from "vue-dapp-connector";
 import { onClickOutside } from "@vueuse/core";
+import { useAccount, useDisconnect } from "vagmi";
+import { Popup } from "@/common/interfaces";
 
-const connector = inject<Connector>("Connector")!;
-
-const { connect, disconnect } = connector;
-const { getShortAddress } = useUserStore();
-const { user } = storeToRefs(useUserStore());
-
-const handleConnect = () => {
-  connect().then((data) => {
-    window.location.reload();
-  });
-};
-
-const handleDisconnect = () => {
-  disconnect().then(() => {
-    localStorage.clear();
-  });
-};
+const { showPopup } = usePopupsStore();
+const { address, isConnected } = useAccount();
+const { disconnect } = useDisconnect();
+const { usdcBalance } = storeToRefs(useUserStore());
 
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
+
+const shortAddress = computed(() => {
+  if (address.value) {
+    return address.value.slice(0, 6) + "..." + address.value.slice(-4);
+  }
+});
 
 onClickOutside(outside, () => {
   showUserInfo.value = false;
@@ -30,11 +24,11 @@ onClickOutside(outside, () => {
 
 <template>
   <div class="user" ref="outside">
-    <template v-if="!user">
+    <template v-if="!isConnected">
       <Motion>
-        <div class="content" @click="handleConnect()">
+        <div class="content" @click="showPopup(Popup.AUTH)">
           <div class="icon">
-            <img src="@/assets/img/icons/eth.svg" alt="Ethereum" />
+            <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
 
           <span class="connect">Connect</span>
@@ -42,14 +36,13 @@ onClickOutside(outside, () => {
       </Motion>
     </template>
 
-    <template v-if="user">
+    <template v-if="isConnected">
       <Motion>
         <div class="content" @click.stop="showUserInfo = !showUserInfo">
           <div class="icon">
-            <img src="@/assets/img/icons/eth.svg" alt="Ethereum" />
+            <img src="@/assets/img/icons/polygon.svg" alt="Ethereum" />
           </div>
-
-          <span class="user-address">{{ getShortAddress() }}</span>
+          <span class="user-address">{{ shortAddress }}</span>
         </div>
       </Motion>
     </template>
@@ -66,11 +59,15 @@ onClickOutside(outside, () => {
                 <img src="@/assets/img/icons/yoda.svg" alt="Yoda" />
               </div>
 
-              <!-- <div class="usdt-value">USDT 00.00</div> -->
-              <!-- <div class="dollar-value">$ 00.00</div> -->
+              <div class="usdt-value" v-if="isConnected">
+                miMATIC {{ usdcBalance }}
+              </div>
             </div>
 
-            <div class="disconnect" @click="handleDisconnect()">
+            <div
+              class="disconnect"
+              @click="disconnect(), (showUserInfo = false)"
+            >
               <span>Disconnect</span>
             </div>
           </ThePopup>
@@ -91,11 +88,63 @@ onClickOutside(outside, () => {
 .content {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   cursor: pointer;
 
   span {
     padding-bottom: 3px;
+  }
+
+  .icon {
+    width: 20px;
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.multicall {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+
+  span {
+    text-align: center;
+  }
+
+  .toggle {
+    justify-self: center;
+    width: 60px;
+    height: 20px;
+    border: 1px solid var(--white-200);
+    border-radius: 6px;
+
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &.active {
+      border-color: var(--shadow-yellow-300);
+      background: var(--shadow-yellow-300);
+      .circle {
+        translate: 34px 0;
+        background: var(--shadow-yellow);
+      }
+    }
+  }
+
+  .toggle .circle {
+    width: 20px;
+    height: 100%;
+    border-radius: 4px;
+    background: var(--white-300);
+    transition: all 0.3s ease;
   }
 }
 
