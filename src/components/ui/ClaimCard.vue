@@ -82,6 +82,7 @@ defineProps<Props>();
   grid-template-columns: 180px 1fr 160px;
   gap: 10px;
 }
+
 .card {
   transition: all 0.3s ease;
 }

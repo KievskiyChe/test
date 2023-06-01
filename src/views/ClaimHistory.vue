@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useAccount } from "vagmi";
+const { showPopup } = usePopupsStore();
 const { rewards } = storeToRefs(useRewardsStore());
 const { process, isActive } = storeToRefs(useTournamentStore());
+const { isConnected } = useAccount();
 
 const animation = {
   from: {
@@ -16,7 +19,7 @@ const animation = {
 onMounted(() => {
   const t = getTournament();
   t.updateSilent();
-})
+});
 </script>
 <template>
   <div class="view history">
@@ -25,30 +28,57 @@ onMounted(() => {
     </div>
 
     <main class="content container">
-      <div class="title">
-        <h1>Battle History</h1>
-        <p>prizes</p>
+      <div class="circles" v-if="!isConnected">
+        <img src="@/assets/img/circles.svg" alt="" />
       </div>
 
       <div class="rewards" v-if="!process">
-        <template v-if="rewards && rewards.length">
+        <div class="title">
+          <h1>Battle History</h1>
+          <p>prizes information</p>
+        </div>
+
+        <template v-if="rewards && rewards.length && isConnected">
           <div class="list">
-            <Motion
-              v-bind="animation"
-              v-for="(claim, i) in rewards"
-              :key="i"
-              :delay="i * 0.1"
-              style="border-radius: 28px;"
-            >
-              <ClaimCard :claim="claim" />
-            </Motion>
+            <div class="list-content">
+              <Motion
+                v-bind="animation"
+                v-for="(claim, i) in rewards"
+                :key="i"
+                :delay="i * 0.1"
+                style="border-radius: 28px"
+              >
+                <ClaimCard
+                  :claim="claim"
+                  v-for="(claim, i) in rewards"
+                  :key="i"
+                />
+              </Motion>
+            </div>
           </div>
         </template>
 
-        <template v-if="!rewards || !rewards.length">
+        <template v-if="(!rewards || !rewards.length) && isConnected">
           <Motion>
             <div class="wrapper">
               <p>No rewards yet</p>
+            </div>
+          </Motion>
+        </template>
+
+        <template v-if="!isConnected">
+          <Motion>
+            <div class="wrapper not-connected">
+              <img src="@/assets/img/claim-history-not-connected.svg" alt="" />
+
+              <p>
+                To see your balance and <br />participate in the battle,<br />connect
+                wallet
+              </p>
+
+              <TheButton @click.stop="showPopup(Popup.AUTH)">
+                <span>Connect wallet</span>
+              </TheButton>
             </div>
           </Motion>
         </template>
@@ -80,6 +110,34 @@ onMounted(() => {
   grid-template-rows: 1fr 80px;
   overflow: hidden;
   gap: 30px;
+}
+
+.rewards {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 40px;
+  height: 100%;
+}
+
+.circles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.not-connected {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
 
 .process {
@@ -146,24 +204,29 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  text-transform: uppercase;
 
   h1 {
-    font-size: 36px;
+    font-size: 32px;
   }
+
   p {
     font-size: 20px;
-    text-transform: uppercase;
   }
 }
 
 .list {
+  height: 100%;
+}
+
+.list-content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 25px;
 }
 
 @media screen and (max-width: 768px) {
-  .list {
+  .list-content {
     grid-template-columns: 1fr;
     gap: 40px;
   }

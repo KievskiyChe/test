@@ -20,65 +20,23 @@ defineProps<Props>();
   --edge: 10px;
   --border-size: 4px;
 
-  background: var(--accent);
-
-  text-transform: uppercase;
-  font-weight: 900;
+  /* background: var(--accent); */
+  background: var(--white-50);
+  border: 3px solid var(--accent);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
   color: #fff;
 
-  border: 0;
   outline: 0;
 
-  height: 54px;
+  height: 44px;
   width: 100%;
-  max-width: 280px;
+  max-width: 220px;
 
   position: relative;
   z-index: 2;
   cursor: pointer;
-
-  clip-path: polygon(
-    var(--edge) 0%,
-    100% 0,
-    100% calc(100% - var(--edge)),
-    calc(100% - var(--edge)) 100%,
-    0 100%,
-    0% var(--edge)
-  );
-
-  &:hover {
-    &::after {
-      background: var(--accent);
-    }
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-
-    top: var(--border-size);
-    left: var(--border-size);
-
-    width: calc(100% - calc(var(--border-size) * 2));
-    height: calc(100% - calc(var(--border-size) * 2));
-
-    transition: all 0.3s ease;
-
-    background: linear-gradient(
-      108.41deg,
-      rgba(0, 0, 0, 1) 0.93%,
-      rgba(69, 73, 83, 1) 100%
-    );
-
-    clip-path: polygon(
-      calc(var(--edge) * 0.85) 0%,
-      100% 0,
-      100% calc(100% - var(--edge) * 0.85),
-      calc(100% - var(--edge) * 0.85) 100%,
-      0 100%,
-      0% calc(var(--edge) * 0.85)
-    );
-  }
+  transition: all 0.3s ease;
 
   .content {
     height: 100%;
@@ -88,6 +46,11 @@ defineProps<Props>();
     justify-content: center;
     gap: 10px;
     z-index: 1;
+  }
+
+  &:hover {
+    background: var(--accent);
+    color: var(--white);
   }
 }
 
