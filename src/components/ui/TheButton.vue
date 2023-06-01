@@ -20,7 +20,7 @@ defineProps<Props>();
   --edge: 10px;
   --border-size: 4px;
 
-  background: var(--shadow-yellow);
+  background: var(--accent);
 
   text-transform: uppercase;
   font-weight: 900;
@@ -48,7 +48,7 @@ defineProps<Props>();
 
   &:hover {
     &::after {
-      background: var(--shadow-yellow);
+      background: var(--accent);
     }
   }
 

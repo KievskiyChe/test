@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside } from "@vueuse/core";
+import { blurry } from "@/common/animations";
 
 const showMenu = ref(false);
 const outside = ref<HTMLElement | null>(null);
@@ -25,10 +26,14 @@ const toggleMenu = () => {
 
     <template v-if="showMenu">
       <div class="popup-wrapper">
-        <Motion :from="{ y: -20, 'backdrop-filter': 'blur(0)' }" :to="{ y: 0, 'backdrop-filter': 'blur(10px)' }">
+        <Motion :from="blurry.from" :to="blurry.to">
           <ThePopup>
             <div class="body">
-              <router-link :to="{ name: 'claim-history' }" class="item" @click="showMenu = false">
+              <router-link
+                :to="{ name: 'claim-history' }"
+                class="item"
+                @click="showMenu = false"
+              >
                 <div class="icon">
                   <img src="@/assets/img/icons/claim.svg" />
                 </div>

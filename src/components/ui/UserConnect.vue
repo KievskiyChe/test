@@ -2,6 +2,7 @@
 import { onClickOutside } from "@vueuse/core";
 import { useAccount, useDisconnect, useProvider } from "vagmi";
 import { Popup } from "@/common/interfaces";
+import { blurry } from "@/common/animations";
 
 const { showPopup } = usePopupsStore();
 const { address, isConnected } = useAccount();
@@ -58,7 +59,7 @@ onClickOutside(outside, () => {
     <!-- show popup -->
     <template v-if="showUserInfo">
       <div class="popup-wrapper">
-        <Motion :from="{ y: -20, 'backdrop-filter': 'blur(0)' }" :to="{ y: 0, 'backdrop-filter': 'blur(10px)' }">
+        <Motion :from="blurry.from" :to="blurry.to">
           <ThePopup>
             <b>Your wallet</b>
 
