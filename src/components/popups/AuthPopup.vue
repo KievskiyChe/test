@@ -126,7 +126,7 @@ const animation = {
   top: 0;
   left: 0;
   background: var(--black-600);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(12px);
 }
 
 .content {
@@ -135,15 +135,14 @@ const animation = {
   border-radius: 8px;
 
   background: linear-gradient(
-    109.29deg,
-    rgba(69, 73, 83, 0.5) 0%,
-    rgba(12, 12, 14, 0.5) 49.21%,
-    rgba(69, 73, 83, 0.5) 100%
-  );
+      112.48deg,
+      rgba(255, 255, 255, 0.2) 3.47%,
+      rgba(255, 255, 255, 0) 101.88%
+    );
 
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(20px);
+  border: 1px solid var(--white-500);
+  backdrop-filter: blur(15px);
+  border-radius: 28px;
 }
 
 .popup-content {
@@ -171,10 +170,10 @@ const animation = {
   align-items: center;
   gap: 15px;
   height: 60px;
-  border: 1px solid var(--white-100);
-  border-radius: 4px;
+  border: 1px solid var(--white-200);
+  border-radius: 8px;
   padding: 0 15px;
-  background: var(--black-200);
+  background: var(--white-50);
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;

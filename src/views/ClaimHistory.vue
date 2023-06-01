@@ -86,9 +86,7 @@ onMounted(() => {
       </div>
 
       <div class="process" v-if="process">
-        <div class="wrapper">
-          <TheLoader />
-        </div>
+        <TheLoader />
       </div>
 
       <div class="actions" v-if="isActive">
