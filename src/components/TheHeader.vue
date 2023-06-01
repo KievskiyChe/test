@@ -2,7 +2,7 @@
 
 <template>
   <header class="header container">
-    <div style="display: flex; align-items: center; gap: 20px;">
+    <div style="display: flex; align-items: center; gap: 10px;">
       <UserMenu />
       <MusicControl />
     </div>
@@ -30,6 +30,8 @@
   justify-content: space-between;
   position: relative;
   z-index: 1;
+
+  gap: 10px;
 
   margin-bottom: 40px;
 }
