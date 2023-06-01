@@ -38,6 +38,7 @@ onMounted(() => {
               v-for="(claim, i) in rewards"
               :key="i"
               :delay="i * 0.1"
+              style="border-radius: 28px;"
             >
               <ClaimCard :claim="claim" />
             </Motion>
@@ -128,7 +129,7 @@ onMounted(() => {
     background: radial-gradient(
       30.58% 50% at 50% 50%,
       rgba(0, 0, 0, 0) 0%,
-      rgba(0, 0, 0, 0.7) 100%
+      rgba(0, 0, 0, 0.35) 100%
     );
   }
 }

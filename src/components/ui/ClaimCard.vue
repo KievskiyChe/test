@@ -10,7 +10,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <TheCard :edges="true" class="card">
+  <TheCard class="card">
     <div class="claim-card" v-if="claim.token">
       <div class="info">
         <div class="battle">
@@ -84,10 +84,6 @@ defineProps<Props>();
 }
 .card {
   transition: all 0.3s ease;
-}
-
-.card:hover {
-  scale: 1.015;
 }
 
 .claim-card .prize {
@@ -175,7 +171,8 @@ defineProps<Props>();
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    .prize, .info {
+    .prize,
+    .info {
       min-width: 200px;
     }
 
@@ -196,7 +193,8 @@ defineProps<Props>();
     height: auto;
     display: flex;
     flex-wrap: wrap;
-    .prize, .info {
+    .prize,
+    .info {
       min-width: 40%;
     }
 
