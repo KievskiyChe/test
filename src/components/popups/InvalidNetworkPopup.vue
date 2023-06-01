@@ -4,9 +4,11 @@ import { useSwitchNetwork } from "vagmi";
 
 const { pushNotification } = useNotificationStore();
 
+const chainId = +import.meta.env.VITE_APP_CHAIN;
+
 const { isLoading, switchNetwork } =
   useSwitchNetwork({
-    chainId: 137,
+    chainId,
     onSuccess: () => {
       pushNotification({
         status: INotificationStatus.SUBMITTED,

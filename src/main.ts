@@ -16,7 +16,7 @@ const app = createApp(App);
 const pinia = createPinia();
 
 const { provider, webSocketProvider } = configureChains(
-  [chain.polygon],
+  [chain.polygon, chain.goerli],
   [
     publicProvider(),
     alchemyProvider({ alchemyId: import.meta.env.VITE_APP_ALCHEMY_KEY }),

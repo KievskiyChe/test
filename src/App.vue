@@ -11,8 +11,10 @@ const { isConnected, address } = useAccount();
 const { chain } = useNetwork();
 const { isActive } = storeToRefs(useTournamentStore());
 
+const chainId = +import.meta.env.VITE_APP_CHAIN;
+
 const provider = useProvider({
-  chainId: 137,
+  chainId,
 }).value;
 
 // update
