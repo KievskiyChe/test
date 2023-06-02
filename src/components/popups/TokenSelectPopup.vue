@@ -127,15 +127,15 @@ const animation = {
 
 .content {
   background: linear-gradient(
-    110deg,
-    rgba(69, 73, 83, 0.5) 0%,
-    rgba(12, 12, 14, 0.5) 50%,
-    rgba(69, 73, 83, 0.5) 100%
-  );
+      112.48deg,
+      rgba(255, 255, 255, 0.2) 3.47%,
+      rgba(255, 255, 255, 0) 101.88%
+    );
+
+  border: 1px solid var(--white-500);
+  backdrop-filter: blur(15px);
+  border-radius: 28px;
   padding: 35px 25px;
-  box-shadow: 0 0 20px var(--black-600);
-  border-radius: 8px;
-  border: 1px solid var(--white-50);
 }
 
 .popup-overlay {
@@ -183,7 +183,7 @@ const animation = {
 
 .list-item:hover {
   cursor: pointer;
-  background: rgba(249, 214, 103, 0.2);
+  background: var(--accent-400);
 
   .token-data {
     border-color: transparent;

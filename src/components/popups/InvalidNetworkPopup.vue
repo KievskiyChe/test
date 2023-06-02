@@ -80,15 +80,24 @@ const animation = {
 .content {
   width: 660px;
   height: 530px;
-  border-radius: 12px;
-  background-image: url("@/assets/img/claim-history-bg.png");
+  /* background-image: url("@/assets/img/claim-history-bg.png");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 
-  background-color: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+  /* background-color: #111111; */
+  /* border: 1px solid rgba(255, 255, 255, 0.1); */
+  /* box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6); */
+
+  background: linear-gradient(
+      112.48deg,
+      rgba(255, 255, 255, 0.2) 3.47%,
+      rgba(255, 255, 255, 0) 101.88%
+    );
+
+  border: 1px solid var(--white-500);
+  backdrop-filter: blur(15px);
+  border-radius: 28px;
 }
 
 .popup-content {

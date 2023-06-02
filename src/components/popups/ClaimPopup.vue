@@ -124,8 +124,8 @@ const animation = {
     text-transform: uppercase;
     color: #1e1e1e;
     background-color: transparent;
-    text-shadow: -1px -1px 0 #f9d667, 1px -1px 0 #f9d667, -1px 1px 0 #f9d667,
-      1px 1px 0 #f9d667;
+    text-shadow: -1px -1px 0 var(--accent), 1px -1px 0 var(--accent), -1px 1px 0 var(--accent),
+      1px 1px 0 var(--accent);
   }
 }
 
@@ -134,17 +134,23 @@ const animation = {
   height: 530px;
   display: grid;
   gap: 10px;
-  border-radius: 8px;
-  background-image: url("@/assets/img/claim-history-bg.png");
-  background-size: cover;
+  /* background-image: url("@/assets/img/claim-history-bg.png"); */
+  /* background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 
-  background-color: #111111;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+
+  background: linear-gradient(
+      112.48deg,
+      rgba(255, 255, 255, 0.2) 3.47%,
+      rgba(255, 255, 255, 0) 101.88%
+    );
+
+  border: 1px solid var(--white-500);
+  backdrop-filter: blur(15px);
+  border-radius: 28px;
 
   // animation: animate 30s ease infinite;
 }
