@@ -10,10 +10,12 @@ const animation = {
   from: {
     y: -30,
     "backdrop-filter": "blur(0px)",
+    "-webkit-backdrop-filter": "blur(0px)",
   },
   to: {
     y: 0,
     "backdrop-filter": "blur(20px)",
+    "-webkit-backdrop-filter": "blur(20px)",
   },
 };
 
@@ -47,12 +49,10 @@ onMounted(() => {
                 v-for="(claim, i) in rewards"
                 :key="i"
                 :delay="i * 0.1"
-                style="border-radius: 28px"
+                style="border-radius: 12px"
               >
                 <ClaimCard
                   :claim="claim"
-                  v-for="(claim, i) in rewards"
-                  :key="i"
                 />
               </Motion>
             </div>

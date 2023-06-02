@@ -150,7 +150,7 @@ onMounted(() => {
 
     <Motion>
       <div class="player" v-if="showCard">
-        <TheCard :small-edges="true">
+        <TheCard :radius="12">
           <div class="player-content">
             <div class="player-head">
               <div class="left">

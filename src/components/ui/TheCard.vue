@@ -1,6 +1,7 @@
 <script setup lang="ts">
 interface Props {
   frozen?: boolean;
+  radius?: number;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -8,12 +9,13 @@ withDefaults(defineProps<Props>(), {
   frozen: false,
   swapEdges: false,
   smallEdges: false,
+  radius: 28,
 });
 </script>
 
 <template>
   <div class="card" :class="[{ frozen }]">
-    <div class="content">
+    <div class="content" :style="{ borderRadius: `${radius}px` }">
       <slot></slot>
     </div>
   </div>

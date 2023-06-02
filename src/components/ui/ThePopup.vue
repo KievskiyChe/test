@@ -13,14 +13,18 @@
   position: relative;
   z-index: 9999;
 
-  background: rgba(0, 0, 0, 0.01);
-  backdrop-filter: blur(10px);
-
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
-  border-radius: 8px;
-
   display: grid;
+  gap: 10px;
   place-items: center;
+
+  background: linear-gradient(
+    112.48deg,
+    rgba(255, 255, 255, 0.2) 3.47%,
+    rgba(255, 255, 255, 0) 101.88%
+  );
+
+  border: 1px solid var(--white-400);
+  backdrop-filter: blur(25px);
+  border-radius: 12px;
 }
 </style>

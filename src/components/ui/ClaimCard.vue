@@ -10,7 +10,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <TheCard class="card">
+  <TheCard class="card" :radius="12">
     <div class="claim-card" v-if="claim.token">
       <div class="info">
         <div class="battle">

@@ -73,12 +73,9 @@ onClickOutside(outside, () => {
               </div>
             </div>
 
-            <div
-              class="disconnect"
-              @click="disconnect(), (showUserInfo = false)"
-            >
+            <TheButton @click="disconnect(), (showUserInfo = false)">
               <span>Disconnect</span>
-            </div>
+            </TheButton>
           </ThePopup>
         </Motion>
       </div>
@@ -169,7 +166,6 @@ onClickOutside(outside, () => {
   .body {
     display: grid;
     place-items: center;
-    margin: 15px 0;
     gap: 3px;
   }
 

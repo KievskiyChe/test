@@ -9,6 +9,8 @@ declare global {
   const Popup: typeof import('../src/common/interfaces')['Popup']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const addTokenToMetaMask: typeof import('../src/common/helpers')['addTokenToMetaMask']
+  const blurry: typeof import('../src/common/animations')['blurry']
+  const blurryRight: typeof import('../src/common/animations')['blurryRight']
   const calculateSlippage: typeof import('../src/common/helpers')['calculateSlippage']
   const calculateUSD: typeof import('../src/common/helpers')['calculateUSD']
   const checkNetwork: typeof import('../src/common/helpers')['checkNetwork']
@@ -110,6 +112,8 @@ declare module 'vue' {
     readonly Popup: UnwrapRef<typeof import('../src/common/interfaces')['Popup']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addTokenToMetaMask: UnwrapRef<typeof import('../src/common/helpers')['addTokenToMetaMask']>
+    readonly blurry: UnwrapRef<typeof import('../src/common/animations')['blurry']>
+    readonly blurryRight: UnwrapRef<typeof import('../src/common/animations')['blurryRight']>
     readonly calculateSlippage: UnwrapRef<typeof import('../src/common/helpers')['calculateSlippage']>
     readonly calculateUSD: UnwrapRef<typeof import('../src/common/helpers')['calculateUSD']>
     readonly checkNetwork: UnwrapRef<typeof import('../src/common/helpers')['checkNetwork']>
