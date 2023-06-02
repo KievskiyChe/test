@@ -26,7 +26,7 @@ const showPopup = usePopupsStore().showPopup;
   gap: 20px;
   text-align: center;
   text-transform: uppercase;
-  color: var(--shadow-yellow);
+  color: var(--accent);
   line-height: 20px;
 }
 

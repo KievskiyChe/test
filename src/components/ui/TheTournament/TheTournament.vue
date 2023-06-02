@@ -15,7 +15,7 @@ const isWinner = (token: IToken, winner: IToken) => {
 
 <template>
   <div class="tournament">
-    <div class="title">Tournament</div>
+    <div class="title">TOURNAMENT</div>
     <div class="content">
       <div class="sidebar">
         <div class="sidebar-title">tournament <br />stats:</div>
@@ -57,7 +57,7 @@ const isWinner = (token: IToken, winner: IToken) => {
                 <img src="@/assets/img/icons/battle-icon-active.svg" alt="" />
               </Motion>
               <Motion v-if="!r.active">
-                <img src="@/assets/img/icons/battle-icon.svg" alt="" />
+                <img src="@/assets/img/icons/battle-icon-inactive.svg" alt="" />
               </Motion>
             </div>
           </div>
@@ -85,7 +85,7 @@ const isWinner = (token: IToken, winner: IToken) => {
 .content {
   display: grid;
   grid-template-columns: 230px 1fr;
-  gap: 20px;
+  gap: 30px;
 }
 
 .sidebar {
@@ -146,7 +146,7 @@ const isWinner = (token: IToken, winner: IToken) => {
 
 .pair {
   display: grid;
-  gap: 10px;
+  gap: 30px;
   position: relative;
 
   &-name {
@@ -170,12 +170,12 @@ const isWinner = (token: IToken, winner: IToken) => {
       text-align: center;
       font-size: 14px;
       text-transform: uppercase;
-      color: #1e1e1e;
-      text-shadow: -1px -1px 0 var(--shadow-yellow), 1px -1px 0 var(--shadow-yellow),
-      -1px 1px 0 var(--shadow-yellow), 1px 1px 0 var(--shadow-yellow);
+      /* color: #1e1e1e;
+      text-shadow: -1px -1px 0 var(--accent), 1px -1px 0 var(--accent),
+      -1px 1px 0 var(--accent), 1px 1px 0 var(--accent); */
 
       &:nth-child(2) {
-        color: var(--shadow-yellow);
+        color: var(--accent);
         font-size: 9px;
         text-shadow: none;
         text-transform: lowercase;
@@ -188,8 +188,8 @@ const isWinner = (token: IToken, winner: IToken) => {
 .battle-icon {
   position: absolute;
   top: 50%;
-  right: -20px;
-  translate: 0 calc(-50% + 4px);
+  right: -18px;
+  translate: 0 calc(-50%);
 }
 
 @media screen and (max-width: 768px) {

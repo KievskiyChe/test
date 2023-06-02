@@ -26,6 +26,7 @@ declare module '@vue/runtime-core' {
     TheHeader: typeof import('./../src/components/TheHeader.vue')['default']
     TheLoader: typeof import('./../src/components/animated/TheLoader.vue')['default']
     ThePlayer: typeof import('./../src/components/ui/ThePlayer.vue')['default']
+    ThePlayerToken: typeof import('./../src/components/ui/ThePlayerToken.vue')['default']
     ThePopup: typeof import('./../src/components/ui/ThePopup.vue')['default']
     TheTimer: typeof import('./../src/components/TheTimer.vue')['default']
     TheTournament: typeof import('./../src/components/ui/TheTournament/TheTournament.vue')['default']

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useAccount } from 'vagmi'
+import { useAccount } from "vagmi";
 
-const { isConnected } = useAccount()
+const { isConnected } = useAccount();
 const { process } = storeToRefs(useTournamentStore());
 
 const showChart = ref(false);
@@ -13,11 +13,7 @@ const toggle = () => {
 
 <template>
   <div class="token-amounts">
-    <TheCard>
-      <div class="overlay">
-        <img src="@/assets/img/token-amounts.svg" alt="">
-      </div>
-
+    <TheCard :background="showChart ? 0 : 2">
       <div class="wrapper">
         <Motion class="title" v-if="isConnected && !process">
           <span>Your Balance</span>
@@ -74,24 +70,6 @@ const toggle = () => {
   min-width: 320px;
   max-width: 340px;
   display: flex;
-
-  .overlay {
-    position: absolute;
-    overflow: hidden;
-    border-radius: 28px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
 }
 
 .wrapper {
@@ -115,13 +93,12 @@ const toggle = () => {
   display: flex;
   align-items: center;
   margin-top: 10px;
-  
+
   sup {
     font-size: 14px;
   }
-  
+
   span {
-    /* font-family: "Aurebesh"; */
     font-size: 30px;
     font-weight: bold;
     padding: 0;
@@ -154,14 +131,16 @@ const toggle = () => {
 
 .toggle .toggle-point {
   display: flex;
+  align-items: center;
   padding: 10px 2.5px;
 
   span {
     border-radius: 30px;
-    background: var(--shadow-yellow);
+    background: var(--black-400);
+    border: 1px solid var(--accent);
 
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     opacity: 0.5;
     transition: all 0.3s ease;
   }
@@ -171,7 +150,8 @@ const toggle = () => {
   &.active {
     cursor: unset;
     span {
-      width: 30px;
+      width: 12px;
+      height: 12px;
       opacity: 1;
     }
   }

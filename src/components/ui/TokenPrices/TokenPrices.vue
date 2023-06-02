@@ -39,11 +39,7 @@ const blur = {
 
 <template>
   <div class="token-prices">
-    <TheCard>
-      <div class="overlay">
-        <img src="@/assets/img/token-prices.svg" alt="">
-      </div>
-
+    <TheCard :background="1">
       <div class="wrapper">
         <div class="title">
           <span v-if="!showLiquidity">token prices</span>
@@ -104,24 +100,6 @@ const blur = {
   display: flex;
   position: relative;
   overflow: hidden;
-
-  .overlay {
-    position: absolute;
-    overflow: hidden;
-    border-radius: 28px;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    /* z-index: -1; */
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
 }
 
 .wrapper {
@@ -167,14 +145,16 @@ const blur = {
 
 .toggle .toggle-point {
   display: flex;
+  align-items: center;
   padding: 10px 2.5px;
 
   span {
     border-radius: 30px;
-    background: var(--shadow-yellow);
+    background: var(--black-400);
+    border: 1px solid var(--accent);
 
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
     opacity: 0.5;
     transition: all 0.3s ease;
   }
@@ -184,7 +164,8 @@ const blur = {
   &.active {
     cursor: unset;
     span {
-      width: 30px;
+      width: 12px;
+      height: 12px;
       opacity: 1;
     }
   }

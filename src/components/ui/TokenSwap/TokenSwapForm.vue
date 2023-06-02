@@ -140,7 +140,7 @@ watch(from, () => {
 .swap {
   height: 115px;
   border: 1px solid var(--white-200);
-  background: var(--white-200);
+  background: var(--white-100);
   border-radius: 8px;
 
   display: flex;

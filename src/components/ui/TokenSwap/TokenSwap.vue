@@ -87,11 +87,7 @@ const needMoreApprove = computed(() => {
 
 <template>
   <div class="swap-wrapper">
-    <TheCard v-if="round !== 1">
-      <div class="overlay">
-        <img src="@/assets/img/token-swap.svg" alt="">
-      </div>
-
+    <TheCard v-if="round !== 1" :background="3">
       <Motion>
         <TokenSwapTitle />
       </Motion>
@@ -128,11 +124,11 @@ const needMoreApprove = computed(() => {
           @click.prevent="handleApprove(from)"
         >
           <template v-if="!process">
-            <span>Approve</span>
+            <span>APPROVE</span>
             <small>{{ from.symbol }}</small>
           </template>
           <template v-if="process">
-            <span>Approving...</span>
+            <span>APPROVING...</span>
           </template>
         </TheButton>
 
@@ -144,14 +140,14 @@ const needMoreApprove = computed(() => {
           <template #icon>
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>
-          <span>swap</span>
+          <span>SWAP</span>
         </TheButton>
 
         <TheButton v-if="!isConnected" :disabled="true">
           <template #icon>
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>
-          <span>swap</span>
+          <span>SWAP</span>
         </TheButton>
       </Motion>
 
@@ -160,7 +156,7 @@ const needMoreApprove = computed(() => {
           <template #icon>
             <img src="@/assets/img/icons/chart.svg" alt="" />
           </template>
-          <span>select tokens</span>
+          <span>SELECT TOKENS</span>
         </TheButton>
       </Motion>
 
@@ -193,23 +189,6 @@ const needMoreApprove = computed(() => {
   width: 100%;
   display: flex;
   position: relative;
-
-
-  .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    /* z-index: 1; */
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
 }
 
 .extra {

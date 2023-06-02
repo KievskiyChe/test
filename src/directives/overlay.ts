@@ -1,4 +1,4 @@
-const INTERVAL_DELAY = 60000; // 60s
+const INTERVAL_DELAY = 5000; // 60s
 const ANIMATION_DELAY = 1000; // 1s
 
 const loadImage = (el: any): Promise<boolean> => {

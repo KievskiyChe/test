@@ -16,6 +16,8 @@ const { percentage } = store;
       ]"
       :data-percent="`%${percentage(token.amount).toFixed(0)}`"
     >
+      <div class="mini" v-if="!percentage(token.amount)"></div>
+
       <div
         class="img"
         :style="getBackgroundImage(`tokens/${token.symbol}.png`)"
@@ -52,12 +54,24 @@ const { percentage } = store;
   /* backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px); */
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   .img {
     width: 100%;
     height: 100%;
     position: absolute;
     background-size: 100%;
     background-position: center center;
+    border-radius: 50%;
+  }
+
+  .mini {
+    background: var(--black-400);
+    border: 1px solid var(--black-100);
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
   }
 

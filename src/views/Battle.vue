@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div class="battle-view">
@@ -11,7 +10,9 @@
       <img src="@/assets/img/backgrounds/5.webp" />
     </div> -->
     <div class="overlay">
-      <img src="@/assets/img/bb.png" />
+      <Motion :from="{ opacity: 0 }" :to="{ opacity: 1 }">
+        <img src="@/assets/img/bb.png" />
+      </Motion>
     </div>
 
     <main class="container content">
@@ -57,12 +58,16 @@
 
   z-index: -1;
 
+  div {
+    height: 100%;
+  }
+
   &::after {
     content: "";
     position: absolute;
     width: 100%;
     height: 100%;
-    background: rgba(37, 39, 47, 0.5);
+    background: var(--black-100);
     filter: contrast(120%);
   }
 
@@ -72,12 +77,12 @@
     left: -10px;
     width: calc(100% + 10px);
     min-height: 100%;
+  }
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 

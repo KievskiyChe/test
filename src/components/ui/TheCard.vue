@@ -40,6 +40,7 @@ withDefaults(defineProps<Props>(), {
 
     border: 1px solid var(--white-400);
     backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
     border-radius: 28px;
 
     display: grid;
