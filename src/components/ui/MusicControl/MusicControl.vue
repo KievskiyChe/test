@@ -150,74 +150,76 @@ onMounted(() => {
 
     <Motion>
       <div class="player" v-if="showCard">
-        <TheCard :radius="12">
-          <div class="player-content">
-            <div class="player-head">
-              <div class="left">
-                <div class="sound-name">Awakness</div>
-                <div class="sound-desc">Epic music</div>
-              </div>
-              <div class="right">
-                <div class="right-state">
-                  <div class="action-icon mute" v-if="volumeOn">
-                    <img
-                      src="@/assets/img/icons/sound-on.svg"
-                      alt=""
-                      @click="volumeOn = false"
-                    />
-                  </div>
-
-                  <div class="action-icon mute" v-if="!volumeOn">
-                    <img
-                      src="@/assets/img/icons/sound-off.svg"
-                      alt=""
-                      @click="volumeOn = true"
-                    />
-                  </div>
-                  <div class="volume-progress">{{ volumePercent }}</div>
+        <Motion :from="blurry.from" :to="blurry.to">
+          <TheCard :radius="12">
+            <div class="player-content">
+              <div class="player-head">
+                <div class="left">
+                  <div class="sound-name">Awakness</div>
+                  <div class="sound-desc">Epic music</div>
                 </div>
-
-                <div class="volume">
-                  <div class="up" @click.stop="volumeUp()"></div>
-                  <div class="down" @click.stop="volumeDown()"></div>
+                <div class="right">
+                  <div class="right-state">
+                    <div class="action-icon mute" v-if="volumeOn">
+                      <img
+                        src="@/assets/img/icons/sound-on.svg"
+                        alt=""
+                        @click="volumeOn = false"
+                      />
+                    </div>
+  
+                    <div class="action-icon mute" v-if="!volumeOn">
+                      <img
+                        src="@/assets/img/icons/sound-off.svg"
+                        alt=""
+                        @click="volumeOn = true"
+                      />
+                    </div>
+                    <div class="volume-progress">{{ volumePercent }}</div>
+                  </div>
+  
+                  <div class="volume">
+                    <div class="up" @click.stop="volumeUp()"></div>
+                    <div class="down" @click.stop="volumeDown()"></div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div class="player-body">
-              <div class="time">{{ parseTime(currentTime) }}</div>
-              <div
-                class="progress"
-                @click="handleChangePlayTime($event)"
-                ref="progressRef"
-              >
+  
+              <div class="player-body">
+                <div class="time">{{ parseTime(currentTime) }}</div>
                 <div
-                  class="progress-bar"
-                  :style="{ width: percent + '%' }"
-                ></div>
+                  class="progress"
+                  @click="handleChangePlayTime($event)"
+                  ref="progressRef"
+                >
+                  <div
+                    class="progress-bar"
+                    :style="{ width: percent + '%' }"
+                  ></div>
+                </div>
+                <div class="time">{{ parseTime(duration) }}</div>
               </div>
-              <div class="time">{{ parseTime(duration) }}</div>
+  
+              <div class="player-actions">
+                <div class="action-icon" v-if="isPlaying">
+                  <img
+                    src="@/assets/img/icons/sound-pause.svg"
+                    alt=""
+                    @click.stop="pause()"
+                  />
+                </div>
+  
+                <div class="action-icon" v-if="!isPlaying">
+                  <img
+                    src="@/assets/img/icons/sound-play.svg"
+                    alt=""
+                    @click.stop="play()"
+                  />
+                </div>
+              </div>
             </div>
-
-            <div class="player-actions">
-              <div class="action-icon" v-if="isPlaying">
-                <img
-                  src="@/assets/img/icons/sound-pause.svg"
-                  alt=""
-                  @click.stop="pause()"
-                />
-              </div>
-
-              <div class="action-icon" v-if="!isPlaying">
-                <img
-                  src="@/assets/img/icons/sound-play.svg"
-                  alt=""
-                  @click.stop="play()"
-                />
-              </div>
-            </div>
-          </div>
-        </TheCard>
+          </TheCard>
+        </Motion>
       </div>
     </Motion>
   </div>
