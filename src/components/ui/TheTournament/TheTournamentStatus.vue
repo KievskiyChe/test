@@ -105,10 +105,10 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
   letter-spacing: 0.13em;
   border-radius: 30px;
 
-  color: var(--shadow-yellow);
-  background: #f9d66733;
+  color: var(--accent);
+  background: var(--accent-500);
   box-shadow: 0px 2px 2px rgba(255, 255, 255, 0.1),
-    inset 0px 4px 4px rgba(249, 214, 103, 0.5);
+    inset 0px 4px 4px var(--accent-500);
 
   &.active {
     color: var(--violet);

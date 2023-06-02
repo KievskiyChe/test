@@ -13,7 +13,11 @@ const toggle = () => {
 
 <template>
   <div class="token-amounts">
-    <TheCard :swapEdges="true">
+    <TheCard>
+      <div class="overlay">
+        <img src="@/assets/img/token-amounts.svg" alt="">
+      </div>
+
       <div class="wrapper">
         <Motion class="title" v-if="isConnected && !process">
           <span>Your Balance</span>
@@ -71,6 +75,23 @@ const toggle = () => {
   max-width: 340px;
   display: flex;
 
+  .overlay {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 28px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 .wrapper {

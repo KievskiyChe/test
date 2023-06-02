@@ -35,6 +35,7 @@ const sortedTokens = computed(() => {
 <style scoped lang="scss">
 .list {
   display: grid;
+  /* height: 100%; */
 }
 
 .list-head {

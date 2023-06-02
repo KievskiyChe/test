@@ -43,14 +43,14 @@ const { percentage } = store;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid var(--shadow-yellow);
+  border: 2px solid var(--accent);
 
   top: 0;
   left: 0;
 
   background: var(--circle-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); */
 
   .img {
     width: 100%;
@@ -96,7 +96,7 @@ const { percentage } = store;
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 1px solid var(--shadow-yellow);
+    border: 1px solid var(--accent);
     background: #000;
     position: absolute;
     bottom: -22px;
@@ -126,17 +126,17 @@ const { percentage } = store;
   }
 
   &:nth-child(1) {
-    top: 2.5%;
+    top: 10.5%;
     left: 10%;
   }
 
   &:nth-child(2) {
-    top: 10%;
+    top: 25%;
     left: 42.5%;
   }
 
   &:nth-child(3) {
-    top: 1%;
+    top: 10%;
     left: 70%;
   }
 

@@ -140,11 +140,14 @@ watch(from, () => {
 .swap {
   height: 115px;
   border: 1px solid var(--white-200);
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--white-200);
   border-radius: 8px;
 
   display: flex;
   flex-direction: column;
+  position: relative;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: relative;
 
   &-icon {
@@ -207,7 +210,7 @@ watch(from, () => {
 
   &.invalid {
     input {
-      color: var(--shadow-yellow);
+      color: var(--accent);
     }
   }
 }
@@ -235,8 +238,8 @@ watch(from, () => {
   right: 26px;
 
   &:hover {
-    border: 1px solid var(--shadow-yellow);
-    color: var(--shadow-yellow);
+    border: 1px solid var(--accent);
+    color: var(--accent);
     cursor: pointer;
   }
 }

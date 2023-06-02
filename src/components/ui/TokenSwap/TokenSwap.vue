@@ -87,7 +87,11 @@ const needMoreApprove = computed(() => {
 
 <template>
   <div class="swap-wrapper">
-    <TheCard v-if="round !== 3">
+    <TheCard v-if="round !== 1">
+      <div class="overlay">
+        <img src="@/assets/img/token-swap.svg" alt="">
+      </div>
+
       <Motion>
         <TokenSwapTitle />
       </Motion>
@@ -189,6 +193,23 @@ const needMoreApprove = computed(() => {
   width: 100%;
   display: flex;
   position: relative;
+
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* z-index: 1; */
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 .extra {
@@ -218,10 +239,12 @@ const needMoreApprove = computed(() => {
   height: 35px;
   padding: 0 10px;
   border: 1px solid var(--white-100);
+  background: var(--white-100);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-radius: 4px;
 }
 
 .foo {

@@ -58,12 +58,12 @@ watch(
   display: flex;
   align-items: center;
   justify-content: space-between;
-
+  
   .options {
     display: flex;
     gap: 8px;
   }
-
+  
   .option {
     background: var(--white-100);
     border: 1px solid var(--white-400);
@@ -72,8 +72,8 @@ watch(
     cursor: pointer;
 
     &.selected {
-      border-color: var(--shadow-yellow);
-      background: var(--shadow-yellow);
+      border-color: var(--accent);
+      background: var(--accent);
       color: #000;
 
       input {

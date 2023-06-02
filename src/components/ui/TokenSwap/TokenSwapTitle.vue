@@ -10,15 +10,15 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <div class="title">
-    <div class="icon">
+    <!-- <div class="icon">
       <img src="@/assets/img/icons/card-head-icon.svg" alt="" />
     </div>
-    <div class="line"></div>
+    <div class="line"></div> -->
     <span>{{ text }}</span>
-    <div class="line"></div>
+    <!-- <div class="line"></div>
     <div class="icon">
       <img src="@/assets/img/icons/card-head-icon.svg" alt="" />
-    </div>
+    </div> -->
   </div>
 </template>
 

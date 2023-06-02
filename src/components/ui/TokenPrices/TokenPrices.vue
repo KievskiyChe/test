@@ -24,11 +24,26 @@ const sortedTokens = computed(() => {
 const toggle = () => {
   showLiquidity.value = !showLiquidity.value;
 };
+
+const blur = {
+  from: {
+    'backdrop-filter': 'blur(0px)',
+    '-webkit-backdrop-filter': 'blur(0px)'
+  },
+  to: {
+    'backdrop-filter': 'blur(10px)',
+    '-webkit-backdrop-filter': 'blur(10px)'
+  }
+}
 </script>
 
 <template>
   <div class="token-prices">
-    <TheCard :swapEdges="true">
+    <TheCard>
+      <div class="overlay">
+        <img src="@/assets/img/token-prices.svg" alt="">
+      </div>
+
       <div class="wrapper">
         <div class="title">
           <span v-if="!showLiquidity">token prices</span>
@@ -87,6 +102,26 @@ const toggle = () => {
   min-width: 320px;
   max-width: 340px;
   display: flex;
+  position: relative;
+  overflow: hidden;
+
+  .overlay {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 28px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* z-index: -1; */
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
 .wrapper {

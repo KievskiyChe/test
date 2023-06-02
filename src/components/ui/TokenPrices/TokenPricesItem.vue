@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cutString } from "@/common/helpers";
 import TokenIcon from "@/components/ui/TokenIcon.vue";
-const { game } = storeToRefs(useTournamentStore())
+const { game } = storeToRefs(useTournamentStore());
 
 const props = defineProps<{
   id: number;
@@ -10,13 +10,13 @@ const props = defineProps<{
 }>();
 
 const data = computed(() => {
-  const t = props.token as any
-  return t[props.field]
-})
+  const t = props.token as any;
+  return t[props.field];
+});
 </script>
 
 <template>
-  <div class="token-price" v-if="game" :class="{inactive: token.inactive }">
+  <div class="token-price" v-if="game" :class="{ inactive: token.inactive }">
     <div class="token-id">{{ id }}.</div>
 
     <div class="icon">
@@ -25,8 +25,12 @@ const data = computed(() => {
 
     <div class="token-content">
       <span>{{ token.symbol }}</span>
-      <span v-if="props.field === 'price'">${{ cutString(parseString(data, 6), 10) }}</span>
-      <span v-if="props.field === 'liquidityPool'">${{ cutString(parseString(data, 4), 10) }}</span>
+      <span v-if="props.field === 'price'"
+        >${{ cutString(parseString(data, 6), 10) }}</span
+      >
+      <span v-if="props.field === 'liquidityPool'"
+        >${{ cutString(parseString(data, 4), 10) }}</span
+      >
     </div>
   </div>
 </template>
@@ -59,7 +63,14 @@ const data = computed(() => {
   height: 20px;
   left: 30px;
   border-radius: 0 30px 30px 0;
-  box-shadow: 0px 1px 4px rgba(255, 249, 199, 0.2);
+
+  background: linear-gradient(
+    95.41deg,
+    rgba(255, 255, 255, 0.114) 0%,
+    rgba(255, 255, 255, 0.066) 50.4%,
+    rgba(255, 255, 255, 0.294) 100%
+  );
+
   font-size: 14px;
   padding-right: 10px;
 
