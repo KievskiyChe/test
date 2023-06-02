@@ -10,9 +10,7 @@
       <img src="@/assets/img/backgrounds/5.webp" />
     </div> -->
     <div class="overlay">
-      <Motion :from="{ opacity: 0 }" :to="{ opacity: 1 }">
-        <img src="@/assets/img/bb.png" />
-      </Motion>
+      <img src="@/assets/img/bb.png" v-lazyload />
     </div>
 
     <main class="container content">
