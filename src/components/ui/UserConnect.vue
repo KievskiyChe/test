@@ -162,6 +162,8 @@ onClickOutside(outside, () => {
   z-index: 1;
 
   font-weight: bold;
+  overflow: hidden;
+  border-radius: 12px;
 
   .body {
     display: grid;
