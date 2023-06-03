@@ -24,14 +24,6 @@ const totalPrize = computed(() => {
 
           <!-- <div class="info-icon"></div> -->
         </div>
-
-        <!-- <div class="stats-players">
-          <img src="@/assets/img/icons/players.svg" alt="players" />
-          <div class="stats-title">
-            <span>players</span>
-            <h2>0</h2>
-          </div>
-        </div> -->
       </div>
     </TheCard>
   </div>
@@ -56,6 +48,7 @@ const totalPrize = computed(() => {
   width: 12px;
   height: 12px;
   border: 1.5px solid;
+  border-radius: 50%;
   cursor: pointer;
 
   &::after {

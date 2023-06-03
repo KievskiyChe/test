@@ -149,6 +149,7 @@ watch(from, () => {
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   position: relative;
+  overflow: hidden;
 
   &-icon {
     min-width: 30px;
