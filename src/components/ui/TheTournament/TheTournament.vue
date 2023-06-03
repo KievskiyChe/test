@@ -111,7 +111,7 @@ const isWinner = (token: IToken, winner: IToken) => {
 .players {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 10px;
 }
 
 .players-process {
@@ -170,9 +170,6 @@ const isWinner = (token: IToken, winner: IToken) => {
       text-align: center;
       font-size: 14px;
       text-transform: uppercase;
-      /* color: #1e1e1e;
-      text-shadow: -1px -1px 0 var(--accent), 1px -1px 0 var(--accent),
-      -1px 1px 0 var(--accent), 1px 1px 0 var(--accent); */
 
       &:nth-child(2) {
         color: var(--accent);
@@ -189,7 +186,16 @@ const isWinner = (token: IToken, winner: IToken) => {
   position: absolute;
   top: 50%;
   right: -18px;
-  translate: 0 calc(-50%);
+  translate: 0 calc(-50% + 6px);
+}
+
+@media screen and (max-width: 1100px) {
+  .players {
+
+    .pair {
+      gap: 20px;
+    }
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -226,7 +232,7 @@ const isWinner = (token: IToken, winner: IToken) => {
 
     .battle-icon {
       top: 48%;
-      right: calc(50% - 61px);
+      right: calc(50% - 60px);
     }
   }
 

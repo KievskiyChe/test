@@ -2,11 +2,13 @@
 interface Props {
   name?: string;
   big?: boolean;
+  border?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   name: '',
   big: false,
+  border: '1px solid var(--accent)',
 });
 
 const token = computed(() => {
@@ -20,6 +22,7 @@ const token = computed(() => {
     :class="[{
       big : props.big,
     }]"
+    :style="{ border: props.border }"
   >
     <div class="token-image">
       <img :src="getImage(`tokens/${token}.png`)" :alt="name" v-if="name"/>
@@ -32,15 +35,15 @@ const token = computed(() => {
   z-index: 1;
   position: relative;
 
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   background: var(--black-700);
 
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 2px solid var(--accent);
+  /* border: 1px solid var(--accent); */
 
   &.big {
     width: 40px;
@@ -67,6 +70,13 @@ const token = computed(() => {
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .token-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>
