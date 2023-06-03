@@ -13,7 +13,7 @@ export const blurry = {
 
 export const blurryRight = {
   from: {
-    x: 20,
+    x: 40,
     "backdrop-filter": "blur(0)",
     "-webkit-backdrop-filter": "blur(0)",
   },
