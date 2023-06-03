@@ -87,7 +87,7 @@ const needMoreApprove = computed(() => {
 
 <template>
   <div class="swap-wrapper">
-    <TheCard v-if="round !== 1" :background="3">
+    <TheCard v-if="round !== 3" :background="3">
       <Motion>
         <TokenSwapTitle />
       </Motion>
