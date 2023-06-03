@@ -4,7 +4,7 @@ const { isActive, round, startTime } = storeToRefs(useTournamentStore());
 
 <template>
   <div class="card-wrapper">
-    <TheCard :smallEdges="true" v-if="startTime">
+    <TheCard background="5" v-if="startTime">
       <div class="info">
         <div class="info-head">
           <div class="round-number">

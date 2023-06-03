@@ -2,6 +2,7 @@
 interface Props {
   frozen?: boolean;
   radius?: number;
+  background?: string | number;
 }
 
 withDefaults(defineProps<Props>(), {
@@ -10,12 +11,14 @@ withDefaults(defineProps<Props>(), {
   swapEdges: false,
   smallEdges: false,
   radius: 28,
+  background: ''
 });
 </script>
 
 <template>
   <div class="card" :class="[{ frozen }]">
     <div class="content" :style="{ borderRadius: `${radius}px` }">
+      <img v-if="background" :src="getImage(`card-backgrounds/${background}.svg`)" alt="" />
       <slot></slot>
     </div>
   </div>
@@ -26,11 +29,13 @@ withDefaults(defineProps<Props>(), {
   width: 100%;
   height: 100%;
   position: relative;
-
+  
   .content {
     padding: 30px;
     width: 100%;
     height: 100%;
+    position: relative;
+    overflow: hidden;
 
     background: linear-gradient(
       112.48deg,
@@ -47,6 +52,15 @@ withDefaults(defineProps<Props>(), {
     gap: 20px;
 
     isolation: isolate;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 

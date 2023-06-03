@@ -11,7 +11,7 @@ const totalPrize = computed(() => {
 
 <template>
   <div class="card-wrapper">
-    <TheCard :smallEdges="true">
+    <TheCard background="4">
       <div class="stats">
         <div class="stats-prize">
           <div class="stats-prize-icon">
