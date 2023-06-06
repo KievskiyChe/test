@@ -11,7 +11,6 @@ import FACTORY_ABI from "./abis/Factory.json";
 
 import { Token } from "./models/Token";
 import type { ManagerData, ManagerDataResults } from "./common/interfaces";
-import { ethers } from "ethers";
 
 const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;

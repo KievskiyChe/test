@@ -1,8 +1,4 @@
 import { ethers } from "ethers";
-import {
-  type CallReturnContext,
-  type ContractCallResults,
-} from "ethereum-multicall";
 
 export const formatUnits = (value: string, decimals: number) => {
   return ethers.utils.formatUnits(value, decimals);

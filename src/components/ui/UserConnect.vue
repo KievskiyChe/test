@@ -35,8 +35,7 @@ onClickOutside(outside, () => {
       <Motion>
         <div class="content" @click="showPopup(Popup.AUTH)">
           <div class="icon">
-            <img v-if="chainId === 5" src="@/assets/img/icons/eth.svg" alt="Ethereum" />
-            <img v-else src="@/assets/img/icons/polygon.svg" alt="Polygon" />
+            <img src="@/assets/img/icons/arbitrum.svg" alt="Arbitrum One" />
           </div>
 
           <span class="connect">Connect</span>
@@ -48,8 +47,7 @@ onClickOutside(outside, () => {
       <Motion>
         <div class="content" @click.stop="showUserInfo = !showUserInfo">
           <div class="icon">
-            <img v-if="chainId === 5" src="@/assets/img/icons/eth.svg" alt="Ethereum" />
-            <img v-else src="@/assets/img/icons/polygon.svg" alt="Polygon" />
+            <img src="@/assets/img/icons/arbitrum.svg" alt="Arbitrum One" />
           </div>
           <span class="user-address">{{ shortAddress }}</span>
         </div>
@@ -69,7 +67,7 @@ onClickOutside(outside, () => {
               </div>
 
               <div class="usdt-value" v-if="isConnected">
-                miMATIC {{ usdcBalance }}
+                USDC {{ usdcBalance }}
               </div>
             </div>
 

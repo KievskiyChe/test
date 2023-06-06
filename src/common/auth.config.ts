@@ -5,18 +5,18 @@ import { MetaMaskConnector } from "vagmi/connectors/metaMask";
 import { WalletConnectConnector } from "vagmi/connectors/walletConnect";
 
 const walletconnect = new WalletConnectConnector({
-  chains: [chain.polygon, chain.goerli, chain.polygonMumbai],
+  chains: [chain.arbitrum],
   options: {
     qrcode: true,
   },
 });
 
 const metamask = new MetaMaskConnector({
-  chains: [chain.polygon, chain.goerli, chain.polygonMumbai],
+  chains: [chain.arbitrum],
 });
 
 const coinbase = new CoinbaseWalletConnector({
-  chains: [chain.polygon, chain.goerli, chain.polygonMumbai],
+  chains: [chain.arbitrum],
   options: {
     appName: 'Awakeness',
     jsonRpcUrl: 'https://eth-mainnet.alchemyapi.io/v2/l8pB5q8P2MCYvTvXEjKOyfnwG1eycTku',

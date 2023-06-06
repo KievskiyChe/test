@@ -45,7 +45,7 @@ const animation = {
         <div class="foo">
           <p>switch to</p>
           <TheButton @click.stop="switchNetwork()" :disabled="isLoading">
-            <span>{{ isLoading ? "switching..." : "Polygon" }}</span>
+            <span>{{ isLoading ? "switching..." : "Arbitrum" }}</span>
           </TheButton>
         </div>
       </div>

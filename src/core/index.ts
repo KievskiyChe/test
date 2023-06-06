@@ -1,5 +1,5 @@
 import router from "@/router";
-import { BigNumber, ethers } from "ethers";
+import { ethers } from "ethers";
 import { Game } from "./models/Game";
 
 import ROUTER_ABI from "./abis/Router.json";
