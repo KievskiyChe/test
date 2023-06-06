@@ -15,6 +15,7 @@ getNetwork().then((res) => {
   chainId.value = res.chainId;
 });
 
+const externalLink = import.meta.env.VITE_APP_EXTERNAL_LINK || "";
 const showUserInfo = ref(false);
 const outside = ref<HTMLElement | null>(null);
 
@@ -69,6 +70,12 @@ onClickOutside(outside, () => {
               <div class="usdt-value" v-if="isConnected">
                 USDC {{ usdcBalance }}
               </div>
+
+              <div class="external-link">
+                <a :href="externalLink" target="_blank">
+                  <span>Polygon App</span>
+                </a>
+              </div>
             </div>
 
             <TheButton @click="disconnect(), (showUserInfo = false)">
@@ -87,6 +94,23 @@ onClickOutside(outside, () => {
   justify-content: flex-end;
   position: relative;
   font-weight: 600;
+}
+
+.external-link {
+  margin-top: 20px;
+  border: 2px solid var(--accent);
+  width: 156px;
+  height: 34px;
+  border-radius: 8px;
+
+  display: grid;
+  place-items: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    cursor: pointer;
+    background: var(--accent);
+  }
 }
 
 .content {
