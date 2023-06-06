@@ -46,6 +46,7 @@ defineProps<Props>();
     justify-content: center;
     gap: 10px;
     z-index: 1;
+    text-transform: uppercase;
   }
 
   &:hover {
