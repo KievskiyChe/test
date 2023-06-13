@@ -11,12 +11,15 @@ const scaleAnimation = {
 
 <template>
   <div class="view home-view">
-    <div class="overlay" v-overlay>
+    <!-- <div class="overlay" v-overlay>
       <img src="@/assets/img/backgrounds/1.webp" />
       <img src="@/assets/img/backgrounds/2.webp" />
       <img src="@/assets/img/backgrounds/3.webp" />
       <img src="@/assets/img/backgrounds/4.webp" />
       <img src="@/assets/img/backgrounds/5.webp" />
+    </div> -->
+    <div class="overlay">
+      <img src="@/assets/img/claim-history-bg.png" alt="" v-lazyload>
     </div>
 
     <main class="container">
