@@ -93,6 +93,12 @@ const scaleAnimation = {
     background: rgba(37, 39, 47, 0.5);
     filter: contrast(120%);
   }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 main {

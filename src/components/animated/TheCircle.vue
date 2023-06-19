@@ -52,8 +52,8 @@
 
 <style scoped lang="scss">
 .layer {
-  width: 540px;
-  height: 540px;
+  width: 500px;
+  height: 500px;
   position: absolute;
 }
 
