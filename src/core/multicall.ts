@@ -315,7 +315,7 @@ export class Caller {
           results[token.address].callsReturnContext
         );
         token.liquidityPoolAddress = obj.liquidityPool[1];
-        token.price = formatUnits(obj.price.toString(), 18);
+        token.price = formatUnits(obj.price.toString(), 6);
       });
     };
 
@@ -342,8 +342,8 @@ export class Caller {
           results[token.address].callsReturnContext
         );
         const total =
-          +formatUnits(obj.liquidityPool, 18) -
-          +formatUnits(startingLiquidity ?? "0", 18);
+          +formatUnits(obj.liquidityPool, 6) -
+          +formatUnits(startingLiquidity ?? "0", 6);
 
         token.liquidityPool = total > 0 ? total.toString() : "0";
       });
