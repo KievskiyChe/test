@@ -16,6 +16,8 @@ const ROUTER = import.meta.env.VITE_APP_ROUTER_ADDRESS;
 const MANAGER = import.meta.env.VITE_APP_MANAGER_ADDRESS;
 const FACTORY = import.meta.env.VITE_APP_FACTORY_ADDRESS;
 
+const DECIMALS = 6;
+
 export class Caller {
   private multicall: Multicall;
   private userAddress: string;
@@ -315,7 +317,7 @@ export class Caller {
           results[token.address].callsReturnContext
         );
         token.liquidityPoolAddress = obj.liquidityPool[1];
-        token.price = formatUnits(obj.price.toString(), 6);
+        token.price = formatUnits(obj.price.toString(), DECIMALS);
       });
     };
 
@@ -342,8 +344,8 @@ export class Caller {
           results[token.address].callsReturnContext
         );
         const total =
-          +formatUnits(obj.liquidityPool, 6) -
-          +formatUnits(startingLiquidity ?? "0", 6);
+          +formatUnits(obj.liquidityPool, DECIMALS) -
+          +formatUnits(startingLiquidity ?? "0", DECIMALS);
 
         token.liquidityPool = total > 0 ? total.toString() : "0";
       });
@@ -499,7 +501,7 @@ export class Caller {
     const userReward = Number(rewards) * Number(userBalance);
 
     // userReward / 1e18
-    const reward = String(userReward / 10 ** 18);
+    const reward = String(userReward / 10 ** DECIMALS);
     token.amount = userBalance;
 
     const approved = Number(token.allowanceManager) >= Number(token.amount);
