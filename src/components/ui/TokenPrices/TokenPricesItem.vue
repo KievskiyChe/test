@@ -29,7 +29,7 @@ const data = computed(() => {
         >${{ cutString(parseString(data, 6), 10) }}</span
       >
       <span v-if="props.field === 'liquidityPool'"
-        >${{ cutString(parseString(data, 4), 10) }}</span
+        >${{ cutString(parseString(data, 6), 10) }}</span
       >
     </div>
   </div>
