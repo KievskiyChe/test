@@ -1,16 +1,20 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+</script>
 
 <template>
   <header class="header container">
     <div style="display: flex; align-items: center; gap: 10px;">
       <UserMenu />
-      <MusicControl />
+<!--      <MusicControl />-->
     </div>
 
     <div class="title">
       <span class="line"></span>
 
-      <router-link to="/tournament" class="text">awakeness</router-link>
+      <router-link to="/tournament" class="text">
+        <p>awakeness</p>
+        <p>crypto legends</p>
+      </router-link>
 
       <span class="line"></span>
     </div>
@@ -46,6 +50,7 @@
     font-size: 22px;
     font-weight: bold;
     text-transform: uppercase;
+    text-align: center;
   }
 
   .line {
@@ -57,8 +62,8 @@
 
 @media screen and (max-width: 768px) {
   .header {
-    grid-template-columns: 60px 1fr 60px;
-    gap: 20px;
+    grid-template-columns: 50px 1fr 50px;
+    gap: 0;
     margin-bottom: 0;
   }
 
@@ -67,6 +72,8 @@
 
     .text {
       font-size: 18px;
+      white-space: nowrap;
+      text-align: center;
     }
 
     .line {

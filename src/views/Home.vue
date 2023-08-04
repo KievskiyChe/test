@@ -19,7 +19,7 @@ const scaleAnimation = {
       <img src="@/assets/img/backgrounds/5.webp" />
     </div> -->
     <div class="overlay">
-      <img src="@/assets/img/claim-history-bg.png" alt="" v-lazyload>
+      <img src="@/assets/img/claim-history-bg.jpeg" alt="" v-lazyload>
     </div>
 
     <main class="container">

@@ -30,7 +30,7 @@ const token = computed(() => {
     ]"
   >
     <div class="token-image">
-      <img :src="getImage(`tokens/${token}.png`)" :alt="name" v-if="name"/>
+      <img :src="getImage(`tokens/new/${token}.png`)" :alt="name" v-if="name"/>
     </div>
   </div>
 </template>

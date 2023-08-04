@@ -20,7 +20,7 @@ const { percentage } = store;
 
       <div
         class="img"
-        :style="getBackgroundImage(`tokens/${token.symbol}.png`)"
+        :style="getBackgroundImage(`tokens/new/${token.symbol}.png`)"
       ></div>
     </div>
   </Motion>

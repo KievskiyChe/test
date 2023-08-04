@@ -15,7 +15,7 @@ const totalPrize = computed(() => {
       <div class="stats">
         <div class="stats-prize">
           <div class="stats-prize-icon">
-            <img src="@/assets/img/icons/prize.svg" alt="prize" />
+            <img src="@/assets/img/icons/prize.png" alt="prize" />
           </div>
           <div class="stats-title">
             <span>total prize <br />pool</span>

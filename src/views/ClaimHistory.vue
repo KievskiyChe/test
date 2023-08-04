@@ -27,7 +27,7 @@ onMounted(() => {
 <template>
   <div class="view history">
     <div class="overlay">
-      <img src="@/assets/img/claim-history-bg.png" alt="" v-lazyload />
+      <img src="@/assets/img/claim-history-bg.jpeg" alt="" v-lazyload />
     </div>
 
     <main class="content container">
