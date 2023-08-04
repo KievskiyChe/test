@@ -43,7 +43,7 @@ router.beforeEach(async (to, from, next) => {
   const { isActive } = storeToRefs(useTournamentStore());
 
   if (to.name === "home" && isActive.value) {
-    // return next('/tournament');
+    return next('/tournament');
   }
 
   if (to.name === "battle" && !isActive.value) {

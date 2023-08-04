@@ -55,7 +55,7 @@ onMounted(async () => {
   await tournament.init();
 
   if ((route.path === "/" || route.path === "/waitplease") && isActive.value) {
-    // router.push("/tournament");
+    router.push("/tournament");
   }
 
   if (route.path === "/tournament" && !isActive.value) {
