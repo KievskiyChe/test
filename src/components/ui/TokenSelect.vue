@@ -22,7 +22,7 @@ const tokenAmount = computed(() => {
   <div class="select-wrapper" @click.stop="show()">
     <div class="select" v-if="token && token.symbol">
       <div class="select-icon">
-        <img :src="getImage(`tokens/${token.symbol}.png`)" />
+        <img :src="getImage(`tokens/new/${token.symbol}.png`)" />
       </div>
 
       <div class="select-info">
