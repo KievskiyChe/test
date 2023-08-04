@@ -52,6 +52,10 @@
     text-transform: uppercase;
     text-align: center;
     white-space: nowrap;
+
+    p:nth-child(2) {
+      font-size: 32px;
+    }
   }
 
   .line {
@@ -63,7 +67,7 @@
 
 @media screen and (max-width: 768px) {
   .header {
-    grid-template-columns: 50px 1fr 50px;
+    grid-template-columns: 40px 1fr 40px;
     gap: 0;
     margin-bottom: 0;
   }
@@ -75,6 +79,10 @@
       font-size: 18px;
       white-space: nowrap;
       text-align: center;
+
+      p:nth-child(2) {
+        font-size: 22px;
+      }
     }
 
     .line {
