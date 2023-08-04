@@ -51,6 +51,7 @@
     font-weight: bold;
     text-transform: uppercase;
     text-align: center;
+    white-space: nowrap;
   }
 
   .line {
