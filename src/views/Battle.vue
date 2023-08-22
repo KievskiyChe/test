@@ -4,9 +4,9 @@
   <div class="battle-view">
     <div class="overlay" v-overlay>
       <img src="@/assets/img/backgrounds/new/1.jpeg" alt="1" />
-      <img src="@/assets/img/backgrounds/new/2.jpeg" alt="2" />
+      <!-- <img src="@/assets/img/backgrounds/new/2.jpeg" alt="2" /> -->
       <img src="@/assets/img/backgrounds/new/3.jpeg" alt="3" />
-      <img src="@/assets/img/backgrounds/new/4.jpeg" alt="4" />
+      <!-- <img src="@/assets/img/backgrounds/new/4.jpeg" alt="4" /> -->
       <img src="@/assets/img/backgrounds/new/5.jpeg" alt="5" />
       <img src="@/assets/img/backgrounds/new/6.jpeg" alt="6" />
     </div>
