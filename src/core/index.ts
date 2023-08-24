@@ -111,9 +111,8 @@ export default class Tournament implements ITournament {
   ): Promise<string | undefined> => {
     try {
       const { from, to } = options;
-
       const path = [from.address, to.address];
-      console.log(options);
+
       const amountIn = ethers.utils
         .parseUnits(
           parseFloat(options.amount).toFixed(from.decimals),
