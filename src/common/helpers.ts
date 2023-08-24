@@ -87,18 +87,10 @@ export const calculateSlippage = (
   slippage: string | number,
   decimals: number
 ) => {
-  const _amount = BigNumber.from(parseUnits(amount, decimals));
-  const _slippage = BigNumber.from(parseUnits(slippage.toString(), 2));
-
-  /**
-   * divide by 100 because we add two symbols after comma in parseUnits
-   * this operation is needed cause BigNumber.from() can't parse numbers less
-   * than 1. For example:
-   * 0.5% = 50 / 100 = 0.5
-   */
-  const result = _amount.sub(_amount.mul(_slippage).div(BigNumber.from(100)));
-
-  return result.toString();
+  const a = BigNumber.from(parseUnits(amount, decimals))
+  const sp = Number(slippage) / 100
+  const r = Number(a) * Number(sp) + Number(a)
+  return Math.floor(r).toString();
 };
 
 export const switchNetwork = (chainId: number) => {
