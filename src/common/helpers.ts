@@ -84,7 +84,7 @@ export const calculateSlippage = (
 ) => {
   const a = BigNumber.from(parseUnits(amount, decimals))
   const sp = Number(slippage) / 100
-  const r = Number(a) * Number(sp) + Number(a)
+  const r = Number(a) - Number(a) * Number(sp)
   return Math.floor(r).toString();
 };
 

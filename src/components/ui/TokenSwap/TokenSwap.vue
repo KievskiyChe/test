@@ -4,7 +4,7 @@ import { useAccount } from "vagmi";
 
 const { isConnected, address } = useAccount();
 const { round, game, usdc } = storeToRefs(useTournamentStore());
-const { process, from, to, amountFrom, isValidFrom, slippage } = storeToRefs(
+const { process, from, to, amountFrom,amountTo,  isValidFrom, slippage } = storeToRefs(
   useSwapStore()
 );
 
@@ -50,16 +50,16 @@ const getSwapOptions = (): SwapOptions | undefined => {
   if (!from.value || !to.value || !isConnected.value) return;
 
   const _slippage = calculateSlippage(
-    amountFrom.value,
+    amountTo.value,
     slippage.value,
-    from.value.decimals
+    to.value.decimals
   );
 
   const _amount = parseUnits(amountFrom.value, from.value.decimals);
 
   return {
     amount: _amount,
-    slippage: to.value.address.toLowerCase() === USDC_ADDRESS ? '0' : _slippage,
+    slippage: _slippage,
     path: [from.value.address, to.value.address],
     to: address.value!,
     deadline: Date.now() + 200000,
