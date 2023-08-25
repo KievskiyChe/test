@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { USDC_ADDRESS } from "@/common/constants";
 import { useAccount } from "vagmi";
 
 const { isConnected, address } = useAccount();
@@ -46,8 +47,6 @@ const swapTokens = async () => {
 };
 
 const getSwapOptions = (): SwapOptions | undefined => {
-  const USDC = '0xaf88d065e77c8cc2239327c5edb3a432268e5831';
-
   if (!from.value || !to.value || !isConnected.value) return;
 
   const _slippage = calculateSlippage(
@@ -60,7 +59,7 @@ const getSwapOptions = (): SwapOptions | undefined => {
 
   return {
     amount: _amount,
-    slippage: to.value.address.toLowerCase() === USDC ? '0' : _slippage,
+    slippage: to.value.address.toLowerCase() === USDC_ADDRESS ? '0' : _slippage,
     path: [from.value.address, to.value.address],
     to: address.value!,
     deadline: Date.now() + 200000,
