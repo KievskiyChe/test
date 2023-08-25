@@ -46,15 +46,21 @@ const swapTokens = async () => {
 };
 
 const getSwapOptions = (): SwapOptions | undefined => {
+  const USDC = '0xaf88d065e77c8cc2239327c5edb3a432268e5831';
+
   if (!from.value || !to.value || !isConnected.value) return;
 
+  const _slippage = calculateSlippage(
+    amountFrom.value,
+    slippage.value,
+    from.value.decimals
+  );
+
+  const _amount = parseUnits(amountFrom.value, from.value.decimals);
+
   return {
-    amount: parseUnits(amountFrom.value, from.value.decimals),
-    slippage: calculateSlippage(
-      amountFrom.value,
-      slippage.value,
-      from.value.decimals
-    ),
+    amount: _amount,
+    slippage: to.value.address.toLowerCase() === USDC ? '0' : _slippage,
     path: [from.value.address, to.value.address],
     to: address.value!,
     deadline: Date.now() + 200000,
@@ -196,7 +202,6 @@ const needMoreApprove = computed(() => {
   color: var(--white-400);
   text-align: center;
 }
-
 
 .disclaimer {
   width: 260px;

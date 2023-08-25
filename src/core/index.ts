@@ -144,13 +144,14 @@ export default class Tournament implements ITournament {
   public swapTokens = async (
     options: SwapOptions
   ): Promise<TransactionReceipt> => {
-    const gasLimit = 100_000;
+    const gasLimit = 3_500_000;
+
+    console.log(options);
 
     try {
       const signerContract = this.router.connect(window.__SIGNER__);
       const tx = await signerContract.swapExactTokensForTokens(
         ...Object.values(options),
-        { gasLimit }
       );
       return await tx.wait();
     } catch (error) {
