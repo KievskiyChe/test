@@ -146,13 +146,11 @@ export default class Tournament implements ITournament {
   ): Promise<TransactionReceipt> => {
     const gasLimit = 3_500_000;
 
-    console.log(options);
+    const { amount, slippage, path, to, deadline } = options;
 
     try {
       const signerContract = this.router.connect(window.__SIGNER__);
-      const tx = await signerContract.swapExactTokensForTokens(
-        ...Object.values(options),
-      );
+      const tx = await signerContract.swapExactTokensForTokens(amount, slippage, path, to, deadline);
       return await tx.wait();
     } catch (error) {
       console.log(error);
