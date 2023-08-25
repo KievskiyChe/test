@@ -39,7 +39,7 @@ const mobile = computed(() => {
       { past: props.past },
     ]"
   >
-    <div class="card">
+    <div class="card" :class="{ inactive: !token?.symbol }">
       <img
         src="@/assets/img/p-active.svg"
         alt=""
@@ -54,9 +54,8 @@ const mobile = computed(() => {
       />
       <img src="@/assets/img/p-inactive-f.svg" alt="" v-if="!token && !mobile" />
 
-      <div class="icon">
+      <div class="icon" v-if="token?.symbol">
         <ThePlayerToken
-          v-if="token?.symbol"
           :name="token?.symbol"
           :active="props.active"
           :big="mobile"
@@ -164,6 +163,11 @@ const mobile = computed(() => {
 
 .player .card {
   position: relative;
+
+  &.inactive {
+    padding-top: 10px;
+  }
+
   &::after {
     content: "";
     position: absolute;
@@ -188,7 +192,7 @@ const mobile = computed(() => {
   height: 100%;
 
   top: 6px;
-  left: 8px;
+  left: 6px;
 }
 
 .player .winner-icon {
