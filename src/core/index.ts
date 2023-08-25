@@ -149,7 +149,8 @@ export default class Tournament implements ITournament {
     try {
       const signerContract = this.router.connect(window.__SIGNER__);
       const tx = await signerContract.swapExactTokensForTokens(
-        ...Object.values(options)
+        ...Object.values(options),
+        { gasLimit }
       );
       return await tx.wait();
     } catch (error) {
