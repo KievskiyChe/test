@@ -7,6 +7,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const INotificationStatus: typeof import('../src/common/interfaces')['INotificationStatus']
   const Popup: typeof import('../src/common/interfaces')['Popup']
+  const USDC_ADDRESS: typeof import('../src/common/constants')['USDC_ADDRESS']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const addTokenToMetaMask: typeof import('../src/common/helpers')['addTokenToMetaMask']
   const blurry: typeof import('../src/common/animations')['blurry']
@@ -110,6 +111,7 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly INotificationStatus: UnwrapRef<typeof import('../src/common/interfaces')['INotificationStatus']>
     readonly Popup: UnwrapRef<typeof import('../src/common/interfaces')['Popup']>
+    readonly USDC_ADDRESS: UnwrapRef<typeof import('../src/common/constants')['USDC_ADDRESS']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly addTokenToMetaMask: UnwrapRef<typeof import('../src/common/helpers')['addTokenToMetaMask']>
     readonly blurry: UnwrapRef<typeof import('../src/common/animations')['blurry']>

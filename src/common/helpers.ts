@@ -78,14 +78,14 @@ export const calculateUSD = (
 };
 
 export const calculateSlippage = (
-  amount: string,
-  slippage: string | number,
-  decimals: number
+  amount: string, // amountOut
+  slippage: string | number, // user slippage input
+  decimals: number // token decimals
 ) => {
-  const a = BigNumber.from(parseUnits(amount, decimals))
-  const sp = Number(slippage) / 100
-  const r = Number(a) - Number(a) * Number(sp)
-  return Math.floor(r).toString();
+  const _amount = BigNumber.from(parseUnits(amount, decimals))
+  const _slippage = 1 - Number(slippage) / 100
+  const result = Number(_amount) * Number(_slippage)
+  return Math.floor(result).toString();
 };
 
 export const switchNetwork = (chainId: number) => {

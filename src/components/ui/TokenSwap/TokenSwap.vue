@@ -27,25 +27,6 @@ const canBuy = (token: IToken) => {
   return arr.find((item) => item?.symbol === token.symbol) ? true : false;
 };
 
-const swapTokens = async () => {
-  const tournament = getTournament() as any;
-  startProcess();
-
-  try {
-    const receipt = await tournament.swap(getSwapOptions());
-
-    if (receipt && receipt.status) {
-      // await tournament.updateSilent();
-      successProcess();
-    }
-  } catch (error) {
-    console.log(error);
-    errorProcess();
-  }
-
-  resetForm();
-};
-
 const getSwapOptions = (): SwapOptions | undefined => {
   if (!from.value || !to.value || !isConnected.value) return;
 
@@ -64,6 +45,26 @@ const getSwapOptions = (): SwapOptions | undefined => {
     to: address.value!,
     deadline: Date.now() + 200000,
   };
+};
+
+const swapTokens = async () => {
+  startProcess();
+
+  const options = getSwapOptions();
+  const tournament = getTournament() as any;
+
+  try {
+    const receipt = await tournament.swap(options);
+
+    if (receipt && receipt.status) {
+      successProcess();
+    }
+  } catch (error) {
+    console.log(error);
+    errorProcess();
+  }
+
+  resetForm();
 };
 
 const handleApprove = async (token: IToken | undefined) => {
