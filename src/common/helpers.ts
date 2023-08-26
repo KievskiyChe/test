@@ -82,12 +82,10 @@ export const calculateSlippage = (
   slippage: string | number, // user slippage input
   decimals: number // token decimals
 ) => {
-  console.log(amount, slippage, decimals)
   const _amount = BigNumber.from(parseUnits(parseFloat(amount).toFixed(2), decimals))
   const _slippage = 1 - Number(slippage) / 100
   const result = Number(_amount) * Number(_slippage)
-  console.log(_amount, _slippage)
-  return Math.floor(result).toString();
+  return Math.floor(result).toLocaleString('fullwide', {useGrouping:false})
 };
 
 export const switchNetwork = (chainId: number) => {
