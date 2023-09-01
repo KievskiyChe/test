@@ -73,8 +73,7 @@ onMounted(() => {
               <img src="@/assets/img/claim-history-not-connected.svg" alt="" />
 
               <p>
-                To see your balance and <br />participate in the battle,<br />connect
-                wallet
+                To see your awards and <br />be able to claim them,<br />please connect your wallet.
               </p>
 
               <TheButton @click.stop="showPopup(Popup.AUTH)">
